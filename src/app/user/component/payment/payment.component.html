@@ -1,0 +1,24 @@
+<p-toast />
+<div class="super">
+  <h2><i class="pi pi-credit-card"></i>
+    Payment</h2>
+  <h3>Order from GiftWave</h3>
+
+  <h4>Total amount: <span> {{amount}}</span></h4>
+  <p>Gift box id:[#]{{giftBoxID}}</p>
+  <div id="card-element">
+    <!-- A Stripe Element will be inserted here. -->
+  </div>
+  <!-- <button (click)="pay()">Pay ${{ amount / 100 }}</button> -->
+  <div class="btn">
+    <button (click)="pay()" class="btnPay">Pay</button>
+  </div>
+
+  <div class="cardIcon">
+    <img src="\assets\card\master.png" alt="" height="40px">
+    <img src="\assets\card\card.png" alt="" height="40px">
+    <img src="\assets\card\paypal.png" alt="" height="40px">
+    <img src="\assets\card\apple-pay.png" alt="" height="40px">
+    <img src="\assets\card\american-express.png" alt="" height="40px">
+  </div>
+</div>

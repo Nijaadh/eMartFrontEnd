@@ -1,0 +1,69 @@
+<p-toast />
+<div class="main">
+    <div class="img">
+        <img src="/assets/register.jpeg" alt="Registration Image">
+    </div>
+    <div class="lgform">
+        <h2>Register</h2>
+        <form class="form" (ngSubmit)="register()">
+            <div style="display: flex;width: 100%;justify-content: space-between;">
+                <div class="inputForm">
+                    <input placeholder="Username" class="input" type="text" [(ngModel)]="user.userName" name="userName"
+                        (ngModelChange)="onUserNameChange()" required>
+                    <div *ngIf="unameExists" class="error-message">
+                        Already used
+                    </div>
+                </div>
+
+                <div class="image-upload">
+                    <label for="file-input">
+                        <div class="image-preview" *ngIf="imagePreviewUrl">
+                            <img [src]="imagePreviewUrl" alt="Image Preview" />
+                        </div>
+                        <div *ngIf="!imagePreviewUrl" class="image-placeholder">
+                            <span>Profile Image</span>
+                        </div>
+                    </label>
+                    <input id="file-input" type="file" (change)="onImageSelected($event)" accept="image/*">
+                </div>
+            </div>
+
+
+            <div class="inputForm">
+                <input placeholder="Address" class="input" type="text" [(ngModel)]="user.address" name="address">
+            </div>
+
+            <div class="inputForm">
+                <input placeholder="Email" class="input" type="email" [(ngModel)]="user.email" name="email"
+                    (ngModelChange)="onEmailChange()" required>
+                <div *ngIf="emailExists" class="error-message">
+                    Already used
+                </div>
+            </div>
+
+
+            <div class="inputForm">
+                <input placeholder="Telephone" class="input" type="tel" [(ngModel)]="user.tel" name="tel">
+            </div>
+
+            <div class="inputForm">
+                <input placeholder="Password" class="input" type="password" [(ngModel)]="user.password" name="password"
+                    required>
+            </div>
+
+
+
+
+
+
+
+            <button class="button-submit" type="submit">Register</button>
+
+
+            <div class="logo" routerLink="/home">
+                <img src="/assets/blogo.png" alt="GiftWave Logo" width="50px"> GiftWave.com
+            </div>
+
+        </form>
+    </div>
+</div>

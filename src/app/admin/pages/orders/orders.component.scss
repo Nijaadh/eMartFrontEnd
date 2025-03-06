@@ -1,0 +1,25 @@
+.path {
+    position: absolute;
+    left: 4rem;
+    top: 6px;
+    height: 40px;
+}
+
+.card {
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 4rem;
+
+}
+
+
+.head {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.xz{
+    display: flex;
+    justify-content: space-between;
+}

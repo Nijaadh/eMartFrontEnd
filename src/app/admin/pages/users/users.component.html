@@ -1,0 +1,37 @@
+<div class="path">
+    <p-breadcrumb class="max-w-full" [model]="items" [home]="home" />
+</div>
+
+
+
+<div class="card flex justify-content-center">
+    <div style="display: flex;width: 100%;justify-content: space-between;align-items: center;border-bottom: 1px solid gainsboro;">
+    <h3 style="color: cornflowerblue;font-size: 30px;margin: 15px;">Registerd Users</h3>
+    <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input type="text" pInputText placeholder="Search" />
+    </p-iconField></div><br><br>
+    <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+        <p-accordionTab *ngFor="let user of fetchingUser">
+            <ng-template pTemplate="header">
+                <span class="head">
+                    <p-avatar [image]="user.image" 
+                        shape="circle" />
+                    <span class="font-bold white-space-nowrap">
+                        {{ user.userName}}
+                    </span>
+                    <p-badge value="ACTIVE" class="ml-auto mr-2" />
+                </span>
+            </ng-template>
+            <p class="m-0">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                id est laborum.
+            </p>
+        </p-accordionTab>
+
+    </p-accordion>
+</div>

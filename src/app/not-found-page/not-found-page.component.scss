@@ -1,0 +1,31 @@
+div {
+    width: 100%;
+    min-height: 90vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    .c {
+        display: flex;
+        flex-direction: column;
+        line-height: 0;
+        position: relative;
+        h1 {
+            font-size: 200px;
+            color: rgb(0, 60, 86);
+            
+        }
+        p{
+            position: relative;
+            bottom: 40px;
+            font-size: larger;
+            color: cadetblue;
+        }
+        img {
+            width: 240px;
+            position: relative;
+            bottom: -50px;
+            // box-shadow: 0 0 10px 0 black;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+
+<div class="carousel-container">
+    <h1>Products</h1>
+    <div class="carousel">
+        <div class="carousel-item" *ngFor="let item of fetchingItems">
+            <img [src]="item.image || '/assets/box.png'" alt="{{ item.name }}">
+            <h3>{{ item.name }}</h3>
+            <!-- <p>{{ item.unitPrice }}</p> -->
+        </div>
+    </div>
+</div>

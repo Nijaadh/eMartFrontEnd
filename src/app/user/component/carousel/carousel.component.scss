@@ -1,0 +1,70 @@
+$carousel-width: 75%;
+//$item-width: 100% / 5; // Assuming 5 items visible at a time
+$animation-duration: 15s;
+@use 'sass:math';
+$item-width: math.div(100%, 5);
+
+.carousel-container {
+  width: $carousel-width;
+  overflow: hidden;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px;
+
+  h1{
+    color: #777;
+  }
+}
+
+.carousel {
+  display: flex;
+  width: calc(5 * #{$item-width}); // Width for 5 items
+  animation: slide-animation $animation-duration linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.carousel-item {
+  min-width: 250px;
+  width: $item-width;
+  margin: 5px;
+  box-shadow: 1px 1px 5px 1px darkgray;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 200px;
+  }
+
+  h3 {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #777;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slide-animation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

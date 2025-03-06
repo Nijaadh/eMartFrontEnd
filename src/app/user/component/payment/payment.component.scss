@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&display=swap');
+.super{
+    margin-top: 5%;
+    width: 400px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 2px 1px 3px 2px rgba(50, 50, 93, 0.1), 0 1px 0 rgba(0, 0, 0, 0.02);
+    h2{
+        color: #d57209;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        i{
+            color: rgb(12, 31, 129);
+        }
+    }
+    h3{
+        font-family: "Maven Pro", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        color: #030c2688;
+    }
+    .cardIcon{
+        min-width: 90%;
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn{
+        width: 90%;
+        display: flex;
+        justify-content: end;
+    }
+    .btnPay{
+        margin: 15px 5px 5px 5px;
+        width: 90px;
+        height: 40px;
+        border: none;
+        border-radius: 6px;
+        background-color: #d57209;
+        color: white;
+        cursor: pointer;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        box-shadow: 2px 1px 8px 2px rgba(50, 50, 93, 0.4);
+    }
+    .btnPay:hover{
+        background-color: #f58813;
+    }
+}
+#card-element {
+    background-color: #f5f5f5;
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    border-radius: 4px;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 1px 3px rgba(50, 50, 93, 0.1), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+#card-element.StripeElement--focus {
+    box-shadow: 0 1px 3px rgba(50, 50, 93, 0.2), 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+#card-element.StripeElement--invalid {
+    border-color: #fa755a;
+}
+
+#card-element.StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+}

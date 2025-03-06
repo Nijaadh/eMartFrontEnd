@@ -1,0 +1,108 @@
+<p-toast />
+<div class="modal" *ngIf="isModalVisible">
+    <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h2>Search Results</h2>
+        <div class="product-card" *ngFor="let item of items">
+
+            <div class="product-image">
+                <img [src]="item.image || '/assets/box.png'" alt="Product Image" />
+            </div>
+            <div class="product-info">
+                <h2 class="product-name">{{ item.name }}</h2>
+                <!-- <p class="product-description">
+                    {{ item.description }}
+                </p> -->
+    
+                <p class="product-description">
+                    <span *ngIf="!item.showFullDescription">
+                        {{ item.description | slice:0:100 }}... <!-- Display the first 100 characters -->
+                        <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
+                    </span>
+                    <span *ngIf="item.showFullDescription">
+                        {{ item.description }}
+                        <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
+                    </span>
+    
+    
+                <div class="product-price">{{ item.unitPrice }} LKR</div>
+            </div>
+            <button class="add-to-cart-button" (click)="addToGiftBox(item.id)">Add To Gift Box</button>
+        </div>
+    </div>
+</div>
+<div class="tool">
+    <div class="catCard">
+        <p-megaMenu [model]="category" />
+    </div>
+    <div class="card flex justify-content-center">
+        <p-iconField iconPosition="right">
+            <p-inputIcon styleClass="pi pi-search" />
+            <input type="text" pInputText placeholder="Search" (keydown.enter)="onSearch()" [(ngModel)]="searchTerm"
+                name="searchTerm" />
+        </p-iconField>
+    </div>
+
+    <div style="display: flex;align-items: center;">
+        <p-button (onClick)=" getGiftBoxItems()" label="Box" icon="pi pi-gift" class="box" badge="{{giftboxCount}}"
+            outlined="true" badgeClass="p-badge-contrast" />
+        <p-dialog header="Gifts Box" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem',minHeight:'300px'}"
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+            <div *ngFor="let item of giftBoxItemsDetails" class="giftBox-card">
+                <div class="gift-image">
+                    <img [src]="item.image" alt="{{ item.name }}" height="70px" />
+                </div>
+                <div class="gift-info">
+                    <h4 class="gift-name"> [#{{ item.id }}] &nbsp; {{ item.name }}</h4>
+                    <div class="gift-price">{{ item.unitPrice }} LKR</div>
+                </div>
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true"
+                    (onClick)="removeItemFromArray(item.id)" />
+            </div>
+
+            <p-button label="Buy & Send" icon="pi pi-send" outlined="true" class="buy-button" (onClick)="sendArray()" />
+        </p-dialog>
+
+    </div>
+</div>
+
+
+
+
+
+
+<div class="store">
+
+
+    <div class="product-card" *ngFor="let item of fetchingItems">
+
+        <div class="product-image">
+            <img [src]="item.image || '/assets/box.png'" alt="Product Image" />
+        </div>
+        <div class="product-info">
+            <h2 class="product-name">{{ item.name }}</h2>
+            <!-- <p class="product-description">
+                {{ item.description }}
+            </p> -->
+
+            <p class="product-description">
+                <span *ngIf="!item.showFullDescription">
+                    {{ item.description | slice:0:100 }}... <!-- Display the first 100 characters -->
+                    <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
+                </span>
+                <span *ngIf="item.showFullDescription">
+                    {{ item.description }}
+                    <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
+                </span>
+
+
+            <div class="product-price">{{ item.unitPrice }} LKR</div>
+        </div>
+        <button class="add-to-cart-button" (click)="addToGiftBox(item.id)">Add To Gift Box</button>
+    </div>
+
+</div>
+ 
+    
+ 
