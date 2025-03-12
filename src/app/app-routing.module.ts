@@ -18,7 +18,6 @@ import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
 
 const routes: Routes = [
-
   {
     path: "", component: UserLayoutComponent, children: [
       { path: "", redirectTo: 'home', pathMatch: 'full' },
