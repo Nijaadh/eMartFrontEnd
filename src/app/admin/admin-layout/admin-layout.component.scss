@@ -102,7 +102,7 @@ $submenu-item-hover-bg: #8aa6cd;
                 a {
                     display: flex;
                     align-items: center;
-                    height: 70px;
+                    height: 50px;
                     padding: 0.75rem 1rem;
                     text-decoration: none;
                     color: $text-color;
@@ -149,7 +149,7 @@ $submenu-item-hover-bg: #8aa6cd;
     }
 
     .sidebar-footer {
-        padding: 1rem;
+        padding: 0.55rem;
         background-color: $menu-item-hover-bg;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
