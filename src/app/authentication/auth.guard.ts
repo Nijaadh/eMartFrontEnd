@@ -1,15 +1,21 @@
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { isPlatformBrowser } from '@angular/common';
 
 export const authGuard: CanActivateFn = (route, state) => {
+  const platformId = inject(PLATFORM_ID);
+  const isBrowser = isPlatformBrowser(platformId);
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
-    return true; // Allow access if user is authenticated
+  if (isBrowser && localStorage.getItem('email') != null ||  localStorage.getItem('jwtToken') != null) {
+    return true;
   } else {
-    router.navigate(['/login']); // Redirect to login if not authenticated
-    return false; // Deny access
+    if (isBrowser) {
+      // toastr.warning('Unauthorized access');
+      router.navigateByUrl('/login');
+    }
+    return false;
   }
 };
