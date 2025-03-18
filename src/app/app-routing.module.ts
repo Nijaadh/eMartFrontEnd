@@ -18,7 +18,6 @@ import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
 
 const routes: Routes = [
-
   {
     path: "", component: UserLayoutComponent, children: [
       { path: "", redirectTo: 'home', pathMatch: 'full' },
@@ -30,11 +29,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: "admin", component: AdminLayoutComponent, children: [
-      { path: "dash", component: DashComponent },
-      { path: "product", component: ProductsComponent },
-      { path: "users", component: UsersComponent },
-      {path:"order",component:OrdersComponent}
+    path: "admin", component: AdminLayoutComponent,canActivate: [authGuard], children: [
+      { path: "dash", component: DashComponent ,canActivate: [authGuard]},
+      { path: "product", component: ProductsComponent,canActivate: [authGuard] },
+      { path: "users", component: UsersComponent,canActivate: [authGuard] },
+      {path:"order",component:OrdersComponent,canActivate: [authGuard]}
     ]
   },
   { path: "login", component: LoginComponent },
