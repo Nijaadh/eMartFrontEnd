@@ -16,6 +16,7 @@ import { GiftsComponent } from './user/pages/gifts/gifts.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
+import { CategoryComponent } from './admin/pages/category/category.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,10 @@ const routes: Routes = [
       { path: "dash", component: DashComponent ,canActivate: [authGuard]},
       { path: "product", component: ProductsComponent,canActivate: [authGuard] },
       { path: "users", component: UsersComponent,canActivate: [authGuard] },
-      {path:"order",component:OrdersComponent,canActivate: [authGuard]}
+      {path:"order",component:OrdersComponent,canActivate: [authGuard]},
+      {path:"category",component:CategoryComponent,canActivate: [authGuard]},
+      {path:"admin",redirectTo:"dash",pathMatch:"full"}
+
     ]
   },
   { path: "login", component: LoginComponent },

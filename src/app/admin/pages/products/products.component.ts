@@ -2,26 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { GiftItemsService } from '../../../services/gift-items.service';
+import { CategoryService } from '../../../services/category.service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
   fetchingItems: any[] = []; // For fetchingProduct
-  items: MenuItem[] | undefined
+  items: MenuItem[] | undefined;
   home: MenuItem | undefined;
-
+  visible: boolean = false;
   productForm: FormGroup;
-
-  // category dropdown
-  categories: string[] = ['Electronics', 'Books', 'Foods', 'Stationeries'];
+  fetchingCategories: any[] = [];
+  fetchingSubCategories: any[] = [];
 
   constructor(
+    private _apim: CategoryService,
     private giftItemsService: GiftItemsService,
     private messageService: MessageService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.productForm = this.fb.group({
       id: [''],
@@ -30,16 +31,16 @@ export class ProductsComponent implements OnInit {
       commonStatus: ['ACTIVE'],
       description: ['', Validators.required],
       category: ['', Validators.required],
-      image: ['', Validators.required]
+      image: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.fetchAllItems();
     this.items = [
-      { label: 'GiftWave' },
+      { label: 'EMart' },
       { label: 'Admin' },
-      { label: 'Products' }
+      { label: 'Products' },
     ];
     this.home = { icon: 'pi pi-slack', routerLink: '/admin/dash' };
   }
@@ -49,7 +50,9 @@ export class ProductsComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      this.productForm.patchValue({ image: reader.result?.toString().split(',')[1] || '' });
+      this.productForm.patchValue({
+        image: reader.result?.toString().split(',')[1] || '',
+      });
     };
   }
 
@@ -62,19 +65,29 @@ export class ProductsComponent implements OnInit {
     }
 
     const product = this.productForm.value;
-
-    this.giftItemsService.addGiftItem(product).subscribe(response => {
+    console.log(product);
+    this.giftItemsService.addGiftItem(product).subscribe((response) => {
       console.log('Product added:', response);
       this.show();
       this.fetchAllItems();
     });
   }
   fetchAllItems(): void {
-    this.giftItemsService.getAllGiftItems().subscribe(data => {
+    this.giftItemsService.getAllGiftItems().subscribe((data) => {
       // Assuming data.payload contains the array of products
       this.fetchingItems = data.payload.map((item: any) => ({
         ...item,
-        image: item.image ? 'data:image/png;base64,' + item.image : '' // Convert base64 to image URL
+        image: item.image ? 'data:image/png;base64,' + item.image : '', // Convert base64 to image URL
+      }));
+    });
+  }
+
+  fetchAllCategories(): void {
+    this._apim.getAllCategories().subscribe((data: any) => {
+      // Assuming data.payload contains the array of products
+      this.fetchingCategories = data.payload.map((category: any) => ({
+        ...category,
+        // image: item.image ? 'data:image/png;base64,' + item.image : '', // Convert base64 to image URL
       }));
     });
   }
@@ -82,25 +95,42 @@ export class ProductsComponent implements OnInit {
   deleteProduct(pId: any) {
     const product = {
       id: pId,
-      commonStatus: "DELETED"
-    }
-    this.giftItemsService.deleteGiftItem(product).subscribe(response => {
+      commonStatus: 'DELETED',
+    };
+    this.giftItemsService.deleteGiftItem(product).subscribe((response) => {
       console.log(response);
       this.detete();
       this.fetchAllItems();
     });
-
   }
   toggleDescription(item: any) {
     item.showFullDescription = !item.showFullDescription;
   }
-  show() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product added Successfully!' });
+
+  showDialog() {
+    this.visible = true;
   }
+  
+  show() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Product added Successfully!',
+    });
+  }
+
   detete() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product deletion Successfully!' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Product deletion Successfully!',
+    });
   }
   showError() {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Product added Unsuccessfully!' });
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Product added Unsuccessfully!',
+    });
   }
 }
