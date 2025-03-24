@@ -97,7 +97,7 @@ export class CategoryComponent implements OnInit {
     console.log("sub");
     console.log(Obj);
 
-    this._apim.addCategory(Obj).subscribe(
+    this._apim.addSubCategory(Obj).subscribe(
       (response) => {
         console.log('Product added:', response);
         this.visible = false;
@@ -163,6 +163,7 @@ export class CategoryComponent implements OnInit {
   toggleDescription(item: any) {
     item.showFullDescription = !item.showFullDescription;
   }
+  
   show() {
     this.messageService.add({
       severity: 'success',
@@ -178,6 +179,7 @@ export class CategoryComponent implements OnInit {
       detail: 'Product deletion Successfully!',
     });
   }
+
   showError() {
     this.messageService.add({
       severity: 'error',
