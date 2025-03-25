@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { GiftItemsService } from '../../../services/gift-items.service';
 import { CategoryService } from '../../../services/category.service';
+import { Item } from '../../model/itemModel';
+import { error } from 'console';
 
 @Component({
   selector: 'app-products',
@@ -13,10 +15,12 @@ export class ProductsComponent implements OnInit {
   fetchingItems: any[] = []; // For fetchingProduct
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
-  visible: boolean = false;
   productForm: FormGroup;
+  selectedCategory: number = 0;
+  selectedSubCategory: number = 0;
   fetchingCategories: any[] = [];
   fetchingSubCategories: any[] = [];
+  visible: boolean = false;
 
   constructor(
     private _apim: CategoryService,
@@ -31,12 +35,14 @@ export class ProductsComponent implements OnInit {
       commonStatus: ['ACTIVE'],
       description: ['', Validators.required],
       category: ['', Validators.required],
+      subCategory: ['', Validators.required],
       image: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.fetchAllItems();
+    this.fetchAllCategories();
     this.items = [
       { label: 'EMart' },
       { label: 'Admin' },
@@ -57,22 +63,49 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    // alert("hello");
-    // console.log("jhiu"+this.productForm.value);
     if (this.productForm.invalid) {
       this.showError();
       return;
     }
+    let product = this.productForm.value;
+    let Obj: Item = {
+      id: '',
+      name: product.name,
+      unitPrice: product.unitPrice,
+      commonStatus: product.commonStatus,
+      description: product.description,
+      subCategoryId: product.subCategory,
+      category: product.category,
+      image: product.image,
+    };
 
-    const product = this.productForm.value;
-    console.log(product);
-    this.giftItemsService.addGiftItem(product).subscribe((response) => {
-      console.log('Product added:', response);
-      this.show();
-      this.fetchAllItems();
-    });
+    console.log(Obj);
+
+    this.giftItemsService.addGiftItem(Obj).subscribe(
+      (response) => {
+        console.log('Product added:', response);
+        this.show();
+        this.productForm.reset();
+        this.visible = false;
+        this.fetchAllItems();
+      },
+      (error) => {
+        this.showError();
+      }
+    );
   }
+
+  onCategoryeSelectionChange(event: any): void {
+    this.selectedCategory = event.target.value;
+    this.fetchSubCategoriesByCategoryId(this.selectedCategory);
+  }
+
+  onSubCategoryeSelectionChange(event: any): void {
+    this.selectedSubCategory = event.target.value;
+  }
+
   fetchAllItems(): void {
+    this.fetchingItems = [];
     this.giftItemsService.getAllGiftItems().subscribe((data) => {
       // Assuming data.payload contains the array of products
       this.fetchingItems = data.payload.map((item: any) => ({
@@ -89,6 +122,25 @@ export class ProductsComponent implements OnInit {
         ...category,
         // image: item.image ? 'data:image/png;base64,' + item.image : '', // Convert base64 to image URL
       }));
+    });
+  }
+
+  onCategorySelectionChange(event: any): void {
+    this.selectedCategory = event.target.value;
+    console.log('Selected Category ID:', this.selectedCategory);
+    this.fetchSubCategoriesByCategoryId(this.selectedCategory)
+  }
+  
+
+  fetchSubCategoriesByCategoryId(id: number): void {
+    this.fetchingSubCategories = [];
+    this._apim.getSubCategoriesByCategoryId(id).subscribe((data: any) => {
+      this.fetchingSubCategories = data.payload[0].map((subCategory: any) => ({
+        ...subCategory,
+      }));
+
+      console.log(this.fetchingSubCategories);
+      console.log(data);
     });
   }
 
@@ -110,7 +162,11 @@ export class ProductsComponent implements OnInit {
   showDialog() {
     this.visible = true;
   }
-  
+
+  Refresh() {
+    this.fetchAllItems();
+  }
+
   show() {
     this.messageService.add({
       severity: 'success',
