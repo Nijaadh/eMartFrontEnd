@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
   constructor(private userService:UserService){}
   ngOnInit() {
       this.items = [
-          { label: 'GiftWave' }, 
+          { label: 'EMart' }, 
           { label: 'Admin' }, 
           { label: 'User' }
       ];
