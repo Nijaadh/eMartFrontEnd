@@ -16,7 +16,7 @@ export class OrdersComponent implements OnInit {
   fetchingDeliveredGift: any[] = [];
   ngOnInit(): void {
     this.items = [
-      { label: 'GiftWave' },
+      { label: 'EMart' },
       { label: 'Admin' },
       { label: 'Orders' }
     ];

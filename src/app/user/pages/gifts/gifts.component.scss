@@ -11,8 +11,8 @@ $button-bg-gradient: linear-gradient(to right, #033f8d, #1d849bae);
     position: relative;
     width: 100%;
     flex-wrap: wrap;
-    // justify-content: space-between;
-    justify-content: flex-end;
+    justify-content: center; /* Center align the search bar */
+margin-left: 6%;
 
     .catCard {
         position: absolute;
@@ -23,11 +23,20 @@ $button-bg-gradient: linear-gradient(to right, #033f8d, #1d849bae);
             padding: 0;
             margin: 5px;
         }
-
     }
 
     .card {
         margin: 5px;
+        width: 30%; /* Increase the width of the search bar container */
+        max-width: 600px;
+    }
+
+    p-iconField {
+        width: 100%; /* Make sure the input takes full width of its container */
+    }
+
+    input[pInputText] {
+        width: 100%; /* Expand the input field to match the card width */
     }
 
     ::ng-deep .buy-button .p-button-label {
@@ -43,6 +52,7 @@ $button-bg-gradient: linear-gradient(to right, #033f8d, #1d849bae);
         margin: 10px;
     }
 }
+
 
 //Gift Box style----------------
 .giftBox-card {
