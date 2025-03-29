@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Item } from '../admin/model/itemModel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class GiftItemsService {
   getAllGiftItems(): Observable<any> {
     return this.http.get(this.api + "/getAll");
   }
-  addGiftItem(product: any): Observable<any> {
-    return this.http.post<any>(this.api+"/add", product);
+  addGiftItem(item:Item): Observable<any> {
+    return this.http.post<any>(this.api+"/add", item);
   }
 
   deleteGiftItem(product: any): Observable<any> {

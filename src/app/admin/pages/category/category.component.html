@@ -1,0 +1,283 @@
+<div class="path">
+  <p-breadcrumb class="max-w-full" [model]="category" [home]="home" />
+</div>
+
+<div class="card">
+  <p-tabView>
+    <p-tabPanel header="Categories"
+      ><br /><br />
+      <p-accordion
+        class="w-full"
+        expandIcon="pi pi-plus"
+        collapseIcon="pi pi-minus"
+      >
+        <p-dialog
+          header="Add New Sub Category"
+          [modal]="true"
+          [(visible)]="subModelVisible"
+          [style]="{ width: '25rem' }"
+        >
+          <span class="dialog-description">Update your information.</span>
+
+          <form [formGroup]="subCategoryForm">
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" formControlName="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <option
+                  *ngFor="let category of fetchingCategories"
+                  [value]="category.id"
+                >
+                  {{ category.name }}
+                </option>
+              </select>
+              <div
+                *ngIf="
+                  subCategoryForm.get('category')?.invalid &&
+                  subCategoryForm.get('category')?.touched
+                "
+              >
+                Category is required.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="category">Category Name</label>
+              <input
+                pInputText
+                id="name"
+                formControlName="name"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="categoryDis">Description</label>
+              <input
+                pInputText
+                id="dis"
+                formControlName="description"
+                required
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label for="image">Image</label>
+              <input
+                type="file"
+                id="image"
+                formControlName="image"
+                required
+                (change)="onFileSelected($event)"
+                required
+              />
+              <div
+                *ngIf="
+                  subCategoryForm.get('image')?.invalid &&
+                  subCategoryForm.get('image')?.touched
+                "
+              >
+                Image is required.
+              </div>
+            </div>
+
+            <div class="button-group">
+              <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="subModelVisible = false"
+              ></p-button>
+              <p-button
+                label="Save"
+                (click)="addSubCategory()"
+                [disabled]="subCategoryForm.invalid"
+              ></p-button>
+            </div>
+          </form>
+        </p-dialog>
+        <div class="card">
+          <div class="cap">
+            <h1>Sub Category List</h1>
+            <div>
+              <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search" />
+                <input type="text" pInputText placeholder="Search" />
+              </p-iconField>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <p-button
+                icon="pi pi-refresh"
+                (onClick)="show()"
+              />&nbsp;&nbsp;&nbsp;&nbsp;
+              <p-button
+                (click)="showSubCategoryDialog()"
+                label="Add Category"
+              ></p-button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>category ID</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subCategory of fetchingSubCategories">
+                  <td>{{ subCategory.id }}</td>
+                  <td>{{ subCategory.name }}</td>
+                  <td>{{ subCategory.description }}</td>
+                  <td>{{ subCategory.commonStatus }}</td>
+                  <td>{{ subCategory.categoryId }}</td>
+                  <td class="action-buttons">
+                    <p-button
+                      icon="pi pi-file-edit"
+                      [text]="true"
+                      [raised]="true"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      [text]="true"
+                      [raised]="true"
+                      severity="danger"
+                      (onClick)="deleteProduct(subCategory.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </p-accordion>
+    </p-tabPanel>
+    <p-tabPanel header="Main Categories"
+      ><br /><br />
+      <p-accordion
+        class="w-full"
+        expandIcon="pi pi-plus"
+        collapseIcon="pi pi-minus"
+      >
+        <p-dialog
+          header="Add New Category"
+          [modal]="true"
+          [(visible)]="visible"
+          [style]="{ width: '25rem' }"
+        >
+          <span class="dialog-description">Update your information.</span>
+
+          <form [formGroup]="categoryForm">
+            <div class="form-group">
+              <label for="category">Category Name</label>
+              <input
+                pInputText
+                id="name"
+                formControlName="name"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="categoryDis">Description</label>
+              <input
+                pInputText
+                id="dis"
+                formControlName="description"
+                required
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label for="image">Image</label>
+              <input
+                type="file"
+                id="image"
+                formControlName="image"
+                required
+                (change)="onFileSelected($event)"
+                required
+              />
+              <div
+                *ngIf="
+                  categoryForm.get('image')?.invalid &&
+                  categoryForm.get('image')?.touched
+                "
+              >
+                Image is required.
+              </div>
+            </div>
+
+            <div class="button-group">
+              <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="visible = false"
+              ></p-button>
+              <p-button
+                label="Save"
+                (click)="addCategory()"
+                [disabled]="categoryForm.invalid"
+              ></p-button>
+            </div>
+          </form>
+        </p-dialog>
+        <div class="card">
+          <div class="cap">
+            <h1>Category List</h1>
+            <div>
+              <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search" />
+                <input type="text" pInputText placeholder="Search" />
+              </p-iconField>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <p-button
+                icon="pi pi-refresh"
+                (onClick)="show()"
+              />&nbsp;&nbsp;&nbsp;&nbsp;
+              <p-button (click)="showDialog()" label="Add Category"></p-button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of fetchingCategories">
+                  <td>{{ category.id }}</td>
+                  <td>{{ category.name }}</td>
+                  <td>{{ category.description }}</td>
+                  <td>{{ category.commonStatus }}</td>
+                  <td class="action-buttons">
+                    <p-button
+                      icon="pi pi-file-edit"
+                      [text]="true"
+                      [raised]="true"
+                    />
+                    <p-button
+                      icon="pi pi-trash"
+                      [text]="true"
+                      [raised]="true"
+                      severity="danger"
+                      (onClick)="deleteProduct(category.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </p-accordion>
+    </p-tabPanel>
+  </p-tabView>
+</div>
