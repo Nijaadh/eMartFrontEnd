@@ -5,11 +5,10 @@ import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { GiftBoxService } from '../../../services/gift-box.service';
 
-
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.scss'
+  styleUrl: './nav-bar.component.scss',
 })
 export class NavBarComponent implements OnInit {
   menuActive: boolean = false;
@@ -18,9 +17,9 @@ export class NavBarComponent implements OnInit {
   isLoggedIn: boolean = false;
   userImageUrl: string = '';
   //get user details for variable
-  username: any = "Username";
-  imageUrl: any = "";
-  email: any = "";
+  username: any = 'Username';
+  imageUrl: any = '';
+  email: any = '';
   gifts: any[] = [];
   errorMessage: string = '';
   toggleMenu() {
@@ -29,7 +28,12 @@ export class NavBarComponent implements OnInit {
 
   items: MenuItem[] | undefined;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private authService: AuthService, private router: Router, private giftBoxService: GiftBoxService) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService,
+    private router: Router,
+    private giftBoxService: GiftBoxService
+  ) {
     if (typeof window !== 'undefined') {
       this.username = localStorage.getItem('username');
       this.imageUrl = `data:image/png;base64,${localStorage.getItem('imgUrl')}`;
@@ -37,7 +41,6 @@ export class NavBarComponent implements OnInit {
     }
   }
   ngOnInit() {
-    
     if (this.username) {
       this.isLoggedIn = true;
       this.userImageUrl = this.imageUrl; // Set the image URL
@@ -45,39 +48,40 @@ export class NavBarComponent implements OnInit {
       this.isLoggedIn = false;
     }
 
-    this.items = [
-      {
-        label: this.username,
-        items: [
+    this.items = this.isLoggedIn
+      ? [
+          {
+            label: this.username,
+            items: [
+              {
+                label: 'My Account',
+                icon: 'pi pi-user',
+                command: () => {
+                  this.sidebarVisible = true;
+                },
+              },
+              {
+                label: 'Logout',
+                icon: 'pi pi-sign-out',
+                command: () => {
+                  this.logout();
+                },
+              },
+            ],
+          },
+        ]
+      : [
           {
             label: 'Login',
             icon: 'pi pi-sign-in',
             routerLink: '/login',
           },
           {
-            label: 'Logout',
-            icon: 'pi pi-sign-in',
-            command: () => {
-              this.logout();
-            }
-          },
-          {
             label: 'Register',
             icon: 'pi pi-user-plus',
-            routerLink: '/register'
+            routerLink: '/register',
           },
-          {
-            label: 'My Account',
-            icon: 'pi pi-user',
-            command: () => {
-              this.sidebarVisible = true;
-            }
-          }
-        ]
-      }
-    ];
-
-   // this.fetchGiftsByUserId();
+        ];
 
     if (isPlatformBrowser(this.platformId)) {
       const userId = localStorage.getItem('id');
@@ -87,7 +91,7 @@ export class NavBarComponent implements OnInit {
     }
   }
 
-  fetchGiftsByUserId(userId: string){
+  fetchGiftsByUserId(userId: string) {
     // const storedUserId = localStorage.getItem('id');
     // if (!storedUserId) {
     //   throw new Error('User ID not found in localStorage.');
@@ -98,7 +102,7 @@ export class NavBarComponent implements OnInit {
       next: (response) => {
         if (response.status) {
           this.gifts = response.payload[0];
-          console.log("Hutto::::::"+response.payload[0]);
+          console.log('Hutto::::::' + response.payload[0]);
         } else {
           this.errorMessage = 'No active gifts found for this user.';
         }
@@ -106,19 +110,17 @@ export class NavBarComponent implements OnInit {
       error: (err) => {
         this.errorMessage = 'Error fetching gift details.';
         console.error('Error fetching gifts: ', err);
-      }
+      },
     });
   }
-
 
   logout() {
     // Perform logout logic here
     // this.authService.logout();
     localStorage.clear();
-    window.location.reload()
+    window.location.reload();
     this.router.navigate(['/home']); // Redirect to login page
     this.isLoggedIn = false;
     console.log('Logout');
   }
-
 }

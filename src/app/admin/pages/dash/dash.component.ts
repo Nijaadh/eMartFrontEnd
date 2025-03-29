@@ -57,7 +57,7 @@ export class DashComponent implements OnInit {
 
 
         this.items = [
-            { label: 'GiftWave' },
+            { label: 'EMart' },
             { label: 'Admin' },
             { label: 'Dashboard' }
         ];

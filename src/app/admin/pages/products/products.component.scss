@@ -141,223 +141,96 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 
-.product-form {
-    background: #ffffff;
-    padding: 30px;
-    //border-radius: 15px;
-    // box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    max-width: 70%;
-    margin: 20px auto;
-    font-family: 'Roboto', sans-serif;
-    form{
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
+
+.dialog-description {
+    display: block;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.3);
+  }
+  
+  .form-group input[type="file"] {
+    padding: 6px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  
+  .button-group button {
+    padding: 10px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .button-group button:first-child {
+    background: #e5e7eb;
+    color: #374151;
+  }
+  
+  .button-group button:first-child:hover {
+    background: #d1d5db;
+  }
+  
+  .button-group button:last-child {
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .button-group button:last-child:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }
+  
+  @media screen and (max-width: 480px) {
+    .form-group input,
+    .form-group select {
+      font-size: 12px;
+      padding: 6px;
     }
-
-    select {
-        width: 100%;
-        padding: 14px 20px;
-        border: 1px solid #cccccc;
-        border-radius: 10px;
-        font-size: 16px;
-        color: #333333;
-        background: #f9f9f9;
-        appearance: none;
-        background-color: #ffffff;
-        background-image: linear-gradient(45deg, #2d79f3 50%, transparent 50%),
-            linear-gradient(135deg, #2d79f3 50%, transparent 50%);
-        background-repeat: no-repeat, no-repeat;
-        background-position: calc(100% - 16px) calc(100% - 16px), calc(100% - 12px) center;
-        background-size: 8px 8px, 8px 8px;
-        transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-
-        &:focus {
-            border-color: #2d79f3;
-            background-color: #ffffff;
-            outline: none;
-        }
-
-        // Custom styling for the dropdown arrow
-        &::-ms-expand {
-            display: none;
-        }
+  
+    .button-group {
+      flex-direction: column;
     }
-
-    // Optional: Custom styling for the error message
-    .form-group {
-        position: relative;
-        width: 400px;
-        div {
-            margin-top: 8px;
-            color: #e74c3c;
-            font-size: 13px;
-        }
+  
+    .button-group button {
+      width: 100%;
     }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-        select {
-            font-size: 15px;
-            padding: 12px 18px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        select {
-            font-size: 14px;
-            padding: 10px 16px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        select {
-            font-size: 13px;
-            padding: 8px 14px;
-        }
-    }
-/////End of selection Style
-
-
-    .form-group {
-        margin-bottom: 25px;
-        position: relative;
-
-        label {
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: #555555;
-            font-size: 16px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        input[type="text"],
-        input[type="file"] {
-            width: 100%;
-            padding: 14px 20px;
-            border: 1px solid #cccccc;
-            border-radius: 10px;
-            font-size: 16px;
-            color: #333333;
-            background: #f9f9f9;
-            transition: border-color 0.3s ease, background-color 0.3s ease;
-
-            &:focus {
-                border-color: #2d79f3;
-                background-color: #ffffff;
-                outline: none;
-            }
-        }
-
-        div {
-            margin-top: 8px;
-            color: #e74c3c;
-            font-size: 13px;
-            position: absolute;
-            bottom: -20px;
-            left: 20px;
-        }
-    }
-
-    button {
-        width: 100%;
-        background-color: #2d79f3;
-        color: white;
-        border: none;
-        padding: 14px;
-        font-size: 18px;
-        font-weight: 700;
-        border-radius: 50px;
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-
-        &:hover {
-            background-color: #1b5ab6;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        &:disabled {
-            background-color: #b2d0f7;
-            cursor: not-allowed;
-        }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-        max-width: 700px;
-        padding: 25px;
-
-        .form-group {
-            margin-bottom: 22px;
-
-            label {
-                font-size: 15px;
-            }
-
-            input[type="text"],
-            input[type="file"] {
-                font-size: 15px;
-                padding: 12px 18px;
-            }
-        }
-
-        button {
-            font-size: 17px;
-            padding: 13px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        max-width: 100%;
-        padding: 22px;
-
-        .form-group {
-            margin-bottom: 20px;
-
-            label {
-                font-size: 14px;
-            }
-
-            input[type="text"],
-            input[type="file"] {
-                font-size: 14px;
-                padding: 10px 16px;
-            }
-        }
-
-        button {
-            font-size: 16px;
-            padding: 12px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        max-width: 100%;
-        padding: 18px;
-
-        .form-group {
-            margin-bottom: 18px;
-
-            label {
-                font-size: 13px;
-            }
-
-            input[type="text"],
-            input[type="file"] {
-                font-size: 13px;
-                padding: 8px 14px;
-            }
-        }
-
-        button {
-            font-size: 15px;
-            padding: 11px;
-        }
-    }
-}
+  }
+  

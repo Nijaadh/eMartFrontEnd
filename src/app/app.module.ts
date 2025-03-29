@@ -59,6 +59,7 @@ import { GiftsComponent } from './user/pages/gifts/gifts.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
+import { CategoryComponent } from './admin/pages/category/category.component';
  
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { UserLayoutComponent } from './user/user-layout/user-layout.component';
     PaymentComponent,
     SuccessPaymentMsgComponent,
     OrdersComponent,
+    CategoryComponent,
     
   ],
   imports: [
