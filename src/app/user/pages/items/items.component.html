@@ -37,20 +37,66 @@
     </div>
   </div>
 </div>
-<div class="tool">
-  <div class="card flex">
-    <p-iconField iconPosition="right">
-      <p-inputIcon styleClass="pi pi-search" />
-      <input
-        type="text"
-        pInputText
-        placeholder="Search"
-        (input)="onSearch()"
-        [(ngModel)]="searchTerm"
-        name="searchTerm"
-      />
-    </p-iconField>
+<div class="tool-container">
+    <div class="search-container">
+        <p-iconField iconPosition="right">
+          <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+          <input
+            type="text"
+            pInputText
+            placeholder="Search gifts..."
+            (input)="onSearch($event)"
+            [(ngModel)]="searchTerm"
+            name="searchTerm"
+          />
+        </p-iconField>
+      </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+  
+  <div class="filter-container">
+    <p-treeSelect
+    [options]="categories"
+    [(ngModel)]="selectedCategory"
+    placeholder="Select Category"
+    class="filter-dropdown"
+  ></p-treeSelect>
+    <!-- Sort Options Dropdown -->
+    <p-dropdown
+      [options]="sortOptions"
+      optionLabel="name"
+      placeholder="Sort By"
+      [(ngModel)]="selectedSortOption"
+      (onChange)="onSortChange()"
+      class="filter-dropdown"
+    />
+
+    <!-- Price Range Dropdown -->
+    <p-dropdown
+      [options]="priceRanges"
+      optionLabel="name"
+      placeholder="Price Range"
+      [(ngModel)]="selectedPriceRange"
+      (onChange)="onFilterChange()"
+      class="filter-dropdown"
+    />
+
+    <!-- In Stock Checkbox -->
+    <p-checkbox
+      [(ngModel)]="inStockOnly"
+      label="In Stock Only"
+      (onChange)="onFilterChange()"
+      class="filter-checkbox"
+    />
+
+    <!-- Clear Filters Button -->
+    <button class="clear-filters-btn" (click)="clearFilters()">
+      <i class="pi pi-filter-slash"></i> Clear Filters
+    </button>
   </div>
+</div>
+
 
   <div style="display: flex; align-items: center">
     <p-button
