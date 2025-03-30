@@ -17,7 +17,7 @@
         <li class="navbar-item">
 
             <a class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                routerLink="/gifts">
+                routerLink="/items">
                 <i class="pi pi-gift"></i>
                 products
             </a>
@@ -40,20 +40,66 @@
     </ul>
 
     <div class="navbar-actions">
+        <div class="cart">
+            <p-button
+                label="Cart"
+                icon="pi pi-gift"
+                class="box"
+                visible="true"
+                outlined="true"
+                badgeClass="p-badge-contrast"
+                (onClick)="showDialog()"
+                [badge]="giftboxCount.toString()"
+            />
+        </div>
         <p-menu #menu [model]="items" [popup]="true"></p-menu>
         <p-button (onClick)="menu.toggle($event)" severity="info" [outlined]="true" [rounded]="true" icon="pi pi-user"
             *ngIf="!isLoggedIn">
         </p-button>
-
+    
         <p-button (onClick)="menu.toggle($event)" [rounded]="true" [text]="true" *ngIf="isLoggedIn">
             <img [src]="userImageUrl" alt="User Image" width="24" height="24" class="user-icon-image" />
         </p-button>
-
+    
         <button class="navbar-toggler" (click)="toggleMenu()">&#9776;</button>
     </div>
 </nav>
 
-<div class="card flex justify-content-center">
+<p-dialog
+header="Gifts Box"
+[modal]="true"
+[(visible)]="visible"
+[style]="{ width: '50rem', minHeight: '300px' }"
+[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+<div *ngFor="let item of giftBoxItemsDetails" class="giftBox-card">
+  <div class="gift-image">
+    <img [src]="item.image" alt="{{ item.name }}" height="70px" />
+  </div>
+  <div class="gift-info">
+    <h4 class="gift-name">[#{{ item.id }}] &nbsp; {{ item.name }}</h4>
+    <div class="gift-price">{{ item.unitPrice }} LKR</div>
+  </div>
+  <p-button
+    icon="pi pi-times"
+    [rounded]="true"
+    severity="danger"
+    [outlined]="true"
+    (onClick)="removeItemFromArray(item.id)"
+  />
+</div>
+
+<p-button
+  label="Buy & Send"
+  icon="pi pi-send"
+  outlined="true"
+  class="buy-button"
+  (onClick)="sendArray()"
+  
+/>
+</p-dialog>
+
+<!-- <div class="card flex justify-content-center">
     <p-sidebar [(visible)]="sidebarVisible" styleClass="w-30rem">
         <ng-template pTemplate="header">
             <span class="font-semibold text-xl">Profile Details</span>
@@ -69,9 +115,8 @@
                 <span>{{username}}</span>
                 <p style="font-size: smaller;">{{email}}</p>
             </div>
-            <!-- <a href="#" class="button">Folow</a> -->
-        </div>
-
+        </div> -->
+<!-- 
 
         <div class="giftlist">
             <h4>My Gift list</h4>
@@ -106,6 +151,6 @@
             </div>
         </div>
 
-    </p-sidebar>
+    </p-sidebar> -->
     <!-- <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" /> -->
-</div>
+<!-- </div> -->

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { GiftBoxService } from '../../../services/gift-box.service';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -22,17 +23,18 @@ export class NavBarComponent implements OnInit {
   email: any = '';
   gifts: any[] = [];
   errorMessage: string = '';
-  toggleMenu() {
-    this.menuActive = !this.menuActive;
-  }
-
+  visible: boolean = false;
   items: MenuItem[] | undefined;
+  giftboxCount: number = 0;
+  giftBoxItems: number[] = [];
+  giftBoxItemsDetails: any[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
     private router: Router,
-    private giftBoxService: GiftBoxService
+    private giftBoxService: GiftBoxService,
+    private sharedDataService: SharedDataService
   ) {
     if (typeof window !== 'undefined') {
       this.username = localStorage.getItem('username');
@@ -91,6 +93,11 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+  toggleMenu() {
+    this.menuActive = !this.menuActive;
+  }
+
+
   fetchGiftsByUserId(userId: string) {
     // const storedUserId = localStorage.getItem('id');
     // if (!storedUserId) {
@@ -122,5 +129,28 @@ export class NavBarComponent implements OnInit {
     this.router.navigate(['/home']); // Redirect to login page
     this.isLoggedIn = false;
     console.log('Logout');
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  sendArray() {
+    localStorage.setItem('item', JSON.stringify(this.giftBoxItems));
+    this.sharedDataService.setData(this.giftBoxItems);
+    this.router.navigate(['/check-out']);
+  }
+
+  removeItemFromArray(item: number): void {
+    const index = this.giftBoxItems.indexOf(item);
+
+    if (index !== -1) {
+      // Item exists in the array, so remove it
+      this.giftBoxItems.splice(index, 1);
+      this.giftboxCount = this.giftBoxItems.length;
+      console.log(`Item ${item} removed. Updated array:`, this.giftBoxItems);
+    } else {
+      console.log(`Item ${item} not found in the array.`);
+    }
   }
 }
