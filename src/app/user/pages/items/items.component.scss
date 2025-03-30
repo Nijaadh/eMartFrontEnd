@@ -1,0 +1,212 @@
+$product-bg-color: #ffffff;
+$product-border-color: #e0e0e0;
+$product-shadow-color: rgba(0, 0, 0, 0.1);
+$primary-color: #1a73e8;
+$secondary-color: #ffcc00;
+$tertiary-color: #2d79f3;
+$button-bg-gradient: linear-gradient(to right, #033f8d, #1d849bae);
+
+.tool {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center; /* Center align the search bar */
+margin-left: 6%;
+
+    .catCard {
+        position: absolute;
+        left: 0;
+
+        ::ng-deep .p-megamenu {
+            height: 45px;
+            padding: 0;
+            margin: 5px;
+        }
+    }
+
+    .card {
+        margin: 5px;
+        width: 30%; /* Increase the width of the search bar container */
+        max-width: 600px;
+    }
+
+    p-iconField {
+        width: 100%; /* Make sure the input takes full width of its container */
+    }
+
+    input[pInputText] {
+        width: 100%; /* Expand the input field to match the card width */
+    }
+
+    ::ng-deep .buy-button .p-button-label {
+        color: #1d849bae;
+    }
+
+    ::ng-deep .buy-button .p-button-icon {
+        color: #1d849bae;
+    }
+
+    ::ng-deep .buy-button .p-button {
+        border: 1px solid #1d849bae;
+        margin: 10px;
+    }
+}
+
+
+//Gift Box style----------------
+.giftBox-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
+    box-shadow: 0 4px 8px $product-shadow-color;
+    border-radius: 8px;
+    padding: 10px;
+
+    .gift-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        // background-color:gold;
+        min-width: 400px;
+
+        .gift-price {
+            color: #033f8d;
+            font-weight: bold;
+        }
+    }
+}
+
+.store {
+    display: flex;
+    flex-wrap: wrap;
+    // background-color: black;
+}
+
+.product-card {
+    // position: relative;
+    width: 280px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // background-color: $product-bg-color;
+    background-color: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px $product-shadow-color;
+    padding: 16px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 7px auto;
+
+    .product-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .brand-logo {
+            width: 24px;
+        }
+
+        .favorite-icon {
+            width: 24px;
+        }
+    }
+
+    .product-image {
+        img {
+            width: 100%;
+            max-width: 200px;
+            max-height: 200px;
+            margin: 0 auto 16px;
+        }
+    }
+
+    .product-info {
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666666;
+            margin-bottom: 12px;
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+
+            span {
+                font-size: 0.75rem;
+                color: #999999;
+            }
+        }
+    }
+
+    .add-to-cart-button {
+        width: 100%;
+        padding: 12px;
+        background: $button-bg-gradient;
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+
+            background: $button-bg-gradient;
+            opacity: 0.9;
+
+        }
+    }
+}
+
+//------Modal-Service-----------
+.modal {
+    display: block;
+    position: fixed;
+    border-radius: 8px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -12,18 +12,18 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { SuccessPaymentMsgComponent } from './success-payment-msg/success-payment-msg.component';
 import { PaymentComponent } from './user/component/payment/payment.component';
 import { CheckOutComponent } from './user/pages/check-out/check-out.component';
-import { GiftsComponent } from './user/pages/gifts/gifts.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
 import { CategoryComponent } from './admin/pages/category/category.component';
+import { ItemsComponent } from './user/pages/items/items.component';
 
 const routes: Routes = [
   {
     path: "", component: UserLayoutComponent, children: [
       { path: "", redirectTo: 'home', pathMatch: 'full' },
       { path: "home", component: HomeComponent },
-      { path: "gifts", component: GiftsComponent },
+      { path: "items", component: ItemsComponent },
       { path: "terms", component: TermsAndServicesComponent },
       {path:"check-out", component:CheckOutComponent,canActivate:[authGuard]},
       {path:"payment",component:PaymentComponent,canActivate:[authGuard]}
