@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 import { debounceTime, Subject } from 'rxjs';
-import { GiftItemsService } from '../../../services/gift-items.service';
+import { GiftItemsService } from '../../../services/items.service';
 import { SharedDataService } from '../../../services/shared-data.service';
 import { Router } from '@angular/router';
 
@@ -15,10 +15,6 @@ interface SortOption {
   value: string;
 }
 
-interface DropdownOption {
-  label: string;
-  value: string;
-}
 
 interface PriceRange {
   name: string;
@@ -54,6 +50,7 @@ export class ItemsComponent implements OnInit {
 
    // Filter options
    sortOptions: SortOption[] = [
+    { name: 'Select Order', value: 'normal' },
     { name: 'Newest First', value: 'newest' },
     { name: 'Price: Low to High', value: 'priceLow' },
     { name: 'Price: High to Low', value: 'priceHigh' },
@@ -468,11 +465,12 @@ export class ItemsComponent implements OnInit {
   clearMsg() {
     this.messageService.clear();
   }
+
   giftAlreadyAddedMsg() {
     this.messageService.add({
       severity: 'info',
       summary: 'info',
-      detail: 'This item is already added in gift box!',
+      detail: 'This item is already added in Cart!',
     });
   }
 
@@ -480,7 +478,7 @@ export class ItemsComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Item successfully added to gift Box!',
+      detail: 'Item successfully added to Cart!',
     });
   }
   emptyGiftBoxMsg() {

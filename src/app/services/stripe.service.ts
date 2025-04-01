@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StripeService {
-  private apiUrl = 'http://localhost:8080/api/payments';
+  private baseUrl = environment.apiUrl + 'payments/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createPaymentIntent(amount: number): Observable<{ clientSecret: string }> {
-    return this.http.post<{ clientSecret: string }>(`${this.apiUrl}/create-payment-intent`, { amount });
+    return this.http.post<{ clientSecret: string }>(
+      `${this.baseUrl}create-payment-intent`,
+      { amount }
+    );
   }
 }

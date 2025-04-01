@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GiftItemsService } from '../../../services/gift-items.service';
+import { GiftItemsService } from '../../../services/items.service';
 
  
 @Component({

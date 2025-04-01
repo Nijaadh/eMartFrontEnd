@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
-import { GiftItemsService } from '../../../services/gift-items.service';
+import { GiftItemsService } from '../../../services/items.service';
 import { CategoryService } from '../../../services/category.service';
 import { Item } from '../../model/itemModel';
 import { error } from 'console';

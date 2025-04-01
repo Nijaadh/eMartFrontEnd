@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
-import { GiftBoxService } from '../../../services/gift-box.service';
-import { GiftItemsService } from '../../../services/gift-items.service';
+import { GiftBoxService } from '../../../services/cart.service';
+import { GiftItemsService } from '../../../services/items.service';
 import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
@@ -151,7 +151,7 @@ export class CheckOutComponent implements OnInit {
       this.item.sendingDate == '') {
       alert("Fill receiver details");
     } else {
-      this.giftBoxService.addGiftItem(this.item).subscribe(
+      this.giftBoxService.addCartItem(this.item).subscribe(
         {
           next:
             response => {

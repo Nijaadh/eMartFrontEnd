@@ -3,20 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  private loginUrl = 'http://localhost:8080/login';  // Replace with your backend login API URL
+  private baseUrl = environment.apiUrl + 'login';
   private tokenKey = 'jwtToken';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object,private http: HttpClient, private router: Router) { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   // Login method
-  login(user:any): Observable<any> {
-    return this.http.post<any>(this.loginUrl, user);
+  login(user: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl, user);
   }
 
   // Save token
@@ -42,7 +46,7 @@ export class AuthService {
   logout(): void {
     // Check if the code is running in the browser
     if (isPlatformBrowser(this.platformId)) {
-     // localStorage.removeItem('jwtToken');
+      // localStorage.removeItem('jwtToken');
       localStorage.clear();
     }
   }

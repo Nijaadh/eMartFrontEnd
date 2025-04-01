@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
-import { GiftBoxService } from '../../../services/gift-box.service';
+import { GiftBoxService } from '../../../services/cart.service';
 import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
@@ -105,7 +105,7 @@ export class NavBarComponent implements OnInit {
     // }
     // const userId: string = storedUserId;
 
-    this.giftBoxService.getGiftsByUserId(userId).subscribe({
+    this.giftBoxService.getcartsByUserId(userId).subscribe({
       next: (response) => {
         if (response.status) {
           this.gifts = response.payload[0];
