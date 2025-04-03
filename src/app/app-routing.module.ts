@@ -17,6 +17,7 @@ import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
 import { CategoryComponent } from './admin/pages/category/category.component';
 import { ItemsComponent } from './user/pages/items/items.component';
+import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: "", redirectTo: 'home', pathMatch: 'full' },
       { path: "home", component: HomeComponent },
       { path: "items", component: ItemsComponent },
+      { path: "about-us", component: AboutUsComponent },
       { path: "terms", component: TermsAndServicesComponent },
       {path:"check-out", component:CheckOutComponent,canActivate:[authGuard]},
       {path:"payment",component:PaymentComponent,canActivate:[authGuard]}

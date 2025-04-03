@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private baseUrl = environment.apiUrl + 'login';
+  private loginUrl = 'http://localhost:8080/login';
   private tokenKey = 'jwtToken';
 
   constructor(
@@ -20,7 +21,7 @@ export class AuthService {
 
   // Login method
   login(user: any): Observable<any> {
-    return this.http.post<any>(this.baseUrl, user);
+    return this.http.post<any>(this.loginUrl, user);
   }
 
   // Save token

@@ -64,6 +64,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
+import { AboutUsComponent } from './user/pages/about-us/about-us.component';
  
  
 @NgModule({
@@ -90,6 +91,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
     OrdersComponent,
     CategoryComponent,
     ItemsComponent,
+    AboutUsComponent,
     
   ],
   imports: [
