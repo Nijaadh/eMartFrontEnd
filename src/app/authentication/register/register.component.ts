@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     console.log("hi");
   }
+  
   onEmailChange() {
     if (this.user.email) {
       this.userService.checkEmailExists(this.user.email).subscribe(

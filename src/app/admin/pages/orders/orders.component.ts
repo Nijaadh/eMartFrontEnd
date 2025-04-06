@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
-import { GiftBoxService } from '../../../services/gift-box.service';
+import { GiftBoxService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-orders',
@@ -27,7 +27,7 @@ export class OrdersComponent implements OnInit {
 
   constructor(private giftBoxService: GiftBoxService,private messageService: MessageService,private router: Router) { }
   getNewGiftBox() {
-    this.giftBoxService.getAllGiftBoxNew().subscribe(data => {
+    this.giftBoxService.getAllCartBoxNew().subscribe(data => {
       // Assuming data.payload contains the array of users
       this.fetchingNewGiftBox = data.payload;
       console.log(this.fetchingNewGiftBox);
@@ -36,14 +36,14 @@ export class OrdersComponent implements OnInit {
 
   }
   getAcceptedGift() {
-    this.giftBoxService.getAllGiftBoxAccepted().subscribe(data => {
+    this.giftBoxService.getAllCartBoxAccepted().subscribe(data => {
       // Assuming data.payload contains the array of users
       this.fetchingAcceptedGift = data.payload;
     });
 
   }
   getDeliveredGift() {
-    this.giftBoxService.getAllGiftBoxDelivered().subscribe(data => {
+    this.giftBoxService.getAllCartBoxDelivered().subscribe(data => {
       // Assuming data.payload contains the array of users
       this.fetchingDeliveredGift = data.payload;
     });

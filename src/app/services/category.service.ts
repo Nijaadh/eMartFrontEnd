@@ -33,7 +33,7 @@ export class CategoryService {
     return this.http.get(this.baseUrl + 'subcategories/getAll');
   }
 
-  getSubCategoriesByCategoryId(id:Number): Observable<any> {
-    return this.http.get(this.baseUrl + 'subcategories/by-category/'+id);
+  getSubCategoriesByCategoryId(id: Number): Observable<any> {
+    return this.http.get(this.baseUrl + 'subcategories/by-category/' + id);
   }
 }

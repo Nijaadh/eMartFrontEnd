@@ -55,11 +55,19 @@ import { HeaderComponent } from './user/component/header/header.component';
 import { NavBarComponent } from './user/component/nav-bar/nav-bar.component';
 import { PaymentComponent } from './user/component/payment/payment.component';
 import { CheckOutComponent } from './user/pages/check-out/check-out.component';
-import { GiftsComponent } from './user/pages/gifts/gifts.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
 import { CategoryComponent } from './admin/pages/category/category.component';
+import { ItemsComponent } from './user/pages/items/items.component';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TreeModule } from 'primeng/tree';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { AboutUsComponent } from './user/pages/about-us/about-us.component';
+import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
+import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
+ 
  
 @NgModule({
   declarations: [
@@ -75,7 +83,6 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     LoginComponent,
     RegisterComponent,
     NotFoundPageComponent,
-    GiftsComponent,
     TermsAndServicesComponent,
     DashComponent,
     ProductsComponent,
@@ -85,6 +92,9 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     SuccessPaymentMsgComponent,
     OrdersComponent,
     CategoryComponent,
+    ItemsComponent,
+    AboutUsComponent,
+    ItemProfileComponent,
     
   ],
   imports: [
@@ -118,9 +128,13 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     BadgeModule,FieldsetModule,PanelModule,
     DialogModule,DataViewModule,TableModule,BreadcrumbModule,
     ChartModule,TabViewModule,MegaMenuModule, 
+    ButtonModule,
+    CheckboxModule,
+    TreeModule,
+    TreeSelectModule
   ],
   providers: [
-     
+    ShoppingCartService,
     provideClientHydration(),
     MessageService,
     provideHttpClient(withFetch()),

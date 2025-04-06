@@ -1,0 +1,192 @@
+<p-toast />
+<div class="modal" *ngIf="isModalVisible">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Search Results</h2>
+    <div class="product-card" *ngFor="let item of items">
+      <div class="product-image">
+        <img [src]="item.image || '/assets/box.png'" alt="Product Image" />
+      </div>
+      <div class="product-info">
+        <h2 class="product-name">{{ item.name }}</h2>
+        <p class="product-description">
+          <span *ngIf="!item.showFullDescription">
+            {{ item.description | slice : 0 : 100 }}...
+            <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
+          </span>
+          <span *ngIf="item.showFullDescription">
+            {{ item.description }}
+            <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
+          </span>
+        </p>
+        <div class="product-price">{{ item.unitPrice }} LKR</div>
+      </div>
+      <button class="add-to-cart-button" (click)="addToCart(item)">
+        Add To Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="tool-container">
+  <div class="search-container">
+    <p-iconField iconPosition="right">
+      <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+      <input
+        type="text"
+        pInputText
+        placeholder="Search gifts..."
+        (input)="onSearch($event)"
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+      />
+    </p-iconField>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-container">
+      <p-treeSelect
+        [options]="categories"
+        [(ngModel)]="selectedCategory"
+        placeholder="Select Category"
+        class="filter-dropdown"
+      ></p-treeSelect>
+      <!-- Sort Options Dropdown -->
+      <p-dropdown
+        [options]="sortOptions"
+        optionLabel="name"
+        placeholder="Select Category"
+        [(ngModel)]="selectedSortOption"
+        (onChange)="onSortChange()"
+        class="filter-dropdown"
+      />
+
+      <!-- Price Range Dropdown -->
+      <p-dropdown
+        [options]="priceRanges"
+        optionLabel="name"
+        placeholder="Price Range"
+        [(ngModel)]="selectedPriceRange"
+        (onChange)="onFilterChange()"
+        class="filter-dropdown"
+      />
+
+      <!-- In Stock Checkbox -->
+      <p-checkbox
+        [(ngModel)]="inStockOnly"
+        label="In Stock Only"
+        (onChange)="onFilterChange()"
+        class="filter-checkbox"
+      />
+
+      <!-- Clear Filters Button -->
+      <button class="clear-filters-btn" (click)="clearFilters()">
+        <i class="pi pi-filter-slash"></i> Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center">
+    <p-button
+      (onClick)="showCart()"
+      label="Shopping Cart"
+      icon="pi pi-cart-plus"
+      class="box"
+      badge="{{ cartCount }}"
+      outlined="true"
+      badgeClass="p-badge-contrast"
+    />
+    <p-dialog
+      header="Shopping Cart"
+      [modal]="true"
+      [(visible)]="visible"
+      [style]="{ width: '50rem', minHeight: '300px' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    >
+      <div *ngIf="cartItems.length === 0" class="empty-cart-message">
+        Your cart is empty. Start shopping to add items!
+      </div>
+      
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <div class="item-image">
+          <img [src]="item.image || '/assets/box.png'" alt="{{ item.name }}" height="70px" />
+        </div>
+        <div class="item-info">
+          <h4 class="item-name">[#{{ item.id }}] &nbsp; {{ item.name }}</h4>
+          <div class="item-price">{{ item.unitPrice }} LKR</div>
+        </div>
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decrementQuantity(item.id)">-</button>
+          <input 
+            type="number" 
+            class="quantity-input" 
+            min="1" 
+            [value]="item.quantity" 
+            (change)="updateQuantity(item, $event)"
+          >
+          <button class="quantity-btn" (click)="incrementQuantity(item.id)">+</button>
+        </div>
+        <div class="item-total">
+          {{ item.unitPrice * item.quantity }} LKR
+        </div>
+        <p-button
+          icon="pi pi-times"
+          [rounded]="true"
+          severity="danger"
+          [outlined]="true"
+          (onClick)="removeFromCart(item.id)"
+        />
+      </div>
+
+      <div *ngIf="cartItems.length > 0" class="cart-summary">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span>{{ cartTotal }} LKR</span>
+        </div>
+        
+        <p-button
+          label="Proceed to Checkout"
+          icon="pi pi-check"
+          [disabled]="cartItems.length === 0"
+          styleClass="p-button-success checkout-button"
+          (onClick)="proceedToCheckout()"
+        />
+      </div>
+    </p-dialog>
+  </div>
+</div>
+
+<div class="store">
+  <div
+    class="product-card"
+    *ngFor="let item of fetchingItems"
+    (click)="goToProfile(item.id)"
+  >
+    <div class="product-image">
+      <img [src]="item.image || '/assets/box.png'" alt="Product Image" />
+    </div>
+    <div class="product-info">
+      <h2 class="product-name">{{ item.name }}</h2>
+
+      <p class="product-description" (click)="$event.stopPropagation()">
+        <span *ngIf="!item.showFullDescription">
+          {{ item.description | slice : 0 : 100 }}...
+          <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
+        </span>
+        <span *ngIf="item.showFullDescription">
+          {{ item.description }}
+          <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
+        </span>
+      </p>
+
+      <div class="product-price">{{ item.unitPrice }} LKR</div>
+    </div>
+    <button
+      class="add-to-cart-button"
+      (click)="addToCart(item); $event.stopPropagation()"
+    ><i class="pi pi-cart-plus"></i>
+      Add To Cart
+    </button>
+  </div>
+</div>

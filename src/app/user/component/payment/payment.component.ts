@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { GiftBoxService } from '../../../services/gift-box.service';
+import { GiftBoxService } from '../../../services/cart.service';
 import { StripeService } from '../../../services/stripe.service';
 
 
