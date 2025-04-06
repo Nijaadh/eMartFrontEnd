@@ -5,16 +5,16 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
-  user={
-    userName:"",
-    userPassword:""
-  }
+  user = {
+    userName: '',
+    userPassword: '',
+  };
   constructor(private authService: AuthService, private router: Router) {}
 
   login(): void {
@@ -28,19 +28,18 @@ export class LoginComponent {
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('role', data.user.role[0].roleName);
         let role = localStorage.getItem('role');
-        console.log("Role is "+role);
+        console.log('Role is ' + role);
         console.log('User:', data.user); // You can access the user details here
 
-        if(role=="Admin"){
+        if (role == 'Admin') {
           this.router.navigate(['/admin/dash']);
-        }else{
-        this.router.navigate(['/home']);
+        } else {
+          this.router.navigate(['/home']);
         }
-
       },
       error: (err) => {
         this.errorMessage = 'Invalid credentials!';
-      }
+      },
     });
   }
 }

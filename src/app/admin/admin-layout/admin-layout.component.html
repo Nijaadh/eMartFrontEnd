@@ -14,44 +14,15 @@
             </div>
             <div class="sidebar-menu">
                 <ul>
-                    <li class="menu-item">
-                        <a routerLink="/admin/dash" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-home"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/product" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-warehouse"></i>
-                            <span>Products</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/order" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-cart-plus"></i>
-                            <span>Track orders</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/category" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-users"></i>
-                            <span>Category</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/users" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-users"></i>
-                            <span>Users</span>
-                        </a>
-                    </li>
-                    <!-- <li class="menu-item">
-                        <a routerLink="/admin/setting">
-                            <i class="pi pi-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li> -->
+                  <li *ngFor="let item of menuList" class="menu-item">
+                    <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                      <i [class]="item.icon"></i>
+                      <span>{{ item.label }}</span>
+                    </a>
+                  </li>
                 </ul>
-            </div>
+              </div>
+              
             <div class="btnHome">
                 <button routerLink="/">Back to home</button>
             </div>

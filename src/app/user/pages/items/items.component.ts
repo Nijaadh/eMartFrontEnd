@@ -50,7 +50,6 @@ export class ItemsComponent implements OnInit {
 
    // Filter options
    sortOptions: SortOption[] = [
-    { name: 'Select Order', value: 'normal' },
     { name: 'Newest First', value: 'newest' },
     { name: 'Price: Low to High', value: 'priceLow' },
     { name: 'Price: High to Low', value: 'priceHigh' },
@@ -325,7 +324,11 @@ export class ItemsComponent implements OnInit {
     this.applyFilters();
   }
 
+  goToProfile(itemId: string) {
+    this.router.navigate(['/item', itemId]);
+    console.log(this.fetchingItems);
 
+  }
 
   sendArray() {
     localStorage.setItem('item', JSON.stringify(this.giftBoxItems));

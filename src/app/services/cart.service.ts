@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class GiftBoxService {
-  private baseUrl = environment.apiUrl + 'gift';
+  private baseUrl = environment.apiUrl + 'gift/';
 
   constructor(private http: HttpClient) {}
 

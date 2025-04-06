@@ -28,7 +28,7 @@ export class NavBarComponent implements OnInit {
   giftboxCount: number = 0;
   giftBoxItems: number[] = [];
   giftBoxItemsDetails: any[] = [];
-
+  userRole: string = ''
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
@@ -40,6 +40,7 @@ export class NavBarComponent implements OnInit {
       this.username = localStorage.getItem('username');
       this.imageUrl = `data:image/png;base64,${localStorage.getItem('imgUrl')}`;
       this.email = localStorage.getItem('email');
+      this.userRole = localStorage.getItem('role') || '';
     }
   }
   ngOnInit() {
@@ -56,10 +57,19 @@ export class NavBarComponent implements OnInit {
             label: this.username,
             items: [
               {
-                label: 'My Account',
+                label: 'My Profile',
                 icon: 'pi pi-user',
                 command: () => {
                   this.sidebarVisible = true;
+                  this.goToProfile();
+                },
+              },
+              {
+                label: 'My Orders',
+                icon: 'pi pi-shopping-cart',
+                command: () => {
+                  this.sidebarVisible = true;
+                  this.goToOrders();
                 },
               },
               {
@@ -93,6 +103,18 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+  goToProfile() {
+    if (this.userRole === 'Admin') {
+      this.router.navigate(['/admin/dash']);
+    } else{
+      this.router.navigate(['/user/profile']);
+    }
+  }
+
+  goToOrders() {
+    this.router.navigate(['/user/order']);
+  }
+
   toggleMenu() {
     this.menuActive = !this.menuActive;
   }
@@ -109,7 +131,6 @@ export class NavBarComponent implements OnInit {
       next: (response) => {
         if (response.status) {
           this.gifts = response.payload[0];
-          console.log('Hutto::::::' + response.payload[0]);
         } else {
           this.errorMessage = 'No active gifts found for this user.';
         }
@@ -128,7 +149,6 @@ export class NavBarComponent implements OnInit {
     window.location.reload();
     this.router.navigate(['/home']); // Redirect to login page
     this.isLoggedIn = false;
-    console.log('Logout');
   }
 
   showDialog() {

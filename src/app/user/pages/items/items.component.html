@@ -38,65 +38,63 @@
   </div>
 </div>
 <div class="tool-container">
-    <div class="search-container">
-        <p-iconField iconPosition="right">
-          <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
-          <input
-            type="text"
-            pInputText
-            placeholder="Search gifts..."
-            (input)="onSearch($event)"
-            [(ngModel)]="searchTerm"
-            name="searchTerm"
-          />
-        </p-iconField>
-      </div>
+  <div class="search-container">
+    <p-iconField iconPosition="right">
+      <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+      <input
+        type="text"
+        pInputText
+        placeholder="Search gifts..."
+        (input)="onSearch($event)"
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+      />
+    </p-iconField>
+  </div>
 
   <!-- Filter Section -->
   <div class="filter-section">
-  
-  <div class="filter-container">
-    <p-treeSelect
-    [options]="categories"
-    [(ngModel)]="selectedCategory"
-    placeholder="Select Category"
-    class="filter-dropdown"
-  ></p-treeSelect>
-    <!-- Sort Options Dropdown -->
-    <p-dropdown
-      [options]="sortOptions"
-      optionLabel="name"
-      placeholder="Sort By"
-      [(ngModel)]="selectedSortOption"
-      (onChange)="onSortChange()"
-      class="filter-dropdown"
-    />
+    <div class="filter-container">
+      <p-treeSelect
+        [options]="categories"
+        [(ngModel)]="selectedCategory"
+        placeholder="Select Category"
+        class="filter-dropdown"
+      ></p-treeSelect>
+      <!-- Sort Options Dropdown -->
+      <p-dropdown
+        [options]="sortOptions"
+        optionLabel="name"
+        placeholder="Select Category"
+        [(ngModel)]="selectedSortOption"
+        (onChange)="onSortChange()"
+        class="filter-dropdown"
+      />
 
-    <!-- Price Range Dropdown -->
-    <p-dropdown
-      [options]="priceRanges"
-      optionLabel="name"
-      placeholder="Price Range"
-      [(ngModel)]="selectedPriceRange"
-      (onChange)="onFilterChange()"
-      class="filter-dropdown"
-    />
+      <!-- Price Range Dropdown -->
+      <p-dropdown
+        [options]="priceRanges"
+        optionLabel="name"
+        placeholder="Price Range"
+        [(ngModel)]="selectedPriceRange"
+        (onChange)="onFilterChange()"
+        class="filter-dropdown"
+      />
 
-    <!-- In Stock Checkbox -->
-    <p-checkbox
-      [(ngModel)]="inStockOnly"
-      label="In Stock Only"
-      (onChange)="onFilterChange()"
-      class="filter-checkbox"
-    />
+      <!-- In Stock Checkbox -->
+      <p-checkbox
+        [(ngModel)]="inStockOnly"
+        label="In Stock Only"
+        (onChange)="onFilterChange()"
+        class="filter-checkbox"
+      />
 
-    <!-- Clear Filters Button -->
-    <button class="clear-filters-btn" (click)="clearFilters()">
-      <i class="pi pi-filter-slash"></i> Clear Filters
-    </button>
+      <!-- Clear Filters Button -->
+      <button class="clear-filters-btn" (click)="clearFilters()">
+        <i class="pi pi-filter-slash"></i> Clear Filters
+      </button>
+    </div>
   </div>
-</div>
-
 
   <div style="display: flex; align-items: center">
     <p-button
@@ -144,20 +142,20 @@
 </div>
 
 <div class="store">
-  <div class="product-card" *ngFor="let item of fetchingItems">
+  <div
+    class="product-card"
+    *ngFor="let item of fetchingItems"
+    (click)="goToProfile(item.id)"
+  >
     <div class="product-image">
       <img [src]="item.image || '/assets/box.png'" alt="Product Image" />
     </div>
     <div class="product-info">
       <h2 class="product-name">{{ item.name }}</h2>
-      <!-- <p class="product-description">
-                {{ item.description }}
-            </p> -->
 
-      <p class="product-description">
+      <p class="product-description" (click)="$event.stopPropagation()">
         <span *ngIf="!item.showFullDescription">
           {{ item.description | slice : 0 : 100 }}...
-          <!-- Display the first 100 characters -->
           <a href="javascript:void(0);" (click)="toggleDescription(item)"
             >Show more</a
           >
@@ -172,7 +170,10 @@
 
       <div class="product-price">{{ item.unitPrice }} LKR</div>
     </div>
-    <button class="add-to-cart-button" (click)="addToGiftBox(item.id)">
+    <button
+      class="add-to-cart-button"
+      (click)="addToGiftBox(item.id); $event.stopPropagation()"
+    >
       Add To Cart
     </button>
   </div>
