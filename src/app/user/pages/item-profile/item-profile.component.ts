@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-item-profile',
   templateUrl: './item-profile.component.html',
-  styleUrl: './item-profile.component.scss'
+  styleUrl: './item-profile.component.scss',
 })
 export class ItemProfileComponent implements OnInit {
   productId: string = '';

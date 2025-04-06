@@ -552,3 +552,115 @@ body {
 ::ng-deep .p-checkbox {
   margin-right: 0;
 }
+
+/* Add these styles to your existing component SCSS file */
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.item-image {
+  width: 80px;
+  margin-right: 15px;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.item-info {
+  flex: 1;
+  
+  .item-name {
+    margin: 0 0 5px;
+    font-size: 16px;
+  }
+  
+  .item-price {
+    color: #666;
+    font-weight: 500;
+  }
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+  
+  .quantity-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    
+    &:hover {
+      background: #eee;
+    }
+  }
+  
+  .quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 5px;
+    padding: 5px 0;
+  }
+}
+
+.item-total {
+  font-weight: bold;
+  margin-right: 15px;
+  min-width: 80px;
+  text-align: right;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px solid #eee;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.checkout-button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.empty-cart-message {
+  text-align: center;
+  padding: 30px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Improve product card button */
+.add-to-cart-button {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+}

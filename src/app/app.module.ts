@@ -66,6 +66,7 @@ import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
+import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
  
  
 @NgModule({
@@ -133,7 +134,7 @@ import { ItemProfileComponent } from './user/pages/item-profile/item-profile.com
     TreeSelectModule
   ],
   providers: [
-     
+    ShoppingCartService,
     provideClientHydration(),
     MessageService,
     provideHttpClient(withFetch()),

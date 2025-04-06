@@ -9,34 +9,25 @@
       </div>
       <div class="product-info">
         <h2 class="product-name">{{ item.name }}</h2>
-        <!-- <p class="product-description">
-                    {{ item.description }}
-                </p> -->
-
         <p class="product-description">
           <span *ngIf="!item.showFullDescription">
             {{ item.description | slice : 0 : 100 }}...
-            <!-- Display the first 100 characters -->
-            <a href="javascript:void(0);" (click)="toggleDescription(item)"
-              >Show more</a
-            >
+            <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
           </span>
           <span *ngIf="item.showFullDescription">
             {{ item.description }}
-            <a href="javascript:void(0);" (click)="toggleDescription(item)"
-              >Show less</a
-            >
+            <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
           </span>
         </p>
-
         <div class="product-price">{{ item.unitPrice }} LKR</div>
       </div>
-      <button class="add-to-cart-button" (click)="addToGiftBox(item.id)">
+      <button class="add-to-cart-button" (click)="addToCart(item)">
         Add To Cart
       </button>
     </div>
   </div>
 </div>
+
 <div class="tool-container">
   <div class="search-container">
     <p-iconField iconPosition="right">
@@ -98,45 +89,70 @@
 
   <div style="display: flex; align-items: center">
     <p-button
-      (onClick)="getGiftBoxItems()"
+      (onClick)="showCart()"
       label="Shopping Cart"
       icon="pi pi-cart-plus"
       class="box"
-      badge="{{ giftboxCount }}"
+      badge="{{ cartCount }}"
       outlined="true"
       badgeClass="p-badge-contrast"
     />
     <p-dialog
-      header="Cart"
+      header="Shopping Cart"
       [modal]="true"
       [(visible)]="visible"
       [style]="{ width: '50rem', minHeight: '300px' }"
       [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
     >
-      <div *ngFor="let item of giftBoxItemsDetails" class="giftBox-card">
-        <div class="gift-image">
-          <img [src]="item.image" alt="{{ item.name }}" height="70px" />
+      <div *ngIf="cartItems.length === 0" class="empty-cart-message">
+        Your cart is empty. Start shopping to add items!
+      </div>
+      
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <div class="item-image">
+          <img [src]="item.image || '/assets/box.png'" alt="{{ item.name }}" height="70px" />
         </div>
-        <div class="gift-info">
-          <h4 class="gift-name">[#{{ item.id }}] &nbsp; {{ item.name }}</h4>
-          <div class="gift-price">{{ item.unitPrice }} LKR</div>
+        <div class="item-info">
+          <h4 class="item-name">[#{{ item.id }}] &nbsp; {{ item.name }}</h4>
+          <div class="item-price">{{ item.unitPrice }} LKR</div>
+        </div>
+        <div class="quantity-controls">
+          <button class="quantity-btn" (click)="decrementQuantity(item.id)">-</button>
+          <input 
+            type="number" 
+            class="quantity-input" 
+            min="1" 
+            [value]="item.quantity" 
+            (change)="updateQuantity(item, $event)"
+          >
+          <button class="quantity-btn" (click)="incrementQuantity(item.id)">+</button>
+        </div>
+        <div class="item-total">
+          {{ item.unitPrice * item.quantity }} LKR
         </div>
         <p-button
           icon="pi pi-times"
           [rounded]="true"
           severity="danger"
           [outlined]="true"
-          (onClick)="removeItemFromArray(item.id)"
+          (onClick)="removeFromCart(item.id)"
         />
       </div>
 
-      <p-button
-        label="Buy & Send"
-        icon="pi pi-send"
-        outlined="true"
-        class="buy-button"
-        (onClick)="sendArray()"
-      />
+      <div *ngIf="cartItems.length > 0" class="cart-summary">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span>{{ cartTotal }} LKR</span>
+        </div>
+        
+        <p-button
+          label="Proceed to Checkout"
+          icon="pi pi-check"
+          [disabled]="cartItems.length === 0"
+          styleClass="p-button-success checkout-button"
+          (onClick)="proceedToCheckout()"
+        />
+      </div>
     </p-dialog>
   </div>
 </div>
@@ -156,15 +172,11 @@
       <p class="product-description" (click)="$event.stopPropagation()">
         <span *ngIf="!item.showFullDescription">
           {{ item.description | slice : 0 : 100 }}...
-          <a href="javascript:void(0);" (click)="toggleDescription(item)"
-            >Show more</a
-          >
+          <a href="javascript:void(0);" (click)="toggleDescription(item)">Show more</a>
         </span>
         <span *ngIf="item.showFullDescription">
           {{ item.description }}
-          <a href="javascript:void(0);" (click)="toggleDescription(item)"
-            >Show less</a
-          >
+          <a href="javascript:void(0);" (click)="toggleDescription(item)">Show less</a>
         </span>
       </p>
 
@@ -172,8 +184,8 @@
     </div>
     <button
       class="add-to-cart-button"
-      (click)="addToGiftBox(item.id); $event.stopPropagation()"
-    >
+      (click)="addToCart(item); $event.stopPropagation()"
+    ><i class="pi pi-cart-plus"></i>
       Add To Cart
     </button>
   </div>

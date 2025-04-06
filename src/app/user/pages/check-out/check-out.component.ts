@@ -1,183 +1,209 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { GiftBoxService } from '../../../services/cart.service';
-import { GiftItemsService } from '../../../services/items.service';
-import { SharedDataService } from '../../../services/shared-data.service';
+import { CartItem } from '../../model/cart.item';
+import { ShoppingCartService } from '../../services/shopping.cart/shopping-cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-check-out',
   templateUrl: './check-out.component.html',
   styleUrl: './check-out.component.scss'
 })
-export class CheckOutComponent implements OnInit {
-  giftBoxitems: any[] = [];
-  receivedData: any;
-  id: any;
+export class CheckOutComponent implements OnInit, OnDestroy {
+  giftBoxitems: CartItem[] = [];
   giftboxCount: number = 0;
-  totalPrice: any;
+  totalPrice: number = 0;
 
-  date: any;
-  note!: any;
-  zip: any;
-  address: any;
-
+  address: string = '';
+  zip: string = '';
+  
+  submitted: boolean = false;
   giftBoxID: any;
+  isLoading: boolean = false;
+  
+  private subscriptions: Subscription[] = [];
 
   item = {
-    giftName: "",
+    giftName: "Gift Order",
     createdAt: "",
     sendingDate: "",
     recieverAddress: "",
     zip: "",
     totalPrice: "",
     commonStatus: "ACTIVE",
-    itemIds: [],
+    itemIds: [] as number[],
     userId: ""
-
   }
 
-
-  //------image-priview--------
+  // Image preview
   showModal: boolean = false;
   previewImage: string = '';
 
-
-
   constructor(
     private router: Router,
-    private sharedDataService: SharedDataService,
-    private giftItemsService: GiftItemsService,
     private giftBoxService: GiftBoxService,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public shoppingCartService: ShoppingCartService
   ) { }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
-      this.id = localStorage.getItem('id');
+      this.item.userId = localStorage.getItem('id') || '';
     }
-    this.receivedData = this.sharedDataService.getData();
-    this.giftboxCount = this.receivedData.length || 0;
-    console.log(this.receivedData);
-    if (this.receivedData != null) {
-      this.getGiftBoxItems();
-    }
-
-
-    console.log("JWT" + this.authService.getToken());
+    
+    // Subscribe to cart items
+    this.subscriptions.push(
+      this.shoppingCartService.getCartItems().subscribe(items => {
+        this.giftBoxitems = items;
+        this.calculateItemIds();
+      })
+    );
+    
+    // Subscribe to cart count
+    this.subscriptions.push(
+      this.shoppingCartService.getCartCount().subscribe(count => {
+        this.giftboxCount = count;
+      })
+    );
+    
+    // Subscribe to cart total
+    this.subscriptions.push(
+      this.shoppingCartService.getCartTotal().subscribe(total => {
+        this.totalPrice = total;
+      })
+    );
   }
+
+  ngOnDestroy(): void {
+    // Clean up subscriptions to prevent memory leaks
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   // Method to open the image preview modal
-  openImagePreview(image: string) {
+  openImagePreview(image: string, event: Event): void {
+    event.stopPropagation(); // Prevent event bubbling
     this.previewImage = image;
     this.showModal = true;
   }
 
   // Method to close the modal
-  closeModal() {
+  closeModal(): void {
     this.showModal = false;
   }
-  getGiftBoxItems(): void { //Get GiftBox items details
-    //console.log("ffff" + this.giftBoxItems);
-    this.giftItemsService.getAllGiftBoxItems(this.receivedData).subscribe((data: any) => {
-      if (data.status) {
-        this.giftBoxitems = data.payload[0].map((item: any) => ({
-          ...item,
-          image: item.image ? 'data:image/png;base64,' + item.image : ''
-        }));
-        // this.giftBoxItemsDetails = data.payload[0];
-        console.log(this.giftBoxitems);
 
-        const totalPrice = this.giftBoxitems.reduce((acc, item) => acc + parseFloat(item.unitPrice), 0);
-        console.log(totalPrice);  // Outputs the total price of all products
-        this.totalPrice = totalPrice;
-      } else {
-        console.error(data.errorMessages);
-      }
-
-    },
-      (error) => {
-        console.error('Error fetching items:', error);
-      });
-
+  removeItemFromArray(itemId: number): void {
+    this.shoppingCartService.removeFromCart(itemId);
   }
 
-
-  removeItemFromArray(item: number): void {
-    const index = this.receivedData.indexOf(item);
-
-    if (index !== -1) {
-      // Item exists in the array, so remove it
-      this.receivedData.splice(index, 1);
-      this.getGiftBoxItems();
-      this.giftboxCount = this.receivedData.length;
-      console.log(`Item ${item} removed. Updated array:`, this.receivedData);
-    } else {
-      console.log(`Item ${item} not found in the array.`);
-    }
+  calculateItemIds(): void {
+    this.item.itemIds = this.giftBoxitems.map(item => item.id);
   }
 
-  savereciever() {
-
-    const selectedDate = new Date(this.date);
-
+  saveReceiverInfo(): boolean {
     this.item.recieverAddress = this.address;
-    this.item.sendingDate = selectedDate.toISOString().split('T')[0];
-    this.item.giftName = this.note;
     this.item.zip = this.zip;
-
-    console.log(this.item);
-
-    this.address = '';
-    this.note = '';
-    this.zip = '';
+    
+    // Set current date as sending date since we removed the date field
+    const today = new Date();
+    this.item.sendingDate = today.toISOString().split('T')[0];
+    
+    return true;
   }
-  saveGift() {
+
+  validateInputs(): boolean {
+    this.submitted = true;
+    
+    if (!this.address) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please enter delivery address' });
+      return false;
+    }
+    
+    if (!this.zip) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please enter zip code' });
+      return false;
+    }
+    
+    return true;
+  }
+
+  saveGift(): void {
+    // Validate form fields
+    if (!this.validateInputs()) {
+      return;
+    }
+
+    // Make sure we have items in cart
+    if (this.giftBoxitems.length === 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Your cart is empty!' });
+      return;
+    }
+
+    this.isLoading = true;
 
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate().toString().padStart(2, '0');
 
     this.item.createdAt = `${year}-${month}-${day}`;
-    this.item.userId = this.id;
-    this.item.itemIds = this.receivedData;
-    this.item.totalPrice = this.totalPrice;
-    console.log(this.item);
-    if (this.item.recieverAddress == '' ||
-      this.item.giftName == '' ||
-      this.item.zip == '' ||
-      this.item.sendingDate == '') {
-      alert("Fill receiver details");
-    } else {
-      this.giftBoxService.addCartItem(this.item).subscribe(
-        {
-          next:
-            response => {
-              const id = response.payload;
-              this.giftBoxID = id;
-              localStorage.setItem('giftBoxID', id);
-              localStorage.setItem('giftBoxPrice', this.totalPrice);
-              console.log("id ::" + id);
-              this.GiftBoxSaveSuccessMsg();
-            }
-          ,
-          error: (error) => {
-            console.error("Error:", error);
-            this.GiftBoxSaveUnsuccessMsg();
-          }
-        }
-      )
+    this.item.totalPrice = this.totalPrice.toString();
+    
+    // Save receiver details
+    if (!this.saveReceiverInfo()) {
+      this.isLoading = false;
+      return;
     }
+
+    this.giftBoxService.addCartItem(this.item).subscribe({
+      next: response => {
+        const id = response.payload;
+        this.giftBoxID = id;
+        localStorage.setItem('giftBoxID', id);
+        localStorage.setItem('giftBoxPrice', this.totalPrice.toString());
+        this.GiftBoxSaveSuccessMsg();
+        
+        // Clear cart after successful save
+        if (id) {
+          // this.shoppingCartService.clearCart();
+          // Navigate to payment route after successful save
+          this.router.navigate(['/payment']);
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error("Error:", error);
+        this.GiftBoxSaveUnsuccessMsg();
+        this.isLoading = false;
+      }
+    });
   }
-  checkOut() {
+
+  checkOut(): void {
+    // Validate form fields first
+    if (!this.validateInputs()) {
+      return;
+    }
+    
+    // If cart is empty, show error
+    if (this.giftBoxitems.length === 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Your cart is empty!' });
+      return;
+    }
+    
+    // If validation passes, proceed with checkout
+    this.isLoading = true;
     this.saveGift();
   }
-  GiftBoxSaveSuccessMsg() {
+
+  GiftBoxSaveSuccessMsg(): void {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'GiftBox Successfully Saved!' });
   }
-  GiftBoxSaveUnsuccessMsg() {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'GiftBox saving Unsuccessfully!' });
+
+  GiftBoxSaveUnsuccessMsg(): void {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'GiftBox saving Unsuccessful!' });
   }
 }
