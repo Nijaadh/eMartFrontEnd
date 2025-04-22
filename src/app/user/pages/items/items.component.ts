@@ -33,7 +33,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
   fetchingItems: any[] = [];
   visible: boolean = false;
-  
+
   // Cart related
   cartCount: number = 0;
   cartItems: CartItem[] = [];
@@ -92,21 +92,23 @@ export class ItemsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchAllItems();
     this.setupCategoryTree();
-    
+
     // Subscribe to cart updates
-    this.cartSubscription = this.cartService.getCartItems().subscribe(items => {
-      this.cartItems = items;
-    });
-    
-    this.cartService.getCartCount().subscribe(count => {
+    this.cartSubscription = this.cartService
+      .getCartItems()
+      .subscribe((items) => {
+        this.cartItems = items;
+      });
+
+    this.cartService.getCartCount().subscribe((count) => {
       this.cartCount = count;
     });
-    
-    this.cartService.getCartTotal().subscribe(total => {
+
+    this.cartService.getCartTotal().subscribe((total) => {
       this.cartTotal = total;
     });
   }
-  
+
   ngOnDestroy(): void {
     // Unsubscribe to prevent memory leaks
     if (this.cartSubscription) {
@@ -197,7 +199,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   updateQuantity(item: CartItem, event: Event) {
     const input = event.target as HTMLInputElement;
     const quantity = parseInt(input.value, 10);
-    
+
     if (!isNaN(quantity)) {
       this.cartService.updateQuantity(item.id, quantity);
     }
@@ -214,7 +216,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   }
 
   fetchAllItems(): void {
-    this.giftItemsService.getAllGiftItems().subscribe((data) => {
+    this.giftItemsService.getAllItems().subscribe((data) => {
       if (!data || !data.payload) {
         console.error('Invalid data format:', data);
         return;
@@ -290,7 +292,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
       detail: 'Item successfully added to Cart!',
     });
   }
-  
+
   itemAlreadyAddedMsg() {
     this.messageService.add({
       severity: 'info',
@@ -298,7 +300,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
       detail: 'Item quantity increased in cart!',
     });
   }
-  
+
   emptyCartMsg() {
     this.messageService.add({
       severity: 'warn',

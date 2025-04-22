@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
-import { GiftItemsService } from '../../../services/items.service';
-import { Category, SubCategory } from '../../model/categoryModel';
+import {
+  Category,
+  SubCategory,
+  DeleteCategory,
+  UpCategory,
+  UpSubCategory,
+} from '../../model/categoryModel';
 import { CategoryService } from '../../../services/category.service';
 
 @Component({
@@ -19,14 +24,16 @@ export class CategoryComponent implements OnInit {
   subCategoryForm: FormGroup;
   fetchingCategories: any[] = [];
   fetchingSubCategories: any[] = [];
+  isSubUpdate: boolean = false;
+  isUpdate: boolean = false;
 
   constructor(
     private _apim: CategoryService,
     private messageService: MessageService,
-    private fb: FormBuilder,
-    private giftItemsService: GiftItemsService
+    private fb: FormBuilder
   ) {
     this.categoryForm = this.fb.group({
+      id: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
       commonStatus: ['ACTIVE'],
@@ -34,6 +41,7 @@ export class CategoryComponent implements OnInit {
     });
 
     this.subCategoryForm = this.fb.group({
+      id: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
       commonStatus: ['ACTIVE'],
@@ -70,8 +78,7 @@ export class CategoryComponent implements OnInit {
 
     this._apim.addCategory(Obj).subscribe(
       (response) => {
-        console.log('Product added:', response);
-        this.show();
+        this.show('Category added Successfully!');
         this.visible = false;
         this.fetchAllCategories();
       },
@@ -94,13 +101,11 @@ export class CategoryComponent implements OnInit {
       commonStatus: this.subCategoryForm.value.commonStatus,
       categoryId: this.subCategoryForm.value.category,
     };
-    console.log("sub");
-    console.log(Obj);
 
     this._apim.addSubCategory(Obj).subscribe(
       (response) => {
-        console.log('Product added:', response);
-        this.visible = false;
+        this.show('Sub Category added Successfully!');
+        this.subModelVisible = false;
         this.fetchSubAllCategories();
       },
       (error) => {
@@ -111,6 +116,7 @@ export class CategoryComponent implements OnInit {
   }
 
   fetchAllCategories(): void {
+    this.fetchingCategories = [];
     this._apim.getAllCategories().subscribe((data: any) => {
       // Assuming data.payload contains the array of products
       this.fetchingCategories = data.payload.map((category: any) => ({
@@ -121,24 +127,121 @@ export class CategoryComponent implements OnInit {
   }
 
   fetchSubAllCategories(): void {
+    this.fetchingSubCategories = [];
     this._apim.getAllSubCategories().subscribe((data: any) => {
-      console.log(data);
       this.fetchingSubCategories = data.payload.map((subCategory: any) => ({
         ...subCategory,
       }));
     });
   }
 
-  deleteProduct(pId: any) {
-    const product = {
+  deleteCategory(pId: any) {
+    let Obj: DeleteCategory = {
       id: pId,
       commonStatus: 'DELETED',
     };
-    this.giftItemsService.deleteGiftItem(product).subscribe((response) => {
+
+    this._apim.deleteCategory(Obj).subscribe((response) => {
       console.log(response);
       this.detete();
       this.fetchAllCategories();
     });
+  }
+
+  deleteSubCategory(pId: any) {
+    let Obj: DeleteCategory = {
+      id: pId,
+      commonStatus: 'DELETED',
+    };
+
+    this._apim.deleteSubCategory(Obj).subscribe((response) => {
+      console.log(response);
+      this.detete();
+      this.fetchAllCategories();
+    });
+  }
+
+  fetchCategory(CId: any) {
+    this.isUpdate = true;
+    this.visible = true;
+    this._apim.getCategoryById(CId).subscribe((data: any) => {
+      const category = data.payload[0];
+      this.categoryForm.patchValue({
+        id: category.id,
+        name: category.name,
+        description: category.description,
+      });
+    });
+  }
+
+  fetchSubCategory(CId: any) {
+    this.isSubUpdate = true;
+    this.subModelVisible = true;
+    this._apim.getSubCategoryById(CId).subscribe((data: any) => {
+      const subCategory = data.payload[0];
+      this.subCategoryForm.patchValue({
+        id: subCategory.id,
+        name: subCategory.name,
+        description: subCategory.description,
+        categoryId: subCategory.categoryId,
+      });
+    });
+  }
+
+  updateCategory() {
+    if (this.categoryForm.invalid) {
+      this.showError();
+      return;
+    }
+
+    let Obj: UpCategory = {
+      id: this.categoryForm.value.id,
+      name: this.categoryForm.value.name,
+      description: this.categoryForm.value.description,
+      image: this.categoryForm.value.image,
+      commonStatus: this.categoryForm.value.commonStatus,
+    };
+
+    this._apim.updateCategory(Obj).subscribe(
+      (response) => {
+        this.categoryForm.reset();
+        this.show('category updated Successfully!');
+        this.visible = false;
+        this.fetchAllCategories();
+      },
+      (error) => {
+        console.log('Error in updating category, ', error);
+      }
+    );
+  }
+
+  updateSubCategory() {
+    if (this.subCategoryForm.invalid) {
+      this.showError();
+      return;
+    }
+
+    let Obj: UpSubCategory = {
+      id: this.subCategoryForm.value.id,
+      name: this.subCategoryForm.value.name,
+      description: this.subCategoryForm.value.description,
+      image: this.subCategoryForm.value.image,
+      commonStatus: this.subCategoryForm.value.commonStatus,
+      categoryId: this.subCategoryForm.value.categoryId,
+    };
+
+    this._apim.updateSubCategory(Obj).subscribe(
+      (response) => {
+        console.log('subCategory updated:', response);
+        this.subCategoryForm.reset();
+        this.show(' sub category updated Successfully!');
+        this.visible = false;
+        this.fetchAllCategories();
+      },
+      (error) => {
+        console.log('Error in adding category, ', error);
+      }
+    );
   }
 
   onFileSelected(event: any) {
@@ -163,12 +266,12 @@ export class CategoryComponent implements OnInit {
   toggleDescription(item: any) {
     item.showFullDescription = !item.showFullDescription;
   }
-  
-  show() {
+
+  show(message: string) {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Product added Successfully!',
+      detail: message,
     });
   }
 
@@ -176,7 +279,7 @@ export class CategoryComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Product deletion Successfully!',
+      detail: 'category deletion Successfully!',
     });
   }
 
