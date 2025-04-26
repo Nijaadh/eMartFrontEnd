@@ -12,19 +12,25 @@ export class GiftItemsService {
   private baseUrl = environment.apiUrl + 'items/';
   constructor(private http:HttpClient) { }
 
-  getAllGiftItems(): Observable<any> {
+  getAllItems(): Observable<any> {
     return this.http.get(this.baseUrl + "getAll");
   }
-  addGiftItem(item:Item): Observable<any> {
+  addItem(item:Item): Observable<any> {
     return this.http.post<any>(this.baseUrl+"add", item);
   }
 
-  deleteGiftItem(product: any): Observable<any> {
+  updateItem(item:Item): Observable<any> {
+    return this.http.put<any>(this.baseUrl+"update", item);
+  }
+
+  deleteItem(product: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+"delete", product);
   }
-  getAllGiftBoxItems(product: number[]): Observable<any> {
+
+  getAllItemsbyId(product: number[]): Observable<any> {
     return this.http.post<any>(this.baseUrl+"by-ids", product);
   }
+
   searchByName(name: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}search?name=${name}`);
   }

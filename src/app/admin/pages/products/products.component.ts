@@ -4,15 +4,13 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { GiftItemsService } from '../../../services/items.service';
 import { CategoryService } from '../../../services/category.service';
 import { Item } from '../../model/itemModel';
-import { error } from 'console';
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  fetchingItems: any[] = []; // For fetchingProduct
+  fetchingItems: any[] = [];
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
   productForm: FormGroup;
@@ -21,6 +19,7 @@ export class ProductsComponent implements OnInit {
   fetchingCategories: any[] = [];
   fetchingSubCategories: any[] = [];
   visible: boolean = false;
+  isUpdate: boolean = false;
 
   constructor(
     private _apim: CategoryService,
@@ -37,6 +36,9 @@ export class ProductsComponent implements OnInit {
       category: ['', Validators.required],
       subCategory: ['', Validators.required],
       image: ['', Validators.required],
+      itemCount: ['', Validators.required],
+      reOrderLevel: ['', Validators.required],
+      discount: ['', Validators.required],
     });
   }
 
@@ -77,11 +79,13 @@ export class ProductsComponent implements OnInit {
       subCategoryId: product.subCategory,
       category: product.category,
       image: product.image,
+      itemCount: product.itemCount,
+      discount: product.discount,
+      reOrderLevel: product.reOrderLevel,
     };
 
-    console.log(Obj);
 
-    this.giftItemsService.addGiftItem(Obj).subscribe(
+    this.giftItemsService.addItem(Obj).subscribe(
       (response) => {
         console.log('Product added:', response);
         this.show();
@@ -106,7 +110,7 @@ export class ProductsComponent implements OnInit {
 
   fetchAllItems(): void {
     this.fetchingItems = [];
-    this.giftItemsService.getAllGiftItems().subscribe((data) => {
+    this.giftItemsService.getAllItems().subscribe((data) => {
       // Assuming data.payload contains the array of products
       this.fetchingItems = data.payload.map((item: any) => ({
         ...item,
@@ -128,9 +132,8 @@ export class ProductsComponent implements OnInit {
   onCategorySelectionChange(event: any): void {
     this.selectedCategory = event.target.value;
     console.log('Selected Category ID:', this.selectedCategory);
-    this.fetchSubCategoriesByCategoryId(this.selectedCategory)
+    this.fetchSubCategoriesByCategoryId(this.selectedCategory);
   }
-  
 
   fetchSubCategoriesByCategoryId(id: number): void {
     this.fetchingSubCategories = [];
@@ -149,12 +152,70 @@ export class ProductsComponent implements OnInit {
       id: pId,
       commonStatus: 'DELETED',
     };
-    this.giftItemsService.deleteGiftItem(product).subscribe((response) => {
+    this.giftItemsService.deleteItem(product).subscribe((response) => {
       console.log(response);
       this.detete();
       this.fetchAllItems();
     });
   }
+
+  fetchProduct(pId: any) {
+    this.visible = true;
+    this.isUpdate = true;
+    this.giftItemsService.getAllItemsbyId([pId]).subscribe((data) => {
+      const item = data.payload[0][0];
+      this.productForm.patchValue({
+        id: item.id,
+        name: item.name,
+        unitPrice: item.unitPrice,
+        commonStatus: item.commonStatus,
+        description: item.description,
+        subCategory: item.subCategoryId,
+        category: item.categoryId,
+        image: item.image,
+        itemCount: item.itemCount,
+        discount: item.discount,
+        reOrderLevel: item.reOrderLevel,
+      });
+    });
+  }
+
+  updateProduct() {
+    if (this.productForm.invalid) {
+      this.showError();
+      return;
+    }
+    let product = this.productForm.value;
+    let Obj: Item = {
+      id: product.id,
+      name: product.name,
+      unitPrice: product.unitPrice,
+      commonStatus: product.commonStatus,
+      description: product.description,
+      subCategoryId: product.subCategory,
+      category: product.category,
+      image: product.image,
+      itemCount: product.itemCount,
+      discount: product.discount,
+      reOrderLevel: product.reOrderLevel,
+    };
+
+    console.log(Obj);
+
+    this.giftItemsService.updateItem(Obj).subscribe(
+      (response) => {
+        console.log('Product updated:', response);
+        this.show();
+        this.productForm.reset();
+        this.visible = false;
+        this.fetchAllItems();
+      },
+      (error) => {
+        this.showError();
+      }
+    );
+  }
+
   toggleDescription(item: any) {
     item.showFullDescription = !item.showFullDescription;
   }
@@ -182,6 +243,7 @@ export class ProductsComponent implements OnInit {
       detail: 'Product deletion Successfully!',
     });
   }
+
   showError() {
     this.messageService.add({
       severity: 'error',

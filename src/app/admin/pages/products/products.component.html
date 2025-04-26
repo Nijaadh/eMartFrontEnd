@@ -3,133 +3,7 @@
 </div>
 
 <p-toast />
-<p-dialog
-  header="Add New Product"
-  [modal]="true"
-  [(visible)]="visible"
-  [style]="{ width: '25rem' }"
->
-  <span class="dialog-description">add the product details</span>
 
-  <form [formGroup]="productForm">
-    <div class="form-group">
-      <label for="category">Category</label>
-      <select
-        id="category"
-        formControlName="category"
-        [(ngModel)]="selectedCategory"
-        (change)="onCategorySelectionChange($event)"
-        required
-      >
-        <option value="" disabled selected>Select a category</option>
-        <option
-          *ngFor="let category of fetchingCategories"
-          [value]="category.id"
-        >
-          {{ category.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="
-          productForm.get('category')?.invalid &&
-          productForm.get('category')?.touched
-        "
-      >
-        Category is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="category">SubCategory</label>
-      <select id="subCategory" formControlName="subCategory" required>
-        <option value="" disabled selected>Select a subCategory</option>
-        <option
-          *ngFor="let subCategory of fetchingSubCategories"
-          [value]="subCategory.id"
-        >
-          {{ subCategory.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="
-          productForm.get('subCategory')?.invalid &&
-          productForm.get('subCategory')?.touched
-        "
-      >
-        Category is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" formControlName="name" required />
-      <div
-        *ngIf="
-          productForm.get('name')?.invalid && productForm.get('name')?.touched
-        "
-      >
-        Name is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="unitPrice">Price</label>
-      <input type="text" id="unitPrice" formControlName="unitPrice" required />
-      <div
-        *ngIf="
-          productForm.get('unitPrice')?.invalid &&
-          productForm.get('unitPrice')?.touched
-        "
-      >
-        Price is required.
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="description">Description</label>
-      <input
-        type="text"
-        id="description"
-        formControlName="description"
-        required
-      />
-      <div
-        *ngIf="
-          productForm.get('description')?.invalid &&
-          productForm.get('description')?.touched
-        "
-      >
-        Description is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="image">Image</label>
-      <input
-        type="file"
-        id="image"
-        (change)="onFileSelected($event)"
-        required
-      />
-      <div
-        *ngIf="
-          productForm.get('image')?.invalid && productForm.get('image')?.touched
-        "
-      >
-        Image is required.
-      </div>
-    </div>
-
-    <div class="button-group">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        (click)="visible = false"
-      ></p-button>
-      <p-button
-        label="Save"
-        (click)="addProduct()"
-        [disabled]="productForm.invalid"
-      ></p-button>
-    </div>
-  </form>
-</p-dialog>
 <div class="card">
   <div class="cap">
     <h1>Product List</h1>
@@ -141,17 +15,224 @@
       &nbsp;&nbsp;&nbsp;&nbsp;
       <p-button icon="pi pi-refresh" (onClick)="Refresh()" />
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <p-button (click)="visible = true" label="Add new item"></p-button>
+      <p-button
+        (click)="visible = true; productForm.reset()"
+        label="Add new item"
+      ></p-button>
     </div>
   </div>
+  <p-dialog
+    [header]="isUpdate ? 'Update Product' : 'Add New Product'"
+    [modal]="true"
+    [(visible)]="visible"
+    [(visible)]="isUpdate"
+    [style]="{ width: '25rem' }"
+  >
+    <span class="dialog-description">
+      {{ isUpdate ? "Update the product details" : "Add the product details" }}
+    </span>
+
+    <form [formGroup]="productForm">
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select
+          id="category"
+          formControlName="category"
+          [(ngModel)]="selectedCategory"
+          (change)="onCategorySelectionChange($event)"
+          required
+        >
+          <option value="" disabled selected>Select a category</option>
+          <option
+            *ngFor="let category of fetchingCategories"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            productForm.get('category')?.invalid &&
+            productForm.get('category')?.touched
+          "
+        >
+          Category is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="category">SubCategory</label>
+        <select id="subCategory" formControlName="subCategory" required>
+          <option value="" disabled selected>Select a subCategory</option>
+          <option
+            *ngFor="let subCategory of fetchingSubCategories"
+            [value]="subCategory.id"
+          >
+            {{ subCategory.name }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            productForm.get('subCategory')?.invalid &&
+            productForm.get('subCategory')?.touched
+          "
+        >
+          Category is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name" required />
+        <div
+          *ngIf="
+            productForm.get('name')?.invalid && productForm.get('name')?.touched
+          "
+        >
+          Name is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="unitPrice">Unit Price</label>
+        <input
+          type="decimal"
+          id="unitPrice"
+          formControlName="unitPrice"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('unitPrice')?.invalid &&
+            productForm.get('unitPrice')?.touched
+          "
+        >
+          Price is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input
+          type="number"
+          id="quantity"
+          formControlName="itemCount"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('quantity')?.invalid &&
+            productForm.get('quantity')?.touched
+          "
+        >
+          quantity is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="discount">Discount</label>
+        <input
+          type="number"
+          id="discount"
+          formControlName="discount"
+          placeholder="e.g. 5%"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('discount')?.invalid &&
+            productForm.get('discount')?.touched
+          "
+        >
+          discount is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reOrderLevel">Re Order Level</label>
+        <input
+          type="number"
+          id="reOrderLevel"
+          formControlName="reOrderLevel"
+          placeholder="e.g. 10"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('reOrderLevel')?.invalid &&
+            productForm.get('reOrderLevel')?.touched
+          "
+        >
+          re order level is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('description')?.invalid &&
+            productForm.get('description')?.touched
+          "
+        >
+          Description is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input
+          type="file"
+          id="image"
+          (change)="onFileSelected($event)"
+          required
+        />
+        <div
+          *ngIf="
+            productForm.get('image')?.invalid &&
+            productForm.get('image')?.touched
+          "
+        >
+          Image is required.
+        </div>
+      </div>
+
+      <div class="button-group">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          (click)="visible = false; isUpdate = false"
+        ></p-button>
+        <p-button
+          *ngIf="isUpdate"
+          label="Update"
+          (click)="updateProduct()"
+          [disabled]="productForm.invalid"
+        ></p-button>
+        <p-button
+          *ngIf="!isUpdate"
+          label="Save"
+          (click)="addProduct()"
+          [disabled]="productForm.invalid"
+        ></p-button>
+      </div>
+    </form>
+  </p-dialog>
+
   <table>
     <thead>
       <tr>
         <th>ID</th>
+        <th>Image</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Image</th>
+
         <th>Price</th>
+        <th>Discount</th>
+        <th>Quantity</th>
+        <th>Sold Count</th>
+        <th>Re Order Level</th>
+        <th>Sub Category</th>
         <th>Category</th>
         <th>Action</th>
       </tr>
@@ -159,8 +240,6 @@
     <tbody>
       <tr *ngFor="let item of fetchingItems">
         <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
         <td>
           <img
             [src]="item.image"
@@ -169,10 +248,23 @@
             class="shadow-4"
           />
         </td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.description }}</td>
+
         <td>&nbsp;{{ item.unitPrice | currency : "LKR" : "code" }}</td>
-        <td>{{ item.category }}</td>
+        <td>{{ (item.discount || 0.0) + "%" }}</td>
+        <td>{{ item.itemCount || 0 }}</td>
+        <td>{{ item.salesCount || 0 }}</td>
+        <td>{{ item.reOrderLevel || 0 }}</td>
+        <td>{{ item.subCategoryName }}</td>
+        <td>{{ item.catagoryName }}</td>
         <td>
-          <p-button icon="pi pi-file-edit" [text]="true" [raised]="true" />
+          <p-button
+            icon="pi pi-file-edit"
+            [text]="true"
+            [raised]="true"
+            (onClick)="fetchProduct(item.id)"
+          />
           <p-button
             icon="pi pi-trash"
             [text]="true"

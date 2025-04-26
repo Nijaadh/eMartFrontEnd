@@ -1,7 +1,7 @@
 <div class="path">
   <p-breadcrumb class="max-w-full" [model]="category" [home]="home" />
 </div>
-
+<p-toast/>
 <div class="card">
   <p-tabView>
     <p-tabPanel header="Categories"
@@ -12,9 +12,12 @@
         collapseIcon="pi pi-minus"
       >
         <p-dialog
-          header="Add New Sub Category"
+          [header]="
+            isSubUpdate ? 'Update Sub Category' : 'Add New Sub Category'
+          "
           [modal]="true"
           [(visible)]="subModelVisible"
+          [(visible)]="isSubUpdate"
           [style]="{ width: '25rem' }"
         >
           <span class="dialog-description">Update your information.</span>
@@ -85,9 +88,16 @@
               <p-button
                 label="Cancel"
                 severity="secondary"
-                (click)="subModelVisible = false"
+                (click)="subModelVisible = false; isSubUpdate = false"
               ></p-button>
               <p-button
+                *ngIf="isSubUpdate"
+                label="Update"
+                (click)="updateSubCategory()"
+                [disabled]="subCategoryForm.invalid"
+              ></p-button>
+              <p-button
+                *ngIf="!isSubUpdate"
                 label="Save"
                 (click)="addSubCategory()"
                 [disabled]="subCategoryForm.invalid"
@@ -106,10 +116,10 @@
               &nbsp;&nbsp;&nbsp;&nbsp;
               <p-button
                 icon="pi pi-refresh"
-                (onClick)="show()"
+                (onClick)="fetchSubAllCategories()"
               />&nbsp;&nbsp;&nbsp;&nbsp;
               <p-button
-                (click)="showSubCategoryDialog()"
+                (click)="showSubCategoryDialog(); subCategoryForm.reset()"
                 label="Add Category"
               ></p-button>
             </div>
@@ -138,13 +148,14 @@
                       icon="pi pi-file-edit"
                       [text]="true"
                       [raised]="true"
+                      (onClick)="fetchSubCategory(subCategory.id)"
                     />
                     <p-button
                       icon="pi pi-trash"
                       [text]="true"
                       [raised]="true"
                       severity="danger"
-                      (onClick)="deleteProduct(subCategory.id)"
+                      (onClick)="deleteSubCategory(subCategory.id)"
                     />
                   </td>
                 </tr>
@@ -162,9 +173,10 @@
         collapseIcon="pi pi-minus"
       >
         <p-dialog
-          header="Add New Category"
+          [header]="isUpdate ? 'Update Category' : 'Add New Category'"
           [modal]="true"
           [(visible)]="visible"
+          [(visible)]="isUpdate"
           [style]="{ width: '25rem' }"
         >
           <span class="dialog-description">Update your information.</span>
@@ -215,9 +227,16 @@
               <p-button
                 label="Cancel"
                 severity="secondary"
-                (click)="visible = false"
+                (click)="visible = false; isUpdate = false"
               ></p-button>
               <p-button
+                *ngIf="isUpdate"
+                label="Update"
+                (click)="updateCategory()"
+                [disabled]="categoryForm.invalid"
+              ></p-button>
+              <p-button
+                *ngIf="!isUpdate"
                 label="Save"
                 (click)="addCategory()"
                 [disabled]="categoryForm.invalid"
@@ -236,9 +255,12 @@
               &nbsp;&nbsp;&nbsp;&nbsp;
               <p-button
                 icon="pi pi-refresh"
-                (onClick)="show()"
+                (onClick)="fetchAllCategories()"
               />&nbsp;&nbsp;&nbsp;&nbsp;
-              <p-button (click)="showDialog()" label="Add Category"></p-button>
+              <p-button
+                (click)="showDialog(); categoryForm.reset()"
+                label="Add Category"
+              ></p-button>
             </div>
           </div>
           <div class="table-container">
@@ -263,13 +285,14 @@
                       icon="pi pi-file-edit"
                       [text]="true"
                       [raised]="true"
+                      (onClick)="fetchCategory(category.id)"
                     />
                     <p-button
                       icon="pi pi-trash"
                       [text]="true"
                       [raised]="true"
                       severity="danger"
-                      (onClick)="deleteProduct(category.id)"
+                      (onClick)="deleteCategory(category.id)"
                     />
                   </td>
                 </tr>
