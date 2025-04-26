@@ -1,82 +1,480 @@
 <div class="about-container">
+  <!-- Hero Section -->
+  <section class="relative">
+    <!-- Hero Image with Overlay -->
+    <div class="relative h-[500px] overflow-hidden">
+      <img src="assets/banner.jpg" alt="About EMart" 
+           class="w-full h-full object-cover object-center" />
+      <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-indigo-900/70"></div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="container mx-auto px-4 text-center" data-aos="fade-up" data-aos-duration="1000">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">About EMart.lk</h1>
+        <p class="text-xl text-gray-100 max-w-3xl mx-auto">
+          Your trusted marketplace connecting millions of buyers and sellers worldwide.
+        </p>
+        <div class="mt-8">
+          <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300 flex items-center mx-auto"
+                  (click)="scrollToSection('story')">
+            <span>Our Story</span>
+            <i class="pi pi-arrow-down ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-      <img src="assets/banner.jpg" alt="About Banner" class="hero-img">
-      <div class="hero-text" data-aos="fade-up">
-        <h1>Welcome to EMart.lk</h1>
-        <p>Your trusted marketplace connecting millions of buyers and sellers worldwide.</p>
-      </div>
-    </section>
-  
-    <!-- Our Story -->
-    <section class="section story" data-aos="fade-right">
-      <div class="content">
-        <h2>Our Story</h2>
-        <p>Founded in 2024, EMart.lk was created to empower people to buy and sell products globally. Today, we proudly serve millions of users in 180+ countries, offering everything from essentials to rare finds.</p>
-      </div>
-      <img src="assets/office.jpg" alt="Our Office" class="section-img" data-aos="zoom-in">
-    </section>
-  
-    <!-- Mission and Vision -->
-    <section class="section mission-vision">
-      <div class="card" data-aos="flip-left">
-        <h3>Our Mission</h3>
-        <p>Making global shopping easy, accessible, and enjoyable for everyone.</p>
-      </div>
-      <div class="card" data-aos="flip-right">
-        <h3>Our Vision</h3>
-        <p>To become the world’s most customer-centric online marketplace.</p>
-      </div>
-    </section>
-  
-    <!-- Why Choose Us -->
-    <section class="section features" data-aos="zoom-in">
-      <h2>Why Choose EMart.lk?</h2>
-      <div class="feature-cards">
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-          <h4>1M+ Happy Users</h4>
-          <p>Across 180+ countries, with 99% satisfaction rate.</p>
+  <!-- Our Story Section -->
+  <section id="story" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="lg:w-1/2" data-aos="fade-right" data-aos-duration="1000">
+          <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-1 h-8 bg-blue-600 mr-4"></div>
+              <h2 class="text-3xl font-bold text-gray-800">Our Story</h2>
+            </div>
+            <p class="text-lg text-gray-600 leading-relaxed mb-6">
+              Founded in 2024, EMart.lk was created with a simple mission: to empower people to buy and sell products globally without barriers. What started as a small team with big dreams has grown into a thriving marketplace.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+              Today, we proudly serve millions of users in over 180 countries, offering everything from everyday essentials to rare collectibles. Our journey is defined by innovation, customer focus, and a commitment to connecting people through commerce.
+            </p>
+            <div class="flex flex-wrap gap-4 mt-6">
+              <div class="flex items-center">
+                <i class="pi pi-globe text-blue-600 text-xl mr-2"></i>
+                <span class="text-gray-700 font-medium">180+ Countries</span>
+              </div>
+              <div class="flex items-center">
+                <i class="pi pi-users text-blue-600 text-xl mr-2"></i>
+                <span class="text-gray-700 font-medium">1M+ Users</span>
+              </div>
+              <div class="flex items-center">
+                <i class="pi pi-shopping-bag text-blue-600 text-xl mr-2"></i>
+                <span class="text-gray-700 font-medium">500K+ Products</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-          <h4>50K+ Cities Connected</h4>
-          <p>Bridging distances, building communities worldwide.</p>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-          <h4>500K+ Products</h4>
-          <p>Amazing variety, competitive prices, seamless experience.</p>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-          <h4>24/7 Support</h4>
-          <p>We’re always here to help — anytime, anywhere.</p>
+        <div class="lg:w-1/2" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="300">
+          <img src="assets/office.jpg" alt="Our Office" 
+               class="w-full h-auto rounded-xl shadow-xl object-cover transform hover:scale-[1.02] transition-transform duration-500" />
         </div>
       </div>
-    </section>
-  
-    <!-- Journey Timeline -->
-    <section class="section timeline" data-aos="fade-up">
-      <h2>Our Journey</h2>
-      <div class="timeline-content">
-        <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-          <span>2024</span> — EMart.lk Launch in New York
+    </div>
+  </section>
+
+  <!-- Mission and Vision Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Our Mission & Vision</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Guided by strong values and a clear purpose, we're building the future of e-commerce.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Mission Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-500 hover:shadow-2xl" 
+             data-aos="flip-left" data-aos-duration="1000">
+          <div class="h-2 bg-blue-600"></div>
+          <div class="p-8">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+              <i class="pi pi-compass text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Making global shopping easy, accessible, and enjoyable for everyone. We strive to break down barriers and create a platform where anyone can find exactly what they need, at the right price, with a seamless experience from discovery to delivery.
+            </p>
+            <div class="mt-6 pt-6 border-t border-gray-100">
+              <p class="text-blue-600 font-medium">
+                "Connecting the world through commerce"
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-          <span>2025</span> — Expanded to 50+ Countries, 500K+ Products
-        </div>
-        <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-          <span>2026</span> — 1M+ User Milestone
+        
+        <!-- Vision Card -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-500 hover:shadow-2xl" 
+             data-aos="flip-right" data-aos-duration="1000" data-aos-delay="200">
+          <div class="h-2 bg-indigo-600"></div>
+          <div class="p-8">
+            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+              <i class="pi pi-eye text-indigo-600 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
+            <p class="text-gray-600 leading-relaxed">
+              To become the world's most customer-centric online marketplace, where people can discover anything they might want to buy online. We envision a future where EMart.lk is synonymous with trust, convenience, and unparalleled selection.
+            </p>
+            <div class="mt-6 pt-6 border-t border-gray-100">
+              <p class="text-indigo-600 font-medium">
+                "Building the future of global commerce"
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-  
-    <!-- Visit Us -->
-    <section class="section map" data-aos="fade-up">
-      <h2>Visit Us</h2>
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.1622199342!2d79.8478235!3d6.9270787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2595c1e437c4f%3A0x4f74e0b28fd7464b!2sColombo%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1714169725601!5m2!1sen!2slk"
-        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
-      </iframe>
-    </section>
-  
-  </div>
-  
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Why Choose EMart.lk?</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          We're more than just a marketplace - we're a community built on trust, innovation, and customer satisfaction.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Feature 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:-translate-y-2" 
+             data-aos="fade-up" data-aos-delay="100">
+          <div class="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+            <i class="pi pi-users text-blue-600 text-xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-gray-800 mb-2">1M+ Happy Users</h4>
+          <p class="text-gray-600">
+            Across 180+ countries, with 99% satisfaction rate.
+          </p>
+          <div class="w-full bg-gray-200 rounded-full h-2 mt-4">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 99%"></div>
+          </div>
+          <p class="text-right text-sm text-gray-500 mt-1">99% Satisfaction</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:-translate-y-2" 
+             data-aos="fade-up" data-aos-delay="200">
+          <div class="bg-green-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+            <i class="pi pi-map-marker text-green-600 text-xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-gray-800 mb-2">50K+ Cities Connected</h4>
+          <p class="text-gray-600">
+            Bridging distances, building communities worldwide.
+          </p>
+          <div class="mt-4 flex items-center">
+            <i class="pi pi-globe text-green-600 mr-2"></i>
+            <span class="text-sm text-gray-500">Global Reach</span>
+          </div>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:-translate-y-2" 
+             data-aos="fade-up" data-aos-delay="300">
+          <div class="bg-amber-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+            <i class="pi pi-shopping-bag text-amber-600 text-xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-gray-800 mb-2">500K+ Products</h4>
+          <p class="text-gray-600">
+            Amazing variety, competitive prices, seamless experience.
+          </p>
+          <div class="mt-4 flex items-center">
+            <i class="pi pi-tag text-amber-600 mr-2"></i>
+            <span class="text-sm text-gray-500">Unbeatable Selection</span>
+          </div>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:-translate-y-2" 
+             data-aos="fade-up" data-aos-delay="400">
+          <div class="bg-purple-100 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+            <i class="pi pi-comments text-purple-600 text-xl"></i>
+          </div>
+          <h4 class="text-xl font-bold text-gray-800 mb-2">24/7 Support</h4>
+          <p class="text-gray-600">
+            We're always here to help — anytime, anywhere.
+          </p>
+          <div class="mt-4 flex items-center">
+            <i class="pi pi-clock text-purple-600 mr-2"></i>
+            <span class="text-sm text-gray-500">Always Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey Timeline Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Our Journey</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          From humble beginnings to a global marketplace, our story is just getting started.
+        </p>
+      </div>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="relative">
+          <!-- Timeline Line -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-200"></div>
+          
+          <!-- Timeline Items -->
+          <div class="space-y-12">
+            <!-- 2024 -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="100">
+              <div class="absolute left-1/2 transform -translate-x-1/2 -mt-3">
+                <div class="w-10 h-10 rounded-full bg-blue-600 shadow-md text-white flex justify-center items-center">
+                  <i class="pi pi-flag"></i>
+                </div>
+              </div>
+              <div class="ml-auto mr-8 md:mr-auto md:ml-8 md:w-1/2 bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-600">
+                <h3 class="text-xl font-bold mb-2">2024</h3>
+                <p class="text-gray-600">EMart.lk launches in Sri Lanka with a vision to transform online shopping.</p>
+                <div class="text-sm text-gray-500 flex items-center mt-3">
+                  <i class="pi pi-star text-blue-600 mr-2"></i>
+                  Company Founded
+                </div>
+              </div>
+            </div>
+            
+            <!-- 2025 -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="200">
+              <div class="absolute left-1/2 transform -translate-x-1/2 -mt-3">
+                <div class="w-10 h-10 rounded-full bg-green-600 shadow-md text-white flex justify-center items-center">
+                  <i class="pi pi-globe"></i>
+                </div>
+              </div>
+              <div class="mr-auto ml-8 md:ml-auto md:mr-8 md:w-1/2 bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-600">
+                <h3 class="text-xl font-bold mb-2">2025</h3>
+                <p class="text-gray-600">Expanded to 50+ countries with over 500,000 products available on the platform.</p>
+                <div class="text-sm text-gray-500 flex items-center mt-3">
+                  <i class="pi pi-map text-green-600 mr-2"></i>
+                  Global Expansion
+                </div>
+              </div>
+            </div>
+            
+            <!-- 2026 -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="300">
+              <div class="absolute left-1/2 transform -translate-x-1/2 -mt-3">
+                <div class="w-10 h-10 rounded-full bg-purple-600 shadow-md text-white flex justify-center items-center">
+                  <i class="pi pi-users"></i>
+                </div>
+              </div>
+              <div class="ml-auto mr-8 md:mr-auto md:ml-8 md:w-1/2 bg-white p-6 rounded-xl shadow-lg border-l-4 border-purple-600">
+                <h3 class="text-xl font-bold mb-2">2026</h3>
+                <p class="text-gray-600">Reached 1 million active users and launched mobile apps for iOS and Android.</p>
+                <div class="text-sm text-gray-500 flex items-center mt-3">
+                  <i class="pi pi-chart-line text-purple-600 mr-2"></i>
+                  User Milestone
+                </div>
+              </div>
+            </div>
+            
+            <!-- 2027 -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="400">
+              <div class="absolute left-1/2 transform -translate-x-1/2 -mt-3">
+                <div class="w-10 h-10 rounded-full bg-amber-600 shadow-md text-white flex justify-center items-center">
+                  <i class="pi pi-bolt"></i>
+                </div>
+              </div>
+              <div class="mr-auto ml-8 md:ml-auto md:mr-8 md:w-1/2 bg-white p-6 rounded-xl shadow-lg border-l-4 border-amber-600">
+                <h3 class="text-xl font-bold mb-2">2027</h3>
+                <p class="text-gray-600">Introduced AI-powered shopping recommendations and same-day delivery.</p>
+                <div class="text-sm text-gray-500 flex items-center mt-3">
+                  <i class="pi pi-cog text-amber-600 mr-2"></i>
+                  Innovation
+                </div>
+              </div>
+            </div>
+            
+            <!-- 2028 -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="500">
+              <div class="absolute left-1/2 transform -translate-x-1/2 -mt-3">
+                <div class="w-10 h-10 rounded-full bg-indigo-600 shadow-md text-white flex justify-center items-center">
+                  <i class="pi pi-compass"></i>
+                </div>
+              </div>
+              <div class="ml-auto mr-8 md:mr-auto md:ml-8 md:w-1/2 bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-600">
+                <h3 class="text-xl font-bold mb-2">2028</h3>
+                <p class="text-gray-600">Looking ahead: Our vision for the next chapter of global e-commerce.</p>
+                <div class="text-sm text-gray-500 flex items-center mt-3">
+                  <i class="pi pi-eye text-indigo-600 mr-2"></i>
+                  Future Vision
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Meet Our Leadership</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          The passionate team behind EMart.lk's success and innovation.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Team Member 1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="100">
+          <div class="h-64 overflow-hidden">
+            <img src="assets/team/ceo.jpg" alt="CEO"
+                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-1">Sarah Johnson</h3>
+            <p class="text-blue-600 font-medium mb-4">Chief Executive Officer</p>
+            <p class="text-gray-600 mb-4">
+              With 15+ years in e-commerce, Sarah leads our global vision and strategy with passion and innovation.
+            </p>
+            <div class="flex space-x-3">
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-linkedin"></i>
+              </a>
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-twitter"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Member 2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="200">
+          <div class="h-64 overflow-hidden">
+            <img src="assets/team/cto.jpg" alt="CTO"
+                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-1">David Chen</h3>
+            <p class="text-blue-600 font-medium mb-4">Chief Technology Officer</p>
+            <p class="text-gray-600 mb-4">
+              David's technical expertise drives our platform innovation, ensuring a seamless shopping experience.
+            </p>
+            <div class="flex space-x-3">
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-linkedin"></i>
+              </a>
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Member 3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg" data-aos="fade-up" data-aos-delay="300">
+          <div class="h-64 overflow-hidden">
+            <img src="assets/team/coo.jpg" alt="COO"
+                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-1">Maria Rodriguez</h3>
+            <p class="text-blue-600 font-medium mb-4">Chief Operations Officer</p>
+            <p class="text-gray-600 mb-4">
+              Maria ensures our global operations run smoothly, from logistics to customer satisfaction.
+            </p>
+            <div class="flex space-x-3">
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-linkedin"></i>
+              </a>
+              <a href="#" class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+                <i class="pi pi-twitter"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visit Us Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div data-aos="fade-right">
+            <div class="mb-8">
+              <h2 class="text-3xl font-bold text-gray-800 mb-4">Visit Our Headquarters</h2>
+              <p class="text-lg text-gray-600">
+                We'd love to meet you in person. Our doors are always open to customers, partners, and innovators.
+              </p>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="bg-blue-100 rounded-full p-3 mr-4">
+                  <i class="pi pi-map-marker text-blue-600"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-1">Address</h3>
+                  <p class="text-gray-600">
+                    123 Commerce Street, Colombo 04<br>
+                    Sri Lanka
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-blue-100 rounded-full p-3 mr-4">
+                  <i class="pi pi-clock text-blue-600"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-1">Business Hours</h3>
+                  <p class="text-gray-600">
+                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                    Saturday: 10:00 AM - 4:00 PM<br>
+                    Sunday: Closed
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-blue-100 rounded-full p-3 mr-4">
+                  <i class="pi pi-phone text-blue-600"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800 mb-1">Contact</h3>
+                  <p class="text-gray-600">
+                    Phone: +94 11 234 5678<br>
+                    Email: info&#64;emart.lk
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="rounded-xl overflow-hidden shadow-xl" data-aos="fade-left">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.1622199342!2d79.8478235!3d6.9270787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2595c1e437c4f%3A0x4f74e0b28fd7464b!2sColombo%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1714169725601!5m2!1sen!2slk"
+              width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-3xl mx-auto" data-aos="zoom-in">
+        <h2 class="text-3xl font-bold mb-6">Ready to Join the EMart.lk Community?</h2>
+        <p class="text-xl text-blue-100 mb-8">
+          Whether you're looking to shop or sell, EMart.lk offers a world of opportunities.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <button class="bg-white text-blue-600 hover:bg-blue-50 font-bold py-3 px-6 rounded-full transition-colors duration-300 flex items-center">
+            <i class="pi pi-shopping-cart mr-2"></i>
+            <span>Start Shopping</span>
+          </button>
+          <button class="bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold py-3 px-6 rounded-full transition-colors duration-300 flex items-center">
+            <i class="pi pi-tag mr-2"></i>
+            <span>Become a Seller</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+

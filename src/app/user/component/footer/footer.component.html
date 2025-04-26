@@ -1,64 +1,184 @@
-<div class="bg-transparent shadow-md min-h-[300px] mt-20 rounded-md">
-    <div class="w-full min-h-[230px] flex items-center justify-center flex-wrap">
-      <div class="w-full md:w-1/3 flex items-center justify-center p-4">
-        <img src="/assets/logo05.png" alt="" class="h-[200px] rounded-lg" />
+<footer class="bg-white border-t border-gray-200">
+  <!-- Main Footer -->
+  <div class="container mx-auto py-16 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12" data-aos="fade-up" data-aos-duration="800">
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <div class="mb-6" data-aos="fade-right" data-aos-delay="100">
+          <img src="/assets/logo05.png" alt="EMart Logo" class="h-16 mb-4" />
+          <p class="text-gray-600 mb-4 max-w-md">
+            EMart is your trusted marketplace connecting millions of buyers and sellers worldwide, offering a seamless shopping experience with unbeatable selection.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+              <i class="pi pi-facebook"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 transition-colors hover:bg-green-600 hover:text-white">
+              <i class="pi pi-whatsapp"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 transition-colors hover:bg-red-600 hover:text-white">
+              <i class="pi pi-youtube"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 transition-colors hover:bg-pink-600 hover:text-white">
+              <i class="pi pi-instagram"></i>
+            </a>
+          </div>
+        </div>
       </div>
-  
-      <div class="w-full md:w-2/3 flex flex-wrap justify-center gap-8 p-4">
-        <ul class="flex flex-col items-center">
-          <li><h2 class="text-gray-700 font-semibold mb-2">Company</h2></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Home</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Products</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">About Us</a></li>
+
+      <!-- Quick Links -->
+      <div data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 relative">
+          <span class="relative z-10">Company</span>
+          <span class="absolute bottom-0 left-0 w-10 h-1 bg-blue-600"></span>
+        </h3>
+        <ul class="space-y-3">
+          <li>
+            <a routerLink="/" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-home mr-2 text-blue-600"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a routerLink="/products" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-shopping-bag mr-2 text-blue-600"></i>
+              Products
+            </a>
+          </li>
+          <li>
+            <a routerLink="/about-us" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-users mr-2 text-blue-600"></i>
+              About Us
+            </a>
+          </li>
+          <li>
+            <a routerLink="/contact" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-envelope mr-2 text-blue-600"></i>
+              Contact
+            </a>
+          </li>
         </ul>
-  
-        <div class="hidden md:block border-l border-gray-300 h-20"></div>
-  
-        <ul class="flex flex-col items-center">
-          <li><h2 class="text-gray-700 font-semibold mb-2">Legal</h2></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Privacy Policy</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Terms & Conditions</a></li>
+      </div>
+
+      <!-- Legal -->
+      <div data-aos="fade-up" data-aos-delay="300">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 relative">
+          <span class="relative z-10">Legal</span>
+          <span class="absolute bottom-0 left-0 w-10 h-1 bg-blue-600"></span>
+        </h3>
+        <ul class="space-y-3">
+          <li>
+            <a routerLink="/privacy-policy" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-shield mr-2 text-blue-600"></i>
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a routerLink="/terms" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-file mr-2 text-blue-600"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li>
+            <a routerLink="/returns" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-refresh mr-2 text-blue-600"></i>
+              Return Policy
+            </a>
+          </li>
+          <li>
+            <a routerLink="/shipping" class="text-gray-600 hover:text-blue-600 transition-colors flex items-center">
+              <i class="pi pi-truck mr-2 text-blue-600"></i>
+              Shipping Info
+            </a>
+          </li>
         </ul>
-  
-        <div class="hidden md:block border-l border-gray-300 h-20"></div>
-  
-        <ul class="flex flex-col items-center">
-          <li><h2 class="text-gray-700 font-semibold mb-2">Account</h2></li>
-          <li><a href="#" class="text-gray-700 hover:underline">My Account</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">My Orders</a></li>
-        </ul>
-  
-        <div class="hidden md:block border-l border-gray-300 h-20"></div>
-  
-        <ul class="flex flex-col items-center">
-          <li><h2 class="text-gray-700 font-semibold mb-2">Contact</h2></li>
-          <li><a href="#" class="text-gray-700 hover:underline">E-mail : info&#64;emart.lk</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Telephone : 011-22 22 223</a></li>
-          <li><a href="#" class="text-gray-700 hover:underline">Address : No 30, Galle Rd, Colombo 7</a></li>
+      </div>
+
+      <!-- Contact -->
+      <div data-aos="fade-up" data-aos-delay="400">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 relative">
+          <span class="relative z-10">Contact Us</span>
+          <span class="absolute bottom-0 left-0 w-10 h-1 bg-blue-600"></span>
+        </h3>
+        <ul class="space-y-3">
+          <li class="flex items-start">
+            <i class="pi pi-map-marker mt-1 mr-3 text-blue-600"></i>
+            <span class="text-gray-600">No 30, Galle Road<br>Colombo 7, Sri Lanka</span>
+          </li>
+          <li class="flex items-center">
+            <i class="pi pi-phone mr-3 text-blue-600"></i>
+            <span class="text-gray-600">+94 11 222 2223</span>
+          </li>
+          <li class="flex items-center">
+            <i class="pi pi-envelope mr-3 text-blue-600"></i>
+            <span class="text-gray-600">info&#64;emart.lk</span>
+          </li>
+          <li class="flex items-center">
+            <i class="pi pi-clock mr-3 text-blue-600"></i>
+            <span class="text-gray-600">Mon-Fri: 9AM - 6PM</span>
+          </li>
         </ul>
       </div>
     </div>
-  
-    <div class="bg-[#0c3e48] flex flex-wrap items-center justify-center md:justify-between min-h-[70px] p-4 gap-4">
-      <div class="flex items-center justify-center space-x-3 text-white">
-        <i class="pi pi-facebook text-xl"></i>
-        <i class="pi pi-whatsapp text-xl"></i>
-        <i class="pi pi-youtube text-xl"></i>
-        <i class="pi pi-phone text-xl"></i>
-        <i class="pi pi-instagram text-xl"></i>
-      </div>
-  
-      <div class="text-center text-white text-sm">
-        &copy; 2025 EMart<br>All Rights Reserved.
-      </div>
-  
-      <div class="flex items-center justify-center space-x-3">
-        <img src="/assets/card/master.png" alt="" class="h-10" />
-        <img src="/assets/card/card.png" alt="" class="h-10" />
-        <img src="/assets/card/paypal.png" alt="" class="h-10" />
-        <img src="/assets/card/apple-pay.png" alt="" class="h-10" />
-        <img src="/assets/card/american-express.png" alt="" class="h-10" />
+
+    <!-- Newsletter -->
+    <div class="mt-16 pt-8 border-t border-gray-200" data-aos="fade-up" data-aos-delay="500">
+      <div class="max-w-xl mx-auto text-center">
+        <h3 class="text-xl font-bold text-gray-800 mb-3">Subscribe to Our Newsletter</h3>
+        <p class="text-gray-600 mb-6">Stay updated with our latest products, offers and news</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <span class="p-input-icon-left flex-grow">
+            <i class="pi pi-envelope"></i>
+            <input type="text" pInputText placeholder="Your email address" class="w-full p-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all" />
+          </span>
+          <button pButton label="Subscribe" icon="pi pi-send" class="p-button-raised p-button-primary"></button>
+        </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Payment Methods -->
+  <div class="bg-gray-50 py-6 border-t border-gray-200" data-aos="fade-up" data-aos-delay="600">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap items-center justify-between">
+        <div class="w-full md:w-auto mb-4 md:mb-0 text-center md:text-left">
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">SECURE PAYMENTS</h4>
+          <p class="text-xs text-gray-500">All major payment methods accepted</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <img src="/assets/card/master.png" alt="Mastercard" class="h-8 grayscale hover:grayscale-0 transition-all" />
+          <img src="/assets/card/card.png" alt="Visa" class="h-8 grayscale hover:grayscale-0 transition-all" />
+          <img src="/assets/card/paypal.png" alt="PayPal" class="h-8 grayscale hover:grayscale-0 transition-all" />
+          <img src="/assets/card/apple-pay.png" alt="Apple Pay" class="h-8 grayscale hover:grayscale-0 transition-all" />
+          <img src="/assets/card/american-express.png" alt="American Express" class="h-8 grayscale hover:grayscale-0 transition-all" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="bg-[#0c3e48] py-4" data-aos="fade" data-aos-delay="700">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="text-white text-sm mb-4 md:mb-0">
+          &copy; 2025 EMart. All Rights Reserved.
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="#" class="text-white hover:text-blue-300 transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-white hover:text-blue-300 transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-white hover:text-blue-300 transition-colors text-sm">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button 
+    (click)="scrollToTop()" 
+    class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-blue-600 text-white shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors z-50"
+    [ngClass]="{'opacity-0 invisible': !showScrollTop, 'opacity-100 visible': showScrollTop}"
+    data-aos="fade-up"
+  >
+    <i class="pi pi-arrow-up"></i>
+  </button>
+</footer>

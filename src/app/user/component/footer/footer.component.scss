@@ -1,0 +1,22 @@
+// Smooth transitions for hover effects
+a, button {
+    transition: all 0.3s ease;
+  }
+  
+  // Animation for the back to top button
+  button.fixed {
+    transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.3s ease;
+  }
+  
+  // Optional: Add a subtle hover effect to the payment method images
+  img.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+  }
+  

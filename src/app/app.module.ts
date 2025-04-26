@@ -67,6 +67,8 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
 import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
+import { CardModule } from 'primeng/card';
+import { TimelineModule } from 'primeng/timeline';
  
 @NgModule({
   declarations: [
@@ -130,7 +132,10 @@ import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart
     ButtonModule,
     CheckboxModule,
     TreeModule,
-    TreeSelectModule
+    TreeSelectModule,
+    CardModule,
+    TimelineModule
+    
   ],
   providers: [
     ShoppingCartService,

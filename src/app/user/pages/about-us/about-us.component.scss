@@ -1,129 +1,26 @@
-.about-container {
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-    line-height: 1.7;
+/* Hero Section Animation */
+.hero-content {
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Hero Section */
-  .hero {
-    position: relative;
-    overflow: hidden;
-    height: 400px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .hero-text {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    text-align: center;
-    color: white;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-    transform: translateY(-50%);
-  }
-  .hero-text h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
-  }
-  .hero-text p {
-    font-size: 20px;
-  }
-  
-  /* Section Generic Styles */
-  .section {
-    padding: 60px 20px;
-    background: #fafafa;
-    margin-top: 40px;
-  }
-  .section:nth-child(even) {
-    background: #ffffff;
-  }
-  .section h2 {
-    font-size: 36px;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  /* Story Section */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .story {
-    display: flex;
-    align-items: center;
-    gap: 40px;
+    @apply flex-col;
+    
+    .section-img {
+      @apply w-full mt-8;
+    }
   }
-  .story .content {
-    flex: 1;
-  }
-  .section-img {
-    width: 50%;
-    border-radius: 10px;
-  }
-  
-  /* Mission Vision */
-  .mission-vision {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-  }
-  .mission-vision .card {
-    flex: 1;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.3s;
-  }
-  .mission-vision .card:hover {
-    transform: translateY(-8px);
-  }
-  
-  /* Features */
-  .features .feature-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 40px;
-  }
-  .feature-card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    text-align: center;
-    transition: transform 0.3s;
-  }
-  .feature-card:hover {
-    transform: scale(1.05);
-  }
-  
-  /* Timeline */
-  .timeline-content {
-    max-width: 800px;
-    margin: auto;
-  }
-  .timeline-item {
-    background: white;
-    margin: 20px 0;
-    padding: 20px;
-    border-left: 4px solid #007bff;
-    position: relative;
-  }
-  .timeline-item span {
-    font-weight: bold;
-    color: #007bff;
-  }
-  
-  /* Map Section */
-  .map iframe {
-    border-radius: 12px;
-    margin-top: 20px;
-  }
-  
-
-
-
-
-  
+}
