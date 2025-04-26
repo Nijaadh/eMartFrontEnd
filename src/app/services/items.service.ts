@@ -44,4 +44,8 @@ export class GiftItemsService {
     }
     return item;
   }
+
+  getItemById(id: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}by-ids`,  [id]);
+  }
 }

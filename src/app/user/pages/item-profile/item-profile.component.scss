@@ -61,16 +61,29 @@
   font-weight: 600;
 }
 
-/* Price Highlight */
 .price-highlight {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   background: #e8fff0;
   padding: 1rem 1.5rem;
   border-left: 6px solid #2e8b57;
   border-radius: 12px;
+  gap: 1rem;
+}
+
+.price-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.original-price {
+  font-size: 1.8rem;
+  color: #999;
+  text-decoration: line-through;
 }
 
 .price {

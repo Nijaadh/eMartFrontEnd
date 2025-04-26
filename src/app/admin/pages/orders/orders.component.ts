@@ -47,7 +47,6 @@ export class OrdersComponent implements OnInit {
       // Assuming data.payload contains the array of users
       this.fetchingDeliveredGift = data.payload;
     });
-
   }
 
   updateStatus(id:any,status:any){

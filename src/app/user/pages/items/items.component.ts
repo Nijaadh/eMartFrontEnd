@@ -47,12 +47,16 @@ export class ItemsComponent implements OnInit, OnDestroy {
   allItems: any[] = [];
   filteredItems: any[] = [];
   currentPage: number = 0;
+  inStockOnly: boolean = false;
+  mobileFiltersVisible = false;
+  screenIsSmall = false;
 
   //--search-modal---
   category: any[] = [];
 
   // Filter options
   sortOptions: SortOption[] = [
+    { name: 'Default', value: 'default' },
     { name: 'Newest First', value: 'newest' },
     { name: 'Price: Low to High', value: 'priceLow' },
     { name: 'Price: High to Low', value: 'priceHigh' },
@@ -60,16 +64,15 @@ export class ItemsComponent implements OnInit, OnDestroy {
   ];
 
   priceRanges: PriceRange[] = [
-    { name: 'All Prices', value: { min: 0, max: 100000 } },
+    { name: 'All Prices', value: { min: 0, max: Number.MAX_SAFE_INTEGER } },
     { name: 'Under 1000 LKR', value: { min: 0, max: 1000 } },
     { name: 'Under 2000 LKR', value: { min: 0, max: 2000 } },
     { name: 'Under 5000 LKR', value: { min: 0, max: 5000 } },
-    { name: '5000+ LKR', value: { min: 5000, max: 100000 } },
+    { name: '5000+ LKR', value: { min: 5000, max: Number.MAX_SAFE_INTEGER } },
   ];
 
   selectedSortOption: SortOption = this.sortOptions[0]; // Default to 'Newest First'
   selectedPriceRange: PriceRange = this.priceRanges[0]; // Default to 'All Prices'
-  inStockOnly: boolean = false;
   selectedCategory: TreeNode | null = null;
 
   // Pagination
@@ -92,6 +95,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchAllItems();
     this.setupCategoryTree();
+
+    this.checkScreenSize();
+    window.addEventListener('resize', () => {
+      this.checkScreenSize();
+    });
 
     // Subscribe to cart updates
     this.cartSubscription = this.cartService
@@ -116,6 +124,17 @@ export class ItemsComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkScreenSize() {
+    this.screenIsSmall = window.innerWidth < 1024; // 'lg' breakpoint
+    if (!this.screenIsSmall) {
+      this.mobileFiltersVisible = false; // Always show filters on desktop
+    }
+  }
+
+  toggleMobileFilters() {
+    this.mobileFiltersVisible = !this.mobileFiltersVisible;
+  }
+
   setupCategoryTree() {
     // Same as original code
     this.categories = [
@@ -132,23 +151,134 @@ export class ItemsComponent implements OnInit, OnDestroy {
           { label: 'Laptops', key: 'laptops' },
         ],
       },
-      // ... rest of categories remain the same
     ];
   }
 
+  loadItems() {
+    this.filteredItems = [...this.fetchingItems];
+    this.totalItems = this.filteredItems.length;
+  }
+
+  applyFilters(): void {
+    if (!this.fetchingItems || this.fetchingItems.length === 0) {
+      return;
+    }
+
+    // If we're using the default option and no other filters are active,
+    // just show all items without any sorting or filtering
+    if (
+      this.selectedSortOption.value === 'default' &&
+      !this.searchTerm &&
+      !this.selectedCategory &&
+      this.selectedPriceRange === this.priceRanges[0] &&
+      !this.inStockOnly
+    ) {
+      this.filteredItems = [...this.fetchingItems];
+      this.totalItems = this.filteredItems.length;
+      return;
+    }
+
+    let filtered = [...this.fetchingItems];
+
+    // Apply search term
+    if (this.searchTerm.trim() !== '') {
+      const lowerSearch = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.name?.toLowerCase().includes(lowerSearch) ||
+          item.description?.toLowerCase().includes(lowerSearch)
+      );
+    }
+
+    // Apply category filter
+    if (this.selectedCategory) {
+      const selectedKey = this.selectedCategory.key;
+      const isParentCategory =
+        this.selectedCategory.children &&
+        this.selectedCategory.children.length > 0;
+
+      filtered = filtered.filter((item) => {
+        // If it's a parent category, match by categoryName
+        if (isParentCategory) {
+          return item.categoryName === selectedKey;
+        }
+        // If it's a child category, match by subCategoryName
+        else {
+          return item.subCategoryName === selectedKey;
+        }
+      });
+    }
+
+    // Apply price range filter
+    if (
+      this.selectedPriceRange &&
+      this.selectedPriceRange !== this.priceRanges[0]
+    ) {
+      const { min, max } = this.selectedPriceRange.value;
+      filtered = filtered.filter((item) => {
+        // Convert to number since item.unitPrice might be a string
+        const price = parseFloat(item.unitPrice);
+        return (
+          price >= min && (max === Number.MAX_SAFE_INTEGER || price <= max)
+        );
+      });
+    }
+    // Apply in-stock filter
+    if (this.inStockOnly) {
+      filtered = filtered.filter(
+        (item) => item.itemCount && item.itemCount > 0
+      );
+    }
+
+    // Apply sorting only if not using default
+    if (this.selectedSortOption.value !== 'default') {
+      switch (this.selectedSortOption.value) {
+        case 'priceLow':
+          filtered.sort(
+            (a, b) => parseFloat(a.unitPrice) - parseFloat(b.unitPrice)
+          );
+          break;
+        case 'priceHigh':
+          filtered.sort(
+            (a, b) => parseFloat(b.unitPrice) - parseFloat(a.unitPrice)
+          );
+          break;
+        case 'alpha':
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case 'newest':
+          filtered.sort((a, b) => {
+            // Parse ids to numbers for numeric comparison
+            const idA = parseInt(a.id, 10);
+            const idB = parseInt(b.id, 10);
+
+            // Sort descending (higher/newer ids first)
+            return idB - idA;
+          });
+          break;
+      }
+    }
+
+    this.filteredItems = filtered;
+    this.totalItems = filtered.length;
+    console.log('Filtered items:', this.filteredItems.length);
+  }
+
   clearFilters(): void {
-    // Same as original code
-    this.selectedSortOption = this.sortOptions[0];
+    // Find the default sort option
+    const defaultOption = this.sortOptions.find(
+      (option) => option.value === 'default'
+    );
+    this.selectedSortOption = defaultOption || this.sortOptions[0];
     this.selectedPriceRange = this.priceRanges[0];
     this.inStockOnly = false;
     this.selectedCategory = null;
     this.searchTerm = '';
     this.currentPage = 0;
-    this.applyFilters();
-  }
 
-  applyFilters(): void {
-    // Same as original code
+    // Reset to show all items
+    this.filteredItems = [...this.fetchingItems];
+    this.totalItems = this.filteredItems.length;
   }
 
   onFilterChange(): void {
@@ -156,6 +286,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
       selectedSort: this.selectedSortOption,
       selectedPrice: this.selectedPriceRange,
       inStockOnly: this.inStockOnly,
+      category: this.selectedCategory ? this.selectedCategory.key : 'none',
     });
     this.applyFilters();
   }
@@ -222,23 +353,35 @@ export class ItemsComponent implements OnInit, OnDestroy {
         return;
       }
 
-      // Map and convert base64 image
       const items = data.payload.map((item: any) => ({
         ...item,
         image: item.image ? 'data:image/png;base64,' + item.image : '',
       }));
 
-      // Randomize the items
-      this.fetchingItems = this.getRandomizedItems(items);
+      // Store all items in fetchingItems
+      this.fetchingItems = items;
+
+      // Initialize filteredItems with all items
+      this.filteredItems = [...this.fetchingItems];
+      this.totalItems = this.filteredItems.length;
+
+      console.log('Total items loaded:', this.fetchingItems.length);
+
+      // Only apply filters if there are active filters
+      if (this.hasActiveFilters()) {
+        this.applyFilters();
+      }
     });
   }
 
   hasActiveFilters(): boolean {
     return !!(
-      this.searchTerm ||
-      this.selectedCategory ||
-      this.selectedSortOption ||
-      this.selectedPriceRange ||
+      this.searchTerm.trim() !== '' ||
+      this.selectedCategory !== null ||
+      (this.selectedSortOption &&
+        this.selectedSortOption.value !== 'default') ||
+      (this.selectedPriceRange &&
+        this.selectedPriceRange !== this.priceRanges[0]) ||
       this.inStockOnly
     );
   }
@@ -255,6 +398,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     const value = (event.target as HTMLInputElement).value;
     this.searchTerm = value;
     this.searchSubject.next(value);
+    this.applyFilters(); // Apply filters immediately when search term changes
   }
 
   fetchSearchResults(searchText: string) {
