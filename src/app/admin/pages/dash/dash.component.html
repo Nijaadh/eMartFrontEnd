@@ -1,129 +1,195 @@
-<div class="path">
-    <p-breadcrumb class="max-w-full" [model]="items" [home]="home" />
-</div>
-
-<div class="top-bar">
-    <div class="card">
-        <div class="title">
-            <span>
-                <i class="pi pi-shopping-cart" style="color: rgb(236, 236, 236)"></i>
-            </span>
-            <p class="title-text">
-                New Orders
-            </p>
-            <p class="percent">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
-                    width="20">
-                    <path
-                        d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
-                    </path>
-                </svg> 43%
-            </p>
-        </div>
-        <div class="data">
-            <p>
-                {{newGift}}
-            </p>
-            <span style="font-size: smaller;color: grey">(New paid gifts)</span>
-        </div>
+<div class="dashboard-container p-4" data-aos="fade-in">
+    <!-- Breadcrumb -->
+    <div class="mb-6">
+      <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
     </div>
-
-    <div class="card">
-        <div class="title">
-            <span>
-                <i class="pi pi-user" style="color: rgb(251, 251, 251)"></i>
-            </span>
-            <p class="title-text">
-                Users
-            </p>
-            <p class="percent">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
-                    width="20">
-                    <path
-                        d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
-                    </path>
-                </svg> 35%
-            </p>
+  
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Items Card -->
+      <div class="card shadow-lg rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-blue-600 p-4 flex justify-between items-center">
+          <div class="text-white">
+            <h3 class="text-lg font-semibold">Total Items</h3>
+            <p class="text-sm opacity-80">In inventory</p>
+          </div>
+          <div class="bg-blue-500 rounded-full p-3">
+            <i class="pi pi-box text-white text-xl"></i>
+          </div>
         </div>
-        <div class="data">
-            <p>
-                {{userCounnt}}
-            </p>
-            <span style="font-size: smaller;color: grey">(Registered users)</span>
+        <div class="p-4 bg-white">
+          <h2 class="text-3xl font-bold text-gray-800">{{totalItems}}</h2>
+          <div class="flex items-center mt-2">
+            <i class="pi pi-arrow-up text-green-500 mr-1"></i>
+            <span class="text-sm text-green-500">5% from last month</span>
+          </div>
         </div>
+      </div>
+  
+      <!-- Items in Stock Card -->
+      <div class="card shadow-lg rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-green-600 p-4 flex justify-between items-center">
+          <div class="text-white">
+            <h3 class="text-lg font-semibold">Items in Stock</h3>
+            <p class="text-sm opacity-80">Available for sale</p>
+          </div>
+          <div class="bg-green-500 rounded-full p-3">
+            <i class="pi pi-check-circle text-white text-xl"></i>
+          </div>
+        </div>
+        <div class="p-4 bg-white">
+          <h2 class="text-3xl font-bold text-gray-800">{{itemsInStock}}</h2>
+          <div class="flex items-center mt-2">
+            <i class="pi pi-arrow-down text-red-500 mr-1"></i>
+            <span class="text-sm text-red-500">3% from last month</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Today's Orders Card -->
+      <div class="card shadow-lg rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-purple-600 p-4 flex justify-between items-center">
+          <div class="text-white">
+            <h3 class="text-lg font-semibold">Today's Orders</h3>
+            <p class="text-sm opacity-80">New purchases</p>
+          </div>
+          <div class="bg-purple-500 rounded-full p-3">
+            <i class="pi pi-shopping-cart text-white text-xl"></i>
+          </div>
+        </div>
+        <div class="p-4 bg-white">
+          <h2 class="text-3xl font-bold text-gray-800">{{todayOrders}}</h2>
+          <div class="flex items-center mt-2">
+            <i class="pi pi-arrow-up text-green-500 mr-1"></i>
+            <span class="text-sm text-green-500">12% from yesterday</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Today's Revenue Card -->
+      <div class="card shadow-lg rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-amber-600 p-4 flex justify-between items-center">
+          <div class="text-white">
+            <h3 class="text-lg font-semibold">Today's Revenue</h3>
+            <p class="text-sm opacity-80">Total sales amount</p>
+          </div>
+          <div class="bg-amber-500 rounded-full p-3">
+            <i class="pi pi-dollar text-white text-xl"></i>
+          </div>
+        </div>
+        <div class="p-4 bg-white">
+          <h2 class="text-3xl font-bold text-gray-800">{{todayRevenue | currency:'LKR ':'symbol':'1.2-2'}}</h2>
+          <div class="flex items-center mt-2">
+            <i class="pi pi-arrow-up text-green-500 mr-1"></i>
+            <span class="text-sm text-green-500">8% from yesterday</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-        <div class="title">
-            <span>
-                <i class="pi pi-dollar" style="color: rgb(255, 255, 255)"></i>
-            </span>
-            <p class="title-text">
-                Total Income
-            </p>
-            <p class="percent">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
-                    width="20">
-                    <path
-                        d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
-                    </path>
-                </svg> 40%
-            </p>
-        </div>
-        <div class="data">
-            <p>
-                {{totalIncome}} LKR
-            </p>
-            <span style="font-size: smaller;color: grey">(Registered users)</span>
-        </div>
+  
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Items by Category Chart -->
+      <div class="bg-white p-6 rounded-xl shadow-lg" data-aos="zoom-in" data-aos-delay="100">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Items by Category</h3>
+        <p-chart type="pie" [data]="itemsByCategoryData" [options]="chartOptions" height="300px"></p-chart>
+      </div>
+  
+      <!-- Orders by Status Chart -->
+      <div class="bg-white p-6 rounded-xl shadow-lg" data-aos="zoom-in" data-aos-delay="200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Orders by Status</h3>
+        <p-chart type="doughnut" [data]="ordersByStatusData" [options]="chartOptions" height="300px"></p-chart>
+      </div>
     </div>
-    <div class="card">
-        <div class="title">
-            <span>
-                <i class="pi pi-check-circle" style="color: rgb(251, 251, 251)"></i>
-            </span>
-            <p class="title-text">
-                Complete Orders
-            </p>
-            <p class="percent">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
-                    width="20">
-                    <path
-                        d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
-                    </path>
-                </svg> 86%
-            </p>
-        </div>
-        <div class="data">
-            <p>
-                {{deliveredGift}}
-            </p>
-            <span style="font-size: smaller;color: grey">(Completely delivered orders)</span>
-            <!-- <div class="range">
-                <div class="fill">
-                </div>
-            </div> -->
-        </div>
+  
+    <!-- Low Stock Alerts -->
+    <div class="bg-white p-6 rounded-xl shadow-lg mb-8" data-aos="fade-up">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Low Stock Alerts</h3>
+        <p-button label="View All" icon="pi pi-external-link" styleClass="p-button-sm p-button-outlined"></p-button>
+      </div>
+      
+      <p-table [value]="lowStockItems" [paginator]="true" [rows]="5" styleClass="p-datatable-sm" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Current Stock</th>
+            <th>Reorder Level</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.category}}</td>
+            <td>{{item.currentStock}}</td>
+            <td>{{item.reorderLevel}}</td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [ngClass]="{'bg-red-100 text-red-800': item.currentStock === 0, 
+                               'bg-yellow-100 text-yellow-800': item.currentStock > 0 && item.currentStock <= item.reorderLevel}">
+                {{item.currentStock === 0 ? 'Out of Stock' : 'Low Stock'}}
+              </span>
+            </td>
+            <td>
+              <p-button icon="pi pi-refresh" styleClass="p-button-sm p-button-rounded p-button-info mr-2"></p-button>
+              <p-button icon="pi pi-shopping-cart" styleClass="p-button-sm p-button-rounded p-button-success"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="text-center p-4">No low stock items found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-</div>
-
-<div class="doller-rate">
-    <div *ngIf="usdToLkrRate !== null; else errorBlock" class="rate">
-        <p>{{date}}</p> 
-        <p><i class="pi pi-dollar"></i>Dollar rate</p>
-        <p>{{ usdToLkrRate | number: '1.3-3' }} LKR</p>
+  
+    <!-- Recent Orders -->
+    <div class="bg-white p-6 rounded-xl shadow-lg" data-aos="fade-up">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Recent Orders</h3>
+        <p-button label="View All Orders" icon="pi pi-external-link" styleClass="p-button-sm p-button-outlined"></p-button>
+      </div>
+      
+      <p-table [value]="recentOrders" [paginator]="true" [rows]="5" styleClass="p-datatable-sm" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+          <tr>
+            <td>#{{order.id}}</td>
+            <td>{{order.customer}}</td>
+            <td>{{order.date | date:'medium'}}</td>
+            <td>{{order.amount | currency:'LKR ':'symbol':'1.2-2'}}</td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [ngClass]="{'bg-blue-100 text-blue-800': order.status === 'Pending', 
+                               'bg-yellow-100 text-yellow-800': order.status === 'Processing',
+                               'bg-indigo-100 text-indigo-800': order.status === 'Shipped',
+                               'bg-green-100 text-green-800': order.status === 'Delivered'}">
+                {{order.status}}
+              </span>
+            </td>
+            <td>
+              <p-button icon="pi pi-eye" styleClass="p-button-sm p-button-rounded p-button-info mr-2"></p-button>
+              <p-button icon="pi pi-pencil" styleClass="p-button-sm p-button-rounded p-button-success"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
-    <ng-template #errorBlock>
-        <p>{{ errorMessage }}</p>
-    </ng-template>
-    
-
-</div>
-
-<div class="chart">
-    <div class="cardChart">
-        <p-chart type="bar" [data]="basicData" [options]="basicOptions" style="min-width: 800px; " />
-    </div>
-    <!-- <div class="card flex justify-content-center">
-        <p-chart type="doughnut" [data]="data" [options]="options" />
-    </div> -->
-</div>
+  </div>
+  
+  <!-- Notification Toast -->
+  <p-toast position="bottom-right"></p-toast>
+  
