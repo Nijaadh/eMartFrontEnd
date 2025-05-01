@@ -69,7 +69,17 @@ import { ItemProfileComponent } from './user/pages/item-profile/item-profile.com
 import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
 import { CardModule } from 'primeng/card';
 import { TimelineModule } from 'primeng/timeline';
- 
+import { RatingModule } from 'primeng/rating';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
+
+
+import { PaginatorModule } from 'primeng/paginator';
+
+
+
+
 @NgModule({
   declarations: [
     
@@ -96,6 +106,7 @@ import { TimelineModule } from 'primeng/timeline';
     ItemsComponent,
     AboutUsComponent,
     ItemProfileComponent,
+    
     
   ],
   imports: [
@@ -126,17 +137,27 @@ import { TimelineModule } from 'primeng/timeline';
     DropdownModule,
     SidebarModule,
     AccordionModule,
-    BadgeModule,FieldsetModule,PanelModule,
-    DialogModule,DataViewModule,TableModule,BreadcrumbModule,
-    ChartModule,TabViewModule,MegaMenuModule, 
+    BadgeModule,
+    FieldsetModule,
+    PanelModule,
+    DialogModule,
+    DataViewModule,
+    TableModule,
+    BreadcrumbModule,
+    ChartModule,
+    TabViewModule,
+    MegaMenuModule,
     ButtonModule,
     CheckboxModule,
     TreeModule,
     TreeSelectModule,
     CardModule,
-    TimelineModule
-    
+    TimelineModule,
+    RatingModule,
+    TooltipModule,
+    PaginatorModule
   ],
+  
   providers: [
     ShoppingCartService,
     provideClientHydration(),
