@@ -1,24 +1,60 @@
 <p-toast />
-<div class="super">
-  <h2><i class="pi pi-credit-card"></i>
-    Payment</h2>
-  <h3>Order from EMart</h3>
 
-  <h4>Total amount: <span> {{amount}}</span></h4>
-  <p>Gift box id:[#]{{giftBoxID}}</p>
-  <div id="card-element">
-    <!-- A Stripe Element will be inserted here. -->
-  </div>
-  <!-- <button (click)="pay()">Pay ${{ amount / 100 }}</button> -->
-  <div class="btn">
-    <button (click)="pay()" class="btnPay">Pay</button>
-  </div>
-
-  <div class="cardIcon">
-    <img src="\assets\card\master.png" alt="" height="40px">
-    <img src="\assets\card\card.png" alt="" height="40px">
-    <img src="\assets\card\paypal.png" alt="" height="40px">
-    <img src="\assets\card\apple-pay.png" alt="" height="40px">
-    <img src="\assets\card\american-express.png" alt="" height="40px">
+<div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl my-10">
+  <div class="p-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center">
+        <div class="bg-indigo-600 p-3 rounded-full mr-4">
+          <i class="pi pi-credit-card text-white text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Payment</h2>
+          <p class="text-gray-600">Order from EMart</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <h4 class="text-lg font-semibold text-gray-700">Total amount:</h4>
+        <span class="text-2xl font-bold text-indigo-600">{{amount}}</span>
+      </div>
+    </div>
+    
+    <!-- Order ID -->
+    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+      <p class="text-gray-600 flex items-center">
+        <i class="pi pi-box mr-2 text-gray-500"></i>
+        Order ID: <span class="font-semibold ml-1">{{orderId}}</span>
+      </p>
+    </div>
+    
+    <!-- Card Element -->
+    <div class="mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Card Information</label>
+      <div id="card-element" class="border border-gray-300 p-4 rounded-lg bg-white">
+        <!-- A Stripe Element will be inserted here. -->
+      </div>
+    </div>
+    
+    <!-- Pay Button -->
+    <button 
+      (click)="pay()" 
+      class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 mb-6">
+      Pay {{amount}}
+    </button>
+    
+    <!-- Card Icons -->
+    <div class="flex justify-center space-x-4 mt-6 pt-6 border-t border-gray-200">
+      <img src="\assets\card\master.png" alt="Mastercard" class="h-8 object-contain grayscale hover:grayscale-0 transition-all duration-200">
+      <img src="\assets\card\card.png" alt="Visa" class="h-8 object-contain grayscale hover:grayscale-0 transition-all duration-200">
+      <img src="\assets\card\paypal.png" alt="PayPal" class="h-8 object-contain grayscale hover:grayscale-0 transition-all duration-200">
+      <img src="\assets\card\apple-pay.png" alt="Apple Pay" class="h-8 object-contain grayscale hover:grayscale-0 transition-all duration-200">
+      <img src="\assets\card\american-express.png" alt="American Express" class="h-8 object-contain grayscale hover:grayscale-0 transition-all duration-200">
+    </div>
+    
+    <!-- Security Note -->
+    <div class="text-center mt-6 text-sm text-gray-500 flex items-center justify-center">
+      <i class="pi pi-lock mr-2"></i>
+      Your payment information is secure and encrypted
+    </div>
   </div>
 </div>

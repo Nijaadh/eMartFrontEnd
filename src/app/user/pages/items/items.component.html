@@ -461,6 +461,81 @@
   </div>
 </div>
 
+<div class="flex justify-center mt-8 mb-10" *ngIf="totalPages > 1">
+  <div class="flex items-center gap-2 flex-wrap justify-center">
+    <!-- Previous page button -->
+    <button 
+      class="px-3 py-2 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors duration-300 flex items-center gap-1"
+      [class.opacity-50]="currentPage === 0"
+      [class.cursor-not-allowed]="currentPage === 0"
+      [disabled]="currentPage === 0"
+      (click)="previousPage()"
+    >
+      <i class="pi pi-chevron-left text-xs"></i>
+      <span class="hidden sm:inline">Previous</span>
+    </button>
+    
+    <!-- First page button (if not in view) -->
+    <button 
+      *ngIf="getPageNumbers()[0] > 0"
+      class="w-10 h-10 rounded-md border border-blue-300 flex items-center justify-center hover:bg-blue-50 transition-colors"
+      (click)="goToPage(0)"
+    >
+      1
+    </button>
+    
+    <!-- Ellipsis if needed -->
+    <span *ngIf="getPageNumbers()[0] > 1" class="px-2">...</span>
+    
+    <!-- Page number buttons -->
+    <button 
+      *ngFor="let page of getPageNumbers()"
+      class="w-10 h-10 rounded-md flex items-center justify-center transition-all duration-300"
+      [class.bg-blue-600]="page === currentPage"
+      [class.text-white]="page === currentPage"
+      [class.border-blue-600]="page === currentPage"
+      [class.border]="page === currentPage"
+      [class.border-blue-300]="page !== currentPage"
+      [class.hover:bg-blue-50]="page !== currentPage"
+      [class.hover:shadow]="page !== currentPage"
+      [class.transform]="page !== currentPage"
+      [class.hover:scale-110]="page !== currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page + 1 }}
+    </button>
+    
+    <!-- Ellipsis if needed -->
+    <span *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 2" class="px-2">...</span>
+    
+    <!-- Last page button (if not in view) -->
+    <button 
+      *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1"
+      class="w-10 h-10 rounded-md border border-blue-300 flex items-center justify-center hover:bg-blue-50 transition-colors"
+      (click)="goToPage(totalPages - 1)"
+    >
+      {{ totalPages }}
+    </button>
+    
+    <!-- Next page button -->
+    <button 
+      class="px-3 py-2 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors duration-300 flex items-center gap-1"
+      [class.opacity-50]="currentPage >= totalPages - 1"
+      [class.cursor-not-allowed]="currentPage >= totalPages - 1"
+      [disabled]="currentPage >= totalPages - 1"
+      (click)="nextPage()"
+    >
+      <span class="hidden sm:inline">Next</span>
+      <i class="pi pi-chevron-right text-xs"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Page info display -->
+<div class="text-center text-gray-600 text-sm mb-8" *ngIf="totalItems > 0">
+  Showing {{ currentPage * itemsPerPage + 1 }} - {{ min((currentPage + 1) * itemsPerPage, totalItems) }} of {{ totalItems }} items
+</div>
+
 <style>
   @keyframes fade-in {
     from {

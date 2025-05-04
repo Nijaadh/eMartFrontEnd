@@ -1,3 +1,4 @@
+// Update ItemsComponent class with pagination methods
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { debounceTime, Subject, Subscription } from 'rxjs';
@@ -51,6 +52,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   allItems: any[] = [];
   fetchingItems: any[] = [];
   filteredItems: any[] = [];
+  allFilteredItems: any[] = []; // Stores all filtered items before pagination
   currentPage: number = 0;
   inStockOnly: boolean = false;
   mobileFiltersVisible = false;
@@ -92,8 +94,10 @@ export class ItemsComponent implements OnInit, OnDestroy {
   selectedPriceRange: PriceRange = this.priceRanges[0]; // Default to 'All Prices'
 
   // Pagination
-  itemsPerPage: number = 12;
+  itemsPerPage: number = 10;
   totalItems: number = 0;
+  totalPages: number = 0;
+  itemsPerPageOptions: number[] = [10, 20, 30, 40];
 
   constructor(
     private giftItemsService: GiftItemsService,
@@ -154,6 +158,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   loadItems() {
     this.filteredItems = [...this.fetchingItems];
     this.totalItems = this.filteredItems.length;
+    this.updatePagination();
   }
 
   applyFilters(): void {
@@ -170,8 +175,9 @@ export class ItemsComponent implements OnInit, OnDestroy {
       this.selectedPriceRange === this.priceRanges[0] &&
       !this.inStockOnly
     ) {
-      this.filteredItems = [...this.fetchingItems];
-      this.totalItems = this.filteredItems.length;
+      this.allFilteredItems = [...this.fetchingItems];
+      this.totalItems = this.allFilteredItems.length;
+      this.updatePagination();
       return;
     }
 
@@ -278,9 +284,93 @@ export class ItemsComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.filteredItems = filtered;
+    // Store all filtered items before pagination
+    this.allFilteredItems = filtered;
     this.totalItems = filtered.length;
-    console.log('Filtered items:', this.filteredItems.length);
+
+    // Reset to first page when filters change
+    this.currentPage = 0;
+    
+    // Apply pagination
+    this.updatePagination();
+    
+    console.log('Filtered items:', this.allFilteredItems.length);
+  }
+
+  // Helper method for template
+  min(a: number, b: number): number {
+    return Math.min(a, b);
+  }
+
+  // New pagination methods
+  updatePagination(): void {
+    // Calculate total pages
+    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    
+    // Make sure current page is within bounds
+    if (this.currentPage >= this.totalPages) {
+      this.currentPage = Math.max(0, this.totalPages - 1);
+    }
+    
+    // Apply pagination to filtered items
+    const startIndex = this.currentPage * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalItems);
+    
+    // Update the displayed items based on pagination
+    this.filteredItems = this.allFilteredItems.slice(startIndex, endIndex);
+    
+    console.log(`Showing page ${this.currentPage + 1} of ${this.totalPages}`);
+  }
+
+  goToPage(page: number): void {
+    if (page < 0 || page >= this.totalPages) {
+      return;
+    }
+    
+    this.currentPage = page;
+    this.updatePagination();
+    
+    // Scroll to top of items when page changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
+  // Generate an array of page numbers for pagination
+  getPageNumbers(): number[] {
+    const totalPagesToShow = 5; // Maximum number of page buttons to show
+    const pages: number[] = [];
+    
+    if (this.totalPages <= totalPagesToShow) {
+      // Show all pages if total pages is less than or equal to totalPagesToShow
+      for (let i = 0; i < this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always include first and last page
+      const startPage = Math.max(0, Math.min(
+        this.currentPage - Math.floor(totalPagesToShow / 2),
+        this.totalPages - totalPagesToShow
+      ));
+      
+      for (let i = 0; i < totalPagesToShow; i++) {
+        if (startPage + i < this.totalPages) {
+          pages.push(startPage + i);
+        }
+      }
+    }
+    
+    return pages;
   }
 
   clearFilters(): void {
@@ -296,8 +386,9 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.currentPage = 0;
 
     // Reset to show all items
-    this.filteredItems = [...this.fetchingItems];
-    this.totalItems = this.filteredItems.length;
+    this.allFilteredItems = [...this.fetchingItems];
+    this.totalItems = this.allFilteredItems.length;
+    this.updatePagination();
   }
 
   onCategoryChange(): void {
@@ -396,9 +487,12 @@ export class ItemsComponent implements OnInit, OnDestroy {
       // Store all items in fetchingItems
       this.fetchingItems = items;
 
-      // Initialize filteredItems with all items
-      this.filteredItems = [...this.fetchingItems];
-      this.totalItems = this.filteredItems.length;
+      // Initialize allFilteredItems with all items
+      this.allFilteredItems = [...this.fetchingItems];
+      this.totalItems = this.allFilteredItems.length;
+      
+      // Apply pagination
+      this.updatePagination();
 
       console.log('Total items loaded:', this.fetchingItems.length);
 

@@ -18,7 +18,7 @@ export class PaymentComponent implements OnInit {
   private card: any;
   amount: number = 2000; // Example amount
   clientSecret: string = 'your-client-secret';
-  giftBoxID: any;
+  orderId: any;
 
   constructor(
     private stripeService: StripeService,
@@ -30,14 +30,14 @@ export class PaymentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.giftBoxID = localStorage.getItem('giftBoxID');
+    this.orderId = localStorage.getItem('giftBoxID');
     const priceFromStorage = localStorage.getItem('giftBoxPrice');
     if (priceFromStorage !== null) {
       this.amount = parseInt(priceFromStorage);
     } else {
       console.log('No giftBoxPrice found in localStorage.');
     }
-    console.log("ID" + this.giftBoxID);
+    console.log("ID" + this.orderId);
     console.log("PRICE" + this.amount);
 
     this.stripe = await loadStripe('pk_test_51PzFfeFoTp81ofWkg2JjvjfPhCy0lCbKkMWMJ1bUp2tRqcGuq9bo20r6vbMCMPiJMcb1qLUMG9PFPCp70M1Nx9uw007sAbMw3d');
@@ -67,7 +67,7 @@ export class PaymentComponent implements OnInit {
           console.log('Payment succeeded!');
 
           const gift = {
-            id: this.giftBoxID,
+            id: this.orderId,
             paymentStatus: "PAID"
           }
           this.giftBoxservice.updatePayment(gift).subscribe((response) => {
@@ -97,5 +97,4 @@ export class PaymentComponent implements OnInit {
   showErrorMsg() {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'An error occurred ! ' });
   }
-
 }
