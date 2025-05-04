@@ -74,7 +74,7 @@ export class ProductsComponent implements OnInit {
       id: '',
       name: product.name,
       unitPrice: product.unitPrice,
-      commonStatus: 'Active',
+      commonStatus: product.commonStatus,
       description: product.description,
       subCategoryId: product.subCategory,
       category: product.category,
