@@ -76,6 +76,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 
 
+import { ConfirmationService } from 'primeng/api';
+
+
+import { InputNumberModule } from 'primeng/inputnumber';
+
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 
 
 @NgModule({
@@ -153,7 +160,10 @@ import { PaginatorModule } from 'primeng/paginator';
     TimelineModule,
     RatingModule,
     TooltipModule,
-    PaginatorModule
+    PaginatorModule,
+    InputNumberModule,
+    ConfirmDialogModule,
+    TooltipModule,
   ],
   
   providers: [
@@ -162,6 +172,7 @@ import { PaginatorModule } from 'primeng/paginator';
     MessageService,
     provideHttpClient(withFetch()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
+    ConfirmationService
      
   ],
   bootstrap: [AppComponent]

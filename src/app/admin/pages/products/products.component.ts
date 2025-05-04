@@ -4,6 +4,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { GiftItemsService } from '../../../services/items.service';
 import { CategoryService } from '../../../services/category.service';
 import { Item } from '../../model/itemModel';
+
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -14,12 +15,12 @@ export class ProductsComponent implements OnInit {
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
   productForm: FormGroup;
-  selectedCategory: number = 0;
-  selectedSubCategory: number = 0;
+  selectedCategory: any = null;
   fetchingCategories: any[] = [];
   fetchingSubCategories: any[] = [];
   visible: boolean = false;
   isUpdate: boolean = false;
+  previewImage: string | null = null;
 
   constructor(
     private _apim: CategoryService,
@@ -54,13 +55,18 @@ export class ProductsComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
+    const file = event.files[0]; // Updated to match PrimeNG's p-fileUpload component
+    if (!file) return;
+    
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
+      const base64Image = reader.result?.toString().split(',')[1] || '';
       this.productForm.patchValue({
-        image: reader.result?.toString().split(',')[1] || '',
+        image: base64Image
       });
+      // Set preview image for UI display
+      this.previewImage = 'data:image/png;base64,' + base64Image;
     };
   }
 
@@ -84,7 +90,6 @@ export class ProductsComponent implements OnInit {
       reOrderLevel: product.reOrderLevel,
     };
 
-
     this.giftItemsService.addItem(Obj).subscribe(
       (response) => {
         console.log('Product added:', response);
@@ -99,13 +104,15 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  onCategoryeSelectionChange(event: any): void {
-    this.selectedCategory = event.target.value;
-    this.fetchSubCategoriesByCategoryId(this.selectedCategory);
-  }
-
-  onSubCategoryeSelectionChange(event: any): void {
-    this.selectedSubCategory = event.target.value;
+  onCategorySelectionChange(event: any): void {
+    const categoryId = event.value;
+    console.log('Selected Category ID:', categoryId);
+    if (categoryId) {
+      this.fetchSubCategoriesByCategoryId(categoryId);
+    } else {
+      this.fetchingSubCategories = [];
+      this.productForm.get('subCategory')?.setValue(null);
+    }
   }
 
   fetchAllItems(): void {
@@ -121,29 +128,22 @@ export class ProductsComponent implements OnInit {
 
   fetchAllCategories(): void {
     this._apim.getAllCategories().subscribe((data: any) => {
-      // Assuming data.payload contains the array of products
+      // Assuming data.payload contains the array of categories
       this.fetchingCategories = data.payload.map((category: any) => ({
         ...category,
-        // image: item.image ? 'data:image/png;base64,' + item.image : '', // Convert base64 to image URL
       }));
     });
-  }
-
-  onCategorySelectionChange(event: any): void {
-    this.selectedCategory = event.target.value;
-    console.log('Selected Category ID:', this.selectedCategory);
-    this.fetchSubCategoriesByCategoryId(this.selectedCategory);
   }
 
   fetchSubCategoriesByCategoryId(id: number): void {
     this.fetchingSubCategories = [];
     this._apim.getSubCategoriesByCategoryId(id).subscribe((data: any) => {
-      this.fetchingSubCategories = data.payload[0].map((subCategory: any) => ({
-        ...subCategory,
-      }));
-
-      console.log(this.fetchingSubCategories);
-      console.log(data);
+      if (data.payload && data.payload[0]) {
+        this.fetchingSubCategories = data.payload[0].map((subCategory: any) => ({
+          ...subCategory,
+        }));
+      }
+      console.log('Fetched subcategories:', this.fetchingSubCategories);
     });
   }
 
@@ -164,6 +164,11 @@ export class ProductsComponent implements OnInit {
     this.isUpdate = true;
     this.giftItemsService.getAllItemsbyId([pId]).subscribe((data) => {
       const item = data.payload[0][0];
+      
+      // Set selected category and load subcategories
+      this.selectedCategory = item.categoryId;
+      this.fetchSubCategoriesByCategoryId(item.categoryId);
+      
       this.productForm.patchValue({
         id: item.id,
         name: item.name,
@@ -177,6 +182,9 @@ export class ProductsComponent implements OnInit {
         discount: item.discount,
         reOrderLevel: item.reOrderLevel,
       });
+      
+      // Set preview image if available
+      this.previewImage = item.image ? 'data:image/png;base64,' + item.image : null;
     });
   }
 
@@ -205,7 +213,11 @@ export class ProductsComponent implements OnInit {
     this.giftItemsService.updateItem(Obj).subscribe(
       (response) => {
         console.log('Product updated:', response);
-        this.show();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Product updated successfully!',
+        });
         this.productForm.reset();
         this.visible = false;
         this.fetchAllItems();
@@ -216,12 +228,11 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  toggleDescription(item: any) {
-    item.showFullDescription = !item.showFullDescription;
-  }
-
-  showDialog() {
-    this.visible = true;
+  cancelDialog() {
+    this.visible = false;
+    this.isUpdate = false;
+    this.productForm.reset();
+    this.previewImage = null;
   }
 
   Refresh() {
@@ -232,7 +243,7 @@ export class ProductsComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Product added Successfully!',
+      detail: 'Product added successfully!',
     });
   }
 
@@ -240,7 +251,7 @@ export class ProductsComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'Product deletion Successfully!',
+      detail: 'Product deleted successfully!',
     });
   }
 
@@ -248,7 +259,7 @@ export class ProductsComponent implements OnInit {
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Product added Unsuccessfully!',
+      detail: 'Operation failed. Please try again.',
     });
   }
 }

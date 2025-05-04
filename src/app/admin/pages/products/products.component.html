@@ -1,281 +1,324 @@
+
 <div class="path">
   <p-breadcrumb class="max-w-full" [model]="items" [home]="home" />
 </div>
 
 <p-toast />
 
-<div class="card">
-  <div class="cap">
-    <h1>Product List</h1>
-    <div>
-      <p-iconField iconPosition="left">
-        <p-inputIcon styleClass="pi pi-search" />
-        <input type="text" pInputText placeholder="Search" />
-      </p-iconField>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <p-button icon="pi pi-refresh" (onClick)="Refresh()" />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <p-button
-        (click)="visible = true; productForm.reset()"
-        label="Add new item"
-      ></p-button>
+<div class="container mx-auto py-8 px-4" data-aos="fade-up" data-aos-duration="800">
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+      <h1 class="text-2xl font-bold text-primary">Product Management</h1>
+      <div class="flex items-center gap-3">
+        <p-iconField iconPosition="left">
+          <p-inputIcon styleClass="pi pi-search" />
+          <input type="text" pInputText placeholder="Search products..." class="p-inputtext-sm" />
+        </p-iconField>
+        <p-button 
+          icon="pi pi-refresh" 
+          (onClick)="Refresh()" 
+          styleClass="p-button-rounded p-button-outlined"
+          pTooltip="Refresh products" 
+          tooltipPosition="top"
+        ></p-button>
+        <p-button
+          (click)="visible = true; productForm.reset()"
+          label="Add Product"
+          icon="pi pi-plus"
+          styleClass="p-button-primary"
+          pTooltip="Add new product" 
+          tooltipPosition="top"
+        ></p-button>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="overflow-x-auto" data-aos="fade-up" data-aos-delay="200">
+      <p-table 
+        [value]="fetchingItems" 
+        [paginator]="true" 
+        [rows]="5" 
+        [rowsPerPageOptions]="[5,10,25]"
+        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+        [tableStyle]="{'min-width': '960px'}"
+        responsiveLayout="scroll"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th>Image</th>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+            <th pSortableColumn="unitPrice">Price <p-sortIcon field="unitPrice"></p-sortIcon></th>
+            <th pSortableColumn="discount">Discount <p-sortIcon field="discount"></p-sortIcon></th>
+            <th pSortableColumn="itemCount">Quantity <p-sortIcon field="itemCount"></p-sortIcon></th>
+            <th pSortableColumn="salesCount">Sold Count <p-sortIcon field="salesCount"></p-sortIcon></th>
+            <th pSortableColumn="reOrderLevel">Re-Order Level <p-sortIcon field="reOrderLevel"></p-sortIcon></th>
+            <th pSortableColumn="subCategoryName">Sub Category <p-sortIcon field="subCategoryName"></p-sortIcon></th>
+            <th pSortableColumn="catagoryName">Category <p-sortIcon field="catagoryName"></p-sortIcon></th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>
+              <img 
+                [src]="item.image" 
+                [alt]="item.name" 
+                width="80" 
+                class="shadow-sm rounded-md object-cover"
+              />
+            </td>
+            <td>{{ item.name }}</td>
+            <td>
+              <div 
+                pTooltip="{{ item.description }}" 
+                tooltipPosition="top"
+                class="line-clamp-2 overflow-hidden"
+                style="max-width: 200px;">
+                {{ item.description | slice:0:30 }}{{ item.description.length > 30 ? '...' : '' }}
+              </div>
+            </td>
+            <td>{{ item.unitPrice | currency : "LKR" : "code" }}</td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ item.discount > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                {{ (item.discount || 0.0) + "%" }}
+              </span>
+            </td>
+            <td>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ item.itemCount <= item.reOrderLevel ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' }}">
+                {{ item.itemCount || 0 }}
+              </span>
+            </td>
+            <td>{{ item.salesCount || 0 }}</td>
+            <td>{{ item.reOrderLevel || 0 }}</td>
+            <td>{{ item.subCategoryName }}</td>
+            <td>{{ item.catagoryName }}</td>
+            <td>
+              <div class="flex gap-2">
+                <p-button
+                  icon="pi pi-file-edit"
+                  styleClass="p-button-rounded p-button-success p-button-sm"
+                  (onClick)="fetchProduct(item.id)"
+                  pTooltip="Edit product"
+                  tooltipPosition="top"
+                ></p-button>
+                <p-button
+                  icon="pi pi-trash"
+                  styleClass="p-button-rounded p-button-danger p-button-sm"
+                  (onClick)="deleteProduct(item.id)"
+                  pTooltip="Delete product"
+                  tooltipPosition="top"
+                ></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="12" class="text-center py-6">
+              <div class="flex flex-col items-center">
+                <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
+                <span class="text-gray-500">No products found</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
-  <p-dialog
-    [header]="isUpdate ? 'Update Product' : 'Add New Product'"
-    [modal]="true"
-    [(visible)]="visible"
-    [(visible)]="isUpdate"
-    [style]="{ width: '25rem' }"
-  >
-    <span class="dialog-description">
-      {{ isUpdate ? "Update the product details" : "Add the product details" }}
-    </span>
-
-    <form [formGroup]="productForm">
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select
-          id="category"
-          formControlName="category"
-          [(ngModel)]="selectedCategory"
-          (change)="onCategorySelectionChange($event)"
-          required
-        >
-          <option value="" disabled selected>Select a category</option>
-          <option
-            *ngFor="let category of fetchingCategories"
-            [value]="category.id"
-          >
-            {{ category.name }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            productForm.get('category')?.invalid &&
-            productForm.get('category')?.touched
-          "
-        >
-          Category is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="category">SubCategory</label>
-        <select id="subCategory" formControlName="subCategory" required>
-          <option value="" disabled selected>Select a subCategory</option>
-          <option
-            *ngFor="let subCategory of fetchingSubCategories"
-            [value]="subCategory.id"
-          >
-            {{ subCategory.name }}
-          </option>
-        </select>
-        <div
-          *ngIf="
-            productForm.get('subCategory')?.invalid &&
-            productForm.get('subCategory')?.touched
-          "
-        >
-          Category is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" formControlName="name" required />
-        <div
-          *ngIf="
-            productForm.get('name')?.invalid && productForm.get('name')?.touched
-          "
-        >
-          Name is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="unitPrice">Unit Price</label>
-        <input
-          type="decimal"
-          id="unitPrice"
-          formControlName="unitPrice"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('unitPrice')?.invalid &&
-            productForm.get('unitPrice')?.touched
-          "
-        >
-          Price is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <input
-          type="number"
-          id="quantity"
-          formControlName="itemCount"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('quantity')?.invalid &&
-            productForm.get('quantity')?.touched
-          "
-        >
-          quantity is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="discount">Discount</label>
-        <input
-          type="number"
-          id="discount"
-          formControlName="discount"
-          placeholder="e.g. 5%"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('discount')?.invalid &&
-            productForm.get('discount')?.touched
-          "
-        >
-          discount is required.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="reOrderLevel">Re Order Level</label>
-        <input
-          type="number"
-          id="reOrderLevel"
-          formControlName="reOrderLevel"
-          placeholder="e.g. 10"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('reOrderLevel')?.invalid &&
-            productForm.get('reOrderLevel')?.touched
-          "
-        >
-          re order level is required.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input
-          type="text"
-          id="description"
-          formControlName="description"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('description')?.invalid &&
-            productForm.get('description')?.touched
-          "
-        >
-          Description is required.
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="image">Image</label>
-        <input
-          type="file"
-          id="image"
-          (change)="onFileSelected($event)"
-          required
-        />
-        <div
-          *ngIf="
-            productForm.get('image')?.invalid &&
-            productForm.get('image')?.touched
-          "
-        >
-          Image is required.
-        </div>
-      </div>
-
-      <div class="button-group">
-        <p-button
-          label="Cancel"
-          severity="secondary"
-          (click)="visible = false; isUpdate = false"
-        ></p-button>
-        <p-button
-          *ngIf="isUpdate"
-          label="Update"
-          (click)="updateProduct()"
-          [disabled]="productForm.invalid"
-        ></p-button>
-        <p-button
-          *ngIf="!isUpdate"
-          label="Save"
-          (click)="addProduct()"
-          [disabled]="productForm.invalid"
-        ></p-button>
-      </div>
-    </form>
-  </p-dialog>
-
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Description</th>
-
-        <th>Price</th>
-        <th>Discount</th>
-        <th>Quantity</th>
-        <th>Sold Count</th>
-        <th>Re Order Level</th>
-        <th>Sub Category</th>
-        <th>Category</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of fetchingItems">
-        <td>{{ item.id }}</td>
-        <td>
-          <img
-            [src]="item.image"
-            [alt]="item.image"
-            width="100"
-            class="shadow-4"
-          />
-        </td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
-
-        <td>&nbsp;{{ item.unitPrice | currency : "LKR" : "code" }}</td>
-        <td>{{ (item.discount || 0.0) + "%" }}</td>
-        <td>{{ item.itemCount || 0 }}</td>
-        <td>{{ item.salesCount || 0 }}</td>
-        <td>{{ item.reOrderLevel || 0 }}</td>
-        <td>{{ item.subCategoryName }}</td>
-        <td>{{ item.catagoryName }}</td>
-        <td>
-          <p-button
-            icon="pi pi-file-edit"
-            [text]="true"
-            [raised]="true"
-            (onClick)="fetchProduct(item.id)"
-          />
-          <p-button
-            icon="pi pi-trash"
-            [text]="true"
-            [raised]="true"
-            severity="danger"
-            (onClick)="deleteProduct(item.id)"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
 </div>
 
-<!-- <p>{{ fetchingItems | json }}</p> -->
+<!-- Add/Edit Product Dialog -->
+<p-dialog
+  [header]="isUpdate ? 'Update Product' : 'Add New Product'"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{width: '500px'}"
+  [breakpoints]="{'960px': '90vw'}"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="p-fluid"
+>
+  <p class="text-gray-600 mb-4">
+    {{ isUpdate ? "Update the product details" : "Add the product details" }}
+  </p>
+
+  <form [formGroup]="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Category -->
+    <div class="field">
+      <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+      <p-dropdown
+        id="category"
+        [options]="fetchingCategories"
+        optionLabel="name"
+        optionValue="id"
+        formControlName="category"
+        [(ngModel)]="selectedCategory"
+        placeholder="Select a category"
+        (onChange)="onCategorySelectionChange($event)"
+        [showClear]="true"
+        styleClass="w-full"
+      ></p-dropdown>
+      <small *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" class="text-red-500">
+        Category is required
+      </small>
+    </div>
+
+    <!-- SubCategory -->
+    <div class="field">
+      <label for="subCategory" class="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
+      <p-dropdown
+        id="subCategory"
+        [options]="fetchingSubCategories"
+        optionLabel="name"
+        optionValue="id"
+        formControlName="subCategory"
+        placeholder="Select a sub category"
+        [showClear]="true"
+        styleClass="w-full"
+      ></p-dropdown>
+      <small *ngIf="productForm.get('subCategory')?.invalid && productForm.get('subCategory')?.touched" class="text-red-500">
+        Sub Category is required
+      </small>
+    </div>
+
+    <!-- Name -->
+    <div class="field md:col-span-2">
+      <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+      <input
+        pInputText
+        id="name"
+        type="text"
+        formControlName="name"
+        class="w-full"
+      />
+      <small *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="text-red-500">
+        Name is required
+      </small>
+    </div>
+
+    <!-- Unit Price -->
+    <div class="field">
+      <label for="unitPrice" class="block text-sm font-medium text-gray-700 mb-1">Unit Price</label>
+      <p-inputNumber
+        id="unitPrice"
+        formControlName="unitPrice"
+        mode="currency"
+        currency="LKR"
+        locale="en-US"
+      ></p-inputNumber>
+      <small *ngIf="productForm.get('unitPrice')?.invalid && productForm.get('unitPrice')?.touched" class="text-red-500">
+        Price is required
+      </small>
+    </div>
+
+    <!-- Quantity -->
+    <div class="field">
+      <label for="itemCount" class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+      <p-inputNumber
+        id="itemCount"
+        formControlName="itemCount"
+        [showButtons]="true"
+        [min]="0"
+      ></p-inputNumber>
+      <small *ngIf="productForm.get('itemCount')?.invalid && productForm.get('itemCount')?.touched" class="text-red-500">
+        Quantity is required
+      </small>
+    </div>
+
+    <!-- Discount -->
+    <div class="field">
+      <label for="discount" class="block text-sm font-medium text-gray-700 mb-1">Discount (%)</label>
+      <p-inputNumber
+        id="discount"
+        formControlName="discount"
+        [showButtons]="true"
+        [min]="0"
+        [max]="100"
+        suffix="%"
+      ></p-inputNumber>
+      <small *ngIf="productForm.get('discount')?.invalid && productForm.get('discount')?.touched" class="text-red-500">
+        Discount is required
+      </small>
+    </div>
+
+    <!-- Re-Order Level -->
+    <div class="field">
+      <label for="reOrderLevel" class="block text-sm font-medium text-gray-700 mb-1">Re-Order Level</label>
+      <p-inputNumber
+        id="reOrderLevel"
+        formControlName="reOrderLevel"
+        [showButtons]="true"
+        [min]="0"
+      ></p-inputNumber>
+      <small *ngIf="productForm.get('reOrderLevel')?.invalid && productForm.get('reOrderLevel')?.touched" class="text-red-500">
+        Re-order level is required
+      </small>
+    </div>
+
+    <!-- Description -->
+    <div class="field md:col-span-2">
+      <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+      <textarea
+        pInputTextarea
+        id="description"
+        formControlName="description"
+        rows="3"
+        class="w-full"
+      ></textarea>
+      <small *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" class="text-red-500">
+        Description is required
+      </small>
+    </div>
+
+    <!-- Image -->
+    <div class="field md:col-span-2">
+      <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+      <div class="flex items-center space-x-4">
+        <p-fileUpload
+          [customUpload]="true"
+          (uploadHandler)="onFileSelected($event)"
+          accept="image/*"
+          [auto]="true"
+          chooseLabel="Select Image"
+          [multiple]="false"
+          [showCancelButton]="false"
+          [showUploadButton]="false"
+          styleClass="p-button-sm"
+        ></p-fileUpload>
+        <img *ngIf="previewImage" [src]="previewImage" alt="Preview" class="h-16 w-16 object-cover rounded-md shadow" />
+      </div>
+      <small *ngIf="productForm.get('image')?.invalid && productForm.get('image')?.touched" class="text-red-500">
+        Image is required
+      </small>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        (click)="cancelDialog()"
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button
+        *ngIf="isUpdate"
+        label="Update"
+        icon="pi pi-check"
+        (click)="updateProduct()"
+        [disabled]="productForm.invalid"
+      ></p-button>
+      <p-button
+        *ngIf="!isUpdate"
+        label="Save"
+        icon="pi pi-check"
+        (click)="addProduct()"
+        [disabled]="productForm.invalid"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
