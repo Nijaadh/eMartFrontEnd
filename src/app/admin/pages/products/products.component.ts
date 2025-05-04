@@ -74,7 +74,7 @@ export class ProductsComponent implements OnInit {
       id: '',
       name: product.name,
       unitPrice: product.unitPrice,
-      commonStatus: product.commonStatus,
+      commonStatus: 'Active',
       description: product.description,
       subCategoryId: product.subCategory,
       category: product.category,
@@ -84,7 +84,7 @@ export class ProductsComponent implements OnInit {
       reOrderLevel: product.reOrderLevel,
     };
 
-
+    console.log(Obj);
     this.giftItemsService.addItem(Obj).subscribe(
       (response) => {
         console.log('Product added:', response);

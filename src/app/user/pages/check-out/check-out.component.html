@@ -139,14 +139,6 @@
             <i *ngIf="isLoading" class="pi pi-spin pi-spinner mr-2"></i>
             <span *ngIf="!isLoading">Place order</span>
           </button>
-          
-          <button 
-            (click)="saveGift()" 
-            [class.disabled]="isLoading || giftBoxitems.length === 0"
-            class="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition-colors flex items-center justify-center">
-            <i *ngIf="isLoading" class="pi pi-spin pi-spinner mr-2"></i>
-            <span *ngIf="!isLoading">Save order</span>
-          </button>
         </div>
       </div>
     </div>
