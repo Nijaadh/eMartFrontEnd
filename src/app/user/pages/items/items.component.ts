@@ -1,16 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService, TreeNode } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 import { GiftItemsService } from '../../../services/items.service';
 import { SharedDataService } from '../../../services/shared-data.service';
 import { Router } from '@angular/router';
 import { CartItem } from '../../model/cart.item';
 import { ShoppingCartService } from '../../services/shopping.cart/shopping-cart.service';
-
-interface Country {
-  name: string;
-  code: string;
-}
+import { PublicCategoryService } from '../../services/item.category/public-category.service';
+import { TreeNode } from 'primeng/api';
 
 interface SortOption {
   name: string;
@@ -22,16 +19,23 @@ interface PriceRange {
   value: { min: number; max: number };
 }
 
+// Category interface updated to support tree structure
+interface Category {
+  id: string;
+  label: string;
+  value: string;
+  parent?: boolean;
+  parentId?: string;
+  styleClass?: string;
+  items?: Category[]; // For subcategories
+}
+
 @Component({
   selector: 'app-items',
   templateUrl: './items.component.html',
   styleUrl: './items.component.scss',
 })
 export class ItemsComponent implements OnInit, OnDestroy {
-  giftBox!: Country[];
-  selectedGifts!: Country[];
-
-  fetchingItems: any[] = [];
   visible: boolean = false;
 
   // Cart related
@@ -45,14 +49,23 @@ export class ItemsComponent implements OnInit, OnDestroy {
   isModalVisible = false;
   private searchSubject = new Subject<string>();
   allItems: any[] = [];
+  fetchingItems: any[] = [];
   filteredItems: any[] = [];
   currentPage: number = 0;
   inStockOnly: boolean = false;
   mobileFiltersVisible = false;
   screenIsSmall = false;
-
-  //--search-modal---
-  category: any[] = [];
+  searchVisible: boolean = false;
+  filtersVisible: boolean = false;
+  // Search modal
+  rawCategories: any[] = [];
+  categories: Category[] = [];
+  categoryTree: Category[] = []; // Hierarchy for flat dropdown
+  
+  // TreeSelect specific properties
+  categoryTreeNodes: TreeNode[] = [];
+  selectedCategory: TreeNode | null = null;
+  selectedCategoryData: any = { id: '0', label: 'All Categories', value: 'all' };
 
   // Filter options
   sortOptions: SortOption[] = [
@@ -71,21 +84,20 @@ export class ItemsComponent implements OnInit, OnDestroy {
     { name: '5000+ LKR', value: { min: 5000, max: Number.MAX_SAFE_INTEGER } },
   ];
 
-  selectedSortOption: SortOption = this.sortOptions[0]; // Default to 'Newest First'
+  selectedSortOption: SortOption = this.sortOptions[0]; // Default to 'Default'
   selectedPriceRange: PriceRange = this.priceRanges[0]; // Default to 'All Prices'
-  selectedCategory: TreeNode | null = null;
 
   // Pagination
   itemsPerPage: number = 12;
   totalItems: number = 0;
-  categories: any[] = [];
 
   constructor(
     private giftItemsService: GiftItemsService,
     private messageService: MessageService,
     private sharedDataService: SharedDataService,
     private router: Router,
-    private cartService: ShoppingCartService
+    private cartService: ShoppingCartService,
+    private publicService: PublicCategoryService
   ) {
     this.searchSubject.pipe(debounceTime(300)).subscribe((searchText) => {
       this.fetchSearchResults(searchText);
@@ -94,7 +106,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchAllItems();
-    this.setupCategoryTree();
+    this.fetchCategories();
 
     this.checkScreenSize();
     window.addEventListener('resize', () => {
@@ -135,25 +147,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.mobileFiltersVisible = !this.mobileFiltersVisible;
   }
 
-  setupCategoryTree() {
-    // Same as original code
-    this.categories = [
-      {
-        label: 'Electronic Devices',
-        key: 'electronic-devices',
-        selectable: false,
-        children: [
-          { label: 'Cameras', key: 'cameras' },
-          { label: 'Refurbished Devices', key: 'refurbished-devices' },
-          { label: 'Mobiles', key: 'mobiles' },
-          { label: 'Tablets', key: 'tablets' },
-          { label: 'Desktops', key: 'desktops' },
-          { label: 'Laptops', key: 'laptops' },
-        ],
-      },
-    ];
-  }
-
   loadItems() {
     this.filteredItems = [...this.fetchingItems];
     this.totalItems = this.filteredItems.length;
@@ -190,23 +183,42 @@ export class ItemsComponent implements OnInit, OnDestroy {
       );
     }
 
-    // Apply category filter
+    // Apply category filter - updated to use tree selected node
     if (this.selectedCategory) {
-      const selectedKey = this.selectedCategory.key;
-      const isParentCategory =
-        this.selectedCategory.children &&
-        this.selectedCategory.children.length > 0;
-
-      filtered = filtered.filter((item) => {
-        // If it's a parent category, match by categoryName
-        if (isParentCategory) {
-          return item.categoryName === selectedKey;
-        }
-        // If it's a child category, match by subCategoryName
-        else {
-          return item.subCategoryName === selectedKey;
-        }
-      });
+      const categoryData = this.selectedCategory.data;
+      console.log('Selected Category Node:', this.selectedCategory);
+      console.log('Category Data:', categoryData);
+      
+      // Logic for filtering based on selected node type (main category or subcategory)
+      if (categoryData.id === '0') { // "All Categories" option
+        // No filtering needed
+      } else if (categoryData.parent) {
+        // Selected a main category - include all its subcategories
+        filtered = filtered.filter((item) => {
+          // Direct match on the main category
+          if (item.categoryId?.toString() === categoryData.id) {
+            return true;
+          }
+          
+          // Check if the item belongs to any subcategory of this main category
+          const parentCategory = this.rawCategories.find(
+            (cat) => cat.id.toString() === categoryData.id
+          );
+          
+          if (parentCategory && parentCategory.subCategories) {
+            return parentCategory.subCategories.some(
+              (subCat: any) => subCat.id.toString() === item.subCategoryId?.toString()
+            );
+          }
+          
+          return false;
+        });
+      } else {
+        // Selected a subcategory - only show items from this specific subcategory
+        filtered = filtered.filter((item) => {
+          return item.subCategoryId?.toString() === categoryData.id;
+        });
+      }
     }
 
     // Apply price range filter
@@ -223,6 +235,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         );
       });
     }
+    
     // Apply in-stock filter
     if (this.inStockOnly) {
       filtered = filtered.filter(
@@ -272,7 +285,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.selectedSortOption = defaultOption || this.sortOptions[0];
     this.selectedPriceRange = this.priceRanges[0];
     this.inStockOnly = false;
-    this.selectedCategory = null;
+    this.selectedCategory = null; // Reset tree selection
     this.searchTerm = '';
     this.currentPage = 0;
 
@@ -281,12 +294,24 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.totalItems = this.filteredItems.length;
   }
 
+  onCategoryChange(): void {
+    console.log('Selected Category Node:', this.selectedCategory);
+    
+    if (this.selectedCategory) {
+      this.selectedCategoryData = this.selectedCategory.data;
+    } else {
+      this.selectedCategoryData = { id: '0', label: 'All Categories', value: 'all' };
+    }
+    
+    this.applyFilters(); // Reapply filters based on the new category selection
+  }
+
   onFilterChange(): void {
     console.log('Filters changed:', {
       selectedSort: this.selectedSortOption,
       selectedPrice: this.selectedPriceRange,
       inStockOnly: this.inStockOnly,
-      category: this.selectedCategory ? this.selectedCategory.key : 'none',
+      category: this.selectedCategory ? this.selectedCategory.data.id : 'none',
     });
     this.applyFilters();
   }
@@ -313,7 +338,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   removeFromCart(itemId: number) {
     this.cartService.removeFromCart(itemId);
     this.messageService.add({
-      severity: 'info',
+      severity: 'success',
       summary: 'Removed',
       detail: 'Item removed from cart',
     });
@@ -374,10 +399,80 @@ export class ItemsComponent implements OnInit, OnDestroy {
     });
   }
 
+  fetchCategories() {
+    this.publicService.getAllCategories().subscribe((data) => {
+      if (!data || !data.payload || !Array.isArray(data.payload[0])) {
+        console.error('Invalid data format:', data);
+        return;
+      }
+
+      this.rawCategories = data.payload[0];
+      console.log('Categories from API:', this.rawCategories);
+
+      // Create TreeNodes for PrimeNG TreeSelect
+      this.buildCategoryTreeNodes();
+    });
+  }
+
+  buildCategoryTreeNodes() {
+    // Start with "All Categories" root node
+    this.categoryTreeNodes = [
+      {
+        key: '0',
+        label: 'All Categories',
+        data: { id: '0', label: 'All Categories', value: 'all' },
+        icon: 'pi pi-tags',
+        expanded: true,
+        children: []
+      }
+    ];
+    
+    // Add parent categories with their subcategories
+    this.rawCategories.forEach((parentCategory: any) => {
+      const parentNode: TreeNode = {
+        key: `p-${parentCategory.id}`,
+        label: parentCategory.name,
+        data: {
+          id: parentCategory.id.toString(),
+          label: parentCategory.name,
+          value: parentCategory.name.toLowerCase().replace(/\s+/g, '-'),
+          parent: true
+        },
+        icon: 'pi pi-folder',
+        expanded: false,
+        children: []
+      };
+      
+      // Add subcategories as children nodes
+      if (parentCategory.subCategories && parentCategory.subCategories.length > 0) {
+        parentCategory.subCategories.forEach((subCategory: any) => {
+          const childNode: TreeNode = {
+            key: `s-${subCategory.id}`,
+            label: subCategory.name,
+            data: {
+              id: subCategory.id.toString(),
+              label: subCategory.name,
+              value: subCategory.name.toLowerCase().replace(/\s+/g, '-'),
+              parentId: parentCategory.id.toString()
+            },
+            icon: 'pi pi-folder-open',
+            leaf: true // No more children for subcategories
+          };
+          parentNode.children?.push(childNode);
+        });
+      }
+      
+      // Add parent node with its children to the root
+      this.categoryTreeNodes[0].children?.push(parentNode);
+    });
+    
+    console.log('Tree Nodes created:', this.categoryTreeNodes);
+  }
+
   hasActiveFilters(): boolean {
     return !!(
       this.searchTerm.trim() !== '' ||
-      this.selectedCategory !== null ||
+      this.selectedCategory || // TreeSelect node is selected
       (this.selectedSortOption &&
         this.selectedSortOption.value !== 'default') ||
       (this.selectedPriceRange &&
@@ -452,4 +547,5 @@ export class ItemsComponent implements OnInit, OnDestroy {
       detail: 'Your cart is empty!',
     });
   }
+  
 }

@@ -69,6 +69,7 @@ import { ItemProfileComponent } from './user/pages/item-profile/item-profile.com
 import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
 import { CardModule } from 'primeng/card';
 import { TimelineModule } from 'primeng/timeline';
+import { TooltipModule } from 'primeng/tooltip';
  
 @NgModule({
   declarations: [
@@ -134,7 +135,8 @@ import { TimelineModule } from 'primeng/timeline';
     TreeModule,
     TreeSelectModule,
     CardModule,
-    TimelineModule
+    TimelineModule,
+    TooltipModule
     
   ],
   providers: [

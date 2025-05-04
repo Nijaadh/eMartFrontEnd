@@ -72,11 +72,9 @@
   </div>
 </div>
 
-<header
-  class="sticky z-50 w-full bg-white shadow-md border-b border-blue-100"
->
+<header class="sticky z-50 w-full bg-white shadow-md border-b border-blue-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex flex-col lg:flex-row gap-4 py-3">
+    <div class="flex flex-col lg:flex-row items-center gap-4 py-5">
       <!-- Search Box -->
       <div class="w-full">
         <p-iconField iconPosition="right" class="w-full">
@@ -88,7 +86,7 @@
             (input)="onSearch($event)"
             [(ngModel)]="searchTerm"
             name="searchTerm"
-            class="w-full p-3 rounded-md border-2 border-blue-100 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
+            class="w-full p-3 h-12 rounded-md border-2 border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
           />
         </p-iconField>
       </div>
@@ -100,7 +98,7 @@
           pButton
           icon="pi pi-filter"
           (click)="toggleMobileFilters()"
-          class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-3 rounded-md transform hover:scale-105 duration-300"
+          class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-3 h-12 w-12 rounded-md transform hover:scale-105 duration-300 flex items-center justify-center"
           pTooltip="Filters"
         ></button>
 
@@ -111,7 +109,7 @@
           badge="{{ cartCount }}"
           outlined="true"
           badgeClass="p-badge-contrast"
-          class="text-blue-700 border-blue-300 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300"
+          class="text-blue-700 border-blue-200 border-2 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 h-12"
         ></p-button>
       </div>
 
@@ -123,46 +121,138 @@
           block: mobileFiltersVisible || !screenIsSmall
         }"
       >
-        <div class="flex flex-wrap md:flex-nowrap items-center gap-3">
+        <div class="flex flex-wrap md:flex-nowrap items-center gap-4 h-12"><!-- Increased gap from 3 to 4 -->
           <p-treeSelect
-            [options]="categories"
             [(ngModel)]="selectedCategory"
+            [options]="categoryTreeNodes"
             placeholder="Select Category"
-            class="min-w-[150px] flex-grow md:max-w-[180px]"
-          ></p-treeSelect>
+            selectionMode="single"
+            [filter]="true"
+            (onNodeSelect)="onCategoryChange()"
+            appendTo="body"
+            styleClass="w-full min-w-[200px] flex-grow md:max-w-[280px] h-12"
+            [showClear]="true"
+            display="chip"
+          >
+            <ng-template pTemplate="value" let-node>
+              <div class="flex align-items-center">
+                <span class="text-blue-700 font-medium">{{ node?.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <div
+                class="p-2 text-blue-800 font-medium border-b border-blue-200"
+              >
+                Browse Categories
+              </div>
+            </ng-template>
+          </p-treeSelect>
 
+          <!-- Sort Options -->
           <p-dropdown
             [options]="sortOptions"
             optionLabel="name"
             placeholder="Sort By"
             [(ngModel)]="selectedSortOption"
             (onChange)="onSortChange()"
-            class="min-w-[120px] flex-grow md:max-w-[160px]"
-          />
+            [styleClass]="'sort-dropdown h-12'"
+            appendTo="body"
+            class="min-w-[120px] flex-grow md:max-w-[180px]"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2">
+                <i
+                  *ngIf="selectedSortOption.value === 'priceLow'"
+                  class="pi pi-sort-amount-up-alt text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'priceHigh'"
+                  class="pi pi-sort-amount-down text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'alpha'"
+                  class="pi pi-sort-alpha-up text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'newest'"
+                  class="pi pi-calendar text-blue-600"
+                ></i>
+                <span>{{ selectedSortOption.name }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-option pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <i
+                  *ngIf="option.value === 'priceLow'"
+                  class="pi pi-sort-amount-up-alt text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'priceHigh'"
+                  class="pi pi-sort-amount-down text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'alpha'"
+                  class="pi pi-sort-alpha-up text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'newest'"
+                  class="pi pi-calendar text-blue-600"
+                ></i>
+                <span>{{ option.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
 
+          <!-- Price Range -->
           <p-dropdown
             [options]="priceRanges"
             optionLabel="name"
             placeholder="Price Range"
             [(ngModel)]="selectedPriceRange"
             (onChange)="onFilterChange()"
-            class="min-w-[120px] flex-grow md:max-w-[160px]"
-          />
-
-          <div class="flex items-center gap-2">
-            <p-checkbox
-              [(ngModel)]="inStockOnly"
-              label="In Stock"
-              (onChange)="onFilterChange()"
-              class="flex items-center"
-            />
+            [styleClass]="'price-dropdown h-12'"
+            appendTo="body"
+            class="min-w-[120px] flex-grow md:max-w-[180px]"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2">
+                <i class="pi pi-tag text-blue-600"></i>
+                <span>{{ selectedPriceRange.name }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-range pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <i class="pi pi-tag text-blue-600"></i>
+                <span>{{ range.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="flex items-center gap-6"><!-- Increased gap from 3 to 6 -->
+            <div
+              class="flex items-center gap-2 bg-blue-50 rounded-md px-3 py-2 h-12 border border-blue-200"
+            >
+              <p-checkbox
+                [(ngModel)]="inStockOnly"
+                [binary]="true"
+                (onChange)="onFilterChange()"
+                styleClass="p-checkbox-sm"
+              ></p-checkbox>
+              <label
+                class="text-blue-800 font-medium text-sm cursor-pointer"
+                (click)="inStockOnly = !inStockOnly; onFilterChange()"
+              >
+                In Stock
+              </label>
+            </div>
             <button
               pButton
-              icon="pi pi-times"
+              icon="pi pi-filter-slash"
               (click)="clearFilters()"
-              class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-2 rounded-md transform hover:scale-105 duration-300"
+              class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-2 h-12 rounded-md transform hover:scale-105 duration-300 flex items-center"
               [disabled]="!hasActiveFilters()"
               pTooltip="Clear All Filters"
+              label="Clear Filters"
             ></button>
           </div>
         </div>
@@ -177,13 +267,12 @@
           badge="{{ cartCount }}"
           outlined="true"
           badgeClass="p-badge-contrast"
-          class="text-blue-700 border-blue-300 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300"
-        />
+          class="text-blue-700 border-blue-200 border-2 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 h-12"
+        ></p-button>
       </div>
     </div>
   </div>
 </header>
-
 <div>
   <div class="flex items-center ml-auto">
     <p-dialog
@@ -296,8 +385,7 @@
       Clear Filters
     </button>
   </div>
-<!-- <div class="top-1"> -->
-
+  <!-- <div class="top-1"> -->
 
   <div
     class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 flex flex-col h-full cursor-pointer group animate-fade-in"
@@ -368,7 +456,6 @@
     </button>
   </div>
 </div>
-
 
 <style>
   @keyframes fade-in {
