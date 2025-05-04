@@ -121,7 +121,9 @@
           block: mobileFiltersVisible || !screenIsSmall
         }"
       >
-        <div class="flex flex-wrap md:flex-nowrap items-center gap-4 h-12"><!-- Increased gap from 3 to 4 -->
+        <div
+          class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4"
+        >
           <p-treeSelect
             [(ngModel)]="selectedCategory"
             [options]="categoryTreeNodes"
@@ -134,11 +136,12 @@
             [showClear]="true"
             display="chip"
           >
-            <ng-template pTemplate="value" let-node>
-              <div class="flex align-items-center">
-                <span class="text-blue-700 font-medium">{{ node?.label }}</span>
+            <ng-template pTemplate="value" let-node let-value="value">
+              <div class="flex items-center text-blue-700 font-medium">
+                {{ node?.label || "Select category" }}
               </div>
             </ng-template>
+
             <ng-template pTemplate="header">
               <div
                 class="p-2 text-blue-800 font-medium border-b border-blue-200"
@@ -227,8 +230,9 @@
               </div>
             </ng-template>
           </p-dropdown>
-&nbsp;&nbsp;&nbsp;&nbsp;
-          <div class="flex items-center gap-6"><!-- Increased gap from 3 to 6 -->
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="flex items-center gap-6">
+            <!-- Increased gap from 3 to 6 -->
             <div
               class="flex items-center gap-2 bg-blue-50 rounded-md px-3 py-2 h-12 border border-blue-200"
             >

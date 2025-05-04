@@ -61,11 +61,15 @@ export class ItemsComponent implements OnInit, OnDestroy {
   rawCategories: any[] = [];
   categories: Category[] = [];
   categoryTree: Category[] = []; // Hierarchy for flat dropdown
-  
+
   // TreeSelect specific properties
   categoryTreeNodes: TreeNode[] = [];
   selectedCategory: TreeNode | null = null;
-  selectedCategoryData: any = { id: '0', label: 'All Categories', value: 'all' };
+  selectedCategoryData: any = {
+    id: '0',
+    label: 'All Categories',
+    value: 'all',
+  };
 
   // Filter options
   sortOptions: SortOption[] = [
@@ -188,9 +192,10 @@ export class ItemsComponent implements OnInit, OnDestroy {
       const categoryData = this.selectedCategory.data;
       console.log('Selected Category Node:', this.selectedCategory);
       console.log('Category Data:', categoryData);
-      
+
       // Logic for filtering based on selected node type (main category or subcategory)
-      if (categoryData.id === '0') { // "All Categories" option
+      if (categoryData.id === '0') {
+        // "All Categories" option
         // No filtering needed
       } else if (categoryData.parent) {
         // Selected a main category - include all its subcategories
@@ -199,18 +204,19 @@ export class ItemsComponent implements OnInit, OnDestroy {
           if (item.categoryId?.toString() === categoryData.id) {
             return true;
           }
-          
+
           // Check if the item belongs to any subcategory of this main category
           const parentCategory = this.rawCategories.find(
             (cat) => cat.id.toString() === categoryData.id
           );
-          
+
           if (parentCategory && parentCategory.subCategories) {
             return parentCategory.subCategories.some(
-              (subCat: any) => subCat.id.toString() === item.subCategoryId?.toString()
+              (subCat: any) =>
+                subCat.id.toString() === item.subCategoryId?.toString()
             );
           }
-          
+
           return false;
         });
       } else {
@@ -235,7 +241,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         );
       });
     }
-    
+
     // Apply in-stock filter
     if (this.inStockOnly) {
       filtered = filtered.filter(
@@ -296,13 +302,17 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
   onCategoryChange(): void {
     console.log('Selected Category Node:', this.selectedCategory);
-    
+
     if (this.selectedCategory) {
       this.selectedCategoryData = this.selectedCategory.data;
     } else {
-      this.selectedCategoryData = { id: '0', label: 'All Categories', value: 'all' };
+      this.selectedCategoryData = {
+        id: '0',
+        label: 'All Categories',
+        value: 'all',
+      };
     }
-    
+
     this.applyFilters(); // Reapply filters based on the new category selection
   }
 
@@ -423,10 +433,10 @@ export class ItemsComponent implements OnInit, OnDestroy {
         data: { id: '0', label: 'All Categories', value: 'all' },
         icon: 'pi pi-tags',
         expanded: true,
-        children: []
-      }
+        children: [],
+      },
     ];
-    
+
     // Add parent categories with their subcategories
     this.rawCategories.forEach((parentCategory: any) => {
       const parentNode: TreeNode = {
@@ -436,15 +446,18 @@ export class ItemsComponent implements OnInit, OnDestroy {
           id: parentCategory.id.toString(),
           label: parentCategory.name,
           value: parentCategory.name.toLowerCase().replace(/\s+/g, '-'),
-          parent: true
+          parent: true,
         },
         icon: 'pi pi-folder',
         expanded: false,
-        children: []
+        children: [],
       };
-      
+
       // Add subcategories as children nodes
-      if (parentCategory.subCategories && parentCategory.subCategories.length > 0) {
+      if (
+        parentCategory.subCategories &&
+        parentCategory.subCategories.length > 0
+      ) {
         parentCategory.subCategories.forEach((subCategory: any) => {
           const childNode: TreeNode = {
             key: `s-${subCategory.id}`,
@@ -453,19 +466,19 @@ export class ItemsComponent implements OnInit, OnDestroy {
               id: subCategory.id.toString(),
               label: subCategory.name,
               value: subCategory.name.toLowerCase().replace(/\s+/g, '-'),
-              parentId: parentCategory.id.toString()
+              parentId: parentCategory.id.toString(),
             },
             icon: 'pi pi-folder-open',
-            leaf: true // No more children for subcategories
+            leaf: true, // No more children for subcategories
           };
           parentNode.children?.push(childNode);
         });
       }
-      
+
       // Add parent node with its children to the root
       this.categoryTreeNodes[0].children?.push(parentNode);
     });
-    
+
     console.log('Tree Nodes created:', this.categoryTreeNodes);
   }
 
@@ -547,5 +560,4 @@ export class ItemsComponent implements OnInit, OnDestroy {
       detail: 'Your cart is empty!',
     });
   }
-  
 }
