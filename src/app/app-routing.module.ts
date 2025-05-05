@@ -19,7 +19,7 @@ import { CategoryComponent } from './admin/pages/category/category.component';
 import { ItemsComponent } from './user/pages/items/items.component';
 import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
-
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component'; 
 const routes: Routes = [
   {
     path: '',
@@ -83,6 +83,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   {
     path: 'success',
     component: SuccessPaymentMsgComponent,

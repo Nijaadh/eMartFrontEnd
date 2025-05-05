@@ -75,13 +75,14 @@ import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 
-
+import { InputMaskModule } from 'primeng/inputmask';
 import { ConfirmationService } from 'primeng/api';
 
-
+import { PasswordModule } from 'primeng/password';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 
 
 
@@ -111,6 +112,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     ItemsComponent,
     AboutUsComponent,
     ItemProfileComponent,
+    ForgotPasswordComponent,
     
     
   ],
@@ -164,6 +166,17 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputNumberModule,
     ConfirmDialogModule,
     TooltipModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    CheckboxModule,
+    ToastModule,
+
+    InputMaskModule,
+
+
+
+    
   ],
   
   providers: [
