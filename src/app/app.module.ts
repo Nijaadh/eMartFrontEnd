@@ -77,7 +77,7 @@ import { PaginatorModule } from 'primeng/paginator';
 
 import { InputMaskModule } from 'primeng/inputmask';
 import { ConfirmationService } from 'primeng/api';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PasswordModule } from 'primeng/password';
 import { InputNumberModule } from 'primeng/inputnumber';
 
@@ -171,7 +171,7 @@ import { ForgotPasswordComponent } from './authentication/forgot-password/forgot
     ButtonModule,
     CheckboxModule,
     ToastModule,
-
+    ProgressSpinnerModule,
     InputMaskModule,
 
 
