@@ -31,7 +31,10 @@ export class OrderService {
     return this.http.get(this.baseUrl + 'shipped');
   }
 
-
+  getAllDeliveredOrders(): Observable<any> {
+    return this.http.get(this.baseUrl + 'delivered');
+  }
+  
   addCartItem(cartBox: any): Observable<any> {
       // Set the responseType to 'text' as expected
       return this.http.post(this.baseUrl + 'create', cartBox, {

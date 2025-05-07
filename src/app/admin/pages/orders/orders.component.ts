@@ -15,6 +15,7 @@ export class OrdersComponent implements OnInit {
   fetchingPendingOrders: any[] = [];
   fetchingProcessingOrders: any[] = [];
   fetchingShippedOrders: any[] = [];
+  fetchingDeliveredOrders: any[] = [];
   ngOnInit(): void {
     this.items = [{ label: 'EMart' }, { label: 'Admin' }, { label: 'Orders' }];
     this.getPendingOrders();
@@ -28,6 +29,7 @@ export class OrdersComponent implements OnInit {
     private messageService: MessageService,
     private router: Router
   ) {}
+
   getPendingOrders() {
     this.orderService.getAllPendingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
@@ -35,16 +37,25 @@ export class OrdersComponent implements OnInit {
       console.log(this.fetchingPendingOrders);
     });
   }
+
   getProcessingOrders() {
     this.orderService.getAllProcessingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingProcessingOrders = data.payload;
     });
   }
+
   getShippedOrders() {
     this.orderService.getAllShippedOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingShippedOrders = data.payload;
+    });
+  }
+
+  getDeliveredOrders() {
+    this.orderService.getAllDeliveredOrders().subscribe((data) => {
+      // Assuming data.payload contains the array of users
+      this.fetchingDeliveredOrders = data.payload;
     });
   }
 

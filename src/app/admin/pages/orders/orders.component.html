@@ -110,7 +110,7 @@
                 <input type="text" pInputText placeholder="Search" />
             </p-iconField><br><br>
             <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
-                <p-accordionTab *ngFor="let order of fetchingShippedOrders">
+                <p-accordionTab *ngFor="let order of fetchingDeliveredOrders">
                     <ng-template pTemplate="header">
                         <span class="head">
                             <p>Ordered date : {{order.createdAt}} &nbsp;&nbsp;&nbsp; Sending date : {{order.sendingDate}}
