@@ -2,200 +2,191 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-:host ::ng-deep {
-  .path {
-    position: absolute;
-    left: 4rem;
-    top: 6px;
-    z-index: 10;
-  }
+.dashboard-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
 
-  // PrimeNG Component Customizations
+:host ::ng-deep {
+  // Breadcrumb styling
   .p-breadcrumb {
     background: transparent;
     border: none;
-    padding: 0.5rem 0;
-    
-    .p-breadcrumb-home {
-      color: var(--primary-color);
-    }
+    padding: 0;
   }
-
+  
+  // Card styling
+  .p-card {
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  // Table styling
   .p-datatable {
-    .p-datatable-header {
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem;
-      background: #f8fafc;
-      border: none;
-    }
-
-    .p-paginator {
-      border-bottom-left-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-      background: #f8fafc;
-      border: none;
+    .p-datatable-thead > tr > th {
+      background-color: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
     }
     
-    th {
-      background: #f1f5f9;
-      font-weight: 600;
-      color: #334155;
-      white-space: nowrap;
-
-      &:first-child {
-        border-top-left-radius: 0.375rem;
+    .p-datatable-tbody > tr {
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #f1f5f9;
       }
-
-      &:last-child {
-        border-top-right-radius: 0.375rem;
+      
+      > td {
+        padding: 0.75rem 1rem;
       }
     }
-
-    td {
-      vertical-align: middle;
-    }
-
-    tr:nth-child(even) {
-      background-color: #fafafa;
-    }
-
-    tr:hover {
-      background-color: #f0f9ff;
-    }
-
-    .p-sortable-column:not(.p-highlight):hover {
-      background: #e2e8f0;
-    }
-
-    .p-sortable-column.p-highlight {
-      background: #f1f5f9;
-      color: var(--primary-color);
-    }
-
-    .p-sortable-column.p-highlight .p-sortable-column-icon {
-      color: var(--primary-color);
+    
+    .p-paginator {
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
     }
   }
-
+  
+  // Button styling
+  .p-button {
+    &.p-button-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.875rem;
+    }
+    
+    &.p-button-rounded.p-button-sm {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  
+  // Dialog styling
   .p-dialog {
     .p-dialog-header {
       padding: 1.25rem 1.5rem;
       background: #f8fafc;
       border-bottom: 1px solid #e2e8f0;
     }
-
+    
     .p-dialog-content {
       padding: 1.5rem;
     }
-
+    
     .p-dialog-footer {
       padding: 1rem 1.5rem;
       background: #f8fafc;
       border-top: 1px solid #e2e8f0;
     }
   }
-
-  .p-button {
-    &.p-button-sm {
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
+  
+  // Form controls
+  .p-dropdown, .p-inputtext, .p-inputnumber, .p-inputtextarea {
+    .p-inputtext {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
     }
-
-    &.p-button-primary {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
+  }
+  
+  .p-input-icon-left {
+    > i {
+      left: 0.75rem;
+      color: #64748b;
+    }
+    
+    > .p-inputtext {
+      padding-left: 2.5rem;
+    }
+  }
+  
+  .p-fileupload {
+    .p-fileupload-buttonbar {
+      background: transparent;
+      padding: 0;
+      border: none;
+    }
+    
+    .p-fileupload-content {
+      display: none;
+    }
+  }
+  
+  // Toast styling
+  .p-toast {
+    .p-toast-message {
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  // Confirmation dialog
+  .p-confirm-dialog {
+    .p-dialog-content {
+      display: flex;
+      align-items: center;
       
-      &:hover {
-        background: var(--primary-color-dark);
-        border-color: var(--primary-color-dark);
+      .p-confirm-dialog-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+        color: #f59e0b;
       }
     }
   }
-
-  .p-dropdown {
-    .p-dropdown-label {
-      padding: 0.5rem 0.75rem;
-    }
-  }
-
-  .p-inputtext, .p-dropdown, .p-multiselect, .p-calendar, .p-inputnumber {
-    &:enabled:focus {
-      box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25);
-    }
-  }
-
-  .p-inputnumber-buttons-horizontal .p-inputnumber-input {
-    width: 100%;
-  }
-
-  .p-inputtextarea {
-    resize: vertical;
-  }
-
-  .p-fileupload-content {
-    display: none;
-  }
-
-  .p-fileupload .p-fileupload-buttonbar {
-    padding: 0;
-    border: none;
-    background: transparent;
-  }
-}
-
-// Custom Application Styles
-.text-primary {
-  color: var(--primary-color);
-}
-
-.bg-primary {
-  background-color: var(--primary-color);
-}
-
-// Animations
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideInUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.animate-slideInUp {
-  animation: slideInUp 0.5s ease-in-out;
-}
-
-// Responsive Styles
-@media screen and (max-width: 768px) {
-  :host ::ng-deep {
-    .p-datatable {
-      &.p-datatable-responsive {
-        .p-datatable-tbody > tr > td {
-          text-align: left;
-          display: block;
+  
+  // Dropdown filter styling
+  .p-dropdown-panel {
+    .p-dropdown-header {
+      padding: 0.5rem;
+      border-bottom: 1px solid #e2e8f0;
+      
+      .p-dropdown-filter-container {
+        width: 100%;
+        
+        .p-dropdown-filter {
+          padding-right: 2rem;
           width: 100%;
-          border: 0 none;
-          padding: 0.5rem 1rem;
+          border-radius: 0.375rem;
+          border: 1px solid #e2e8f0;
+          transition: all 0.2s ease;
           
-          &:before {
-            content: attr(data-label);
-            font-weight: 600;
-            margin-right: 0.5rem;
+          &:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
           }
+        }
+        
+        .p-dropdown-filter-icon {
+          right: 0.75rem;
+          color: #64748b;
+        }
+      }
+    }
+    
+    .p-dropdown-items {
+      padding: 0.5rem 0;
+      
+      .p-dropdown-item {
+        padding: 0.5rem 1rem;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: #f1f5f9;
+        }
+        
+        &.p-highlight {
+          background-color: #e6f7ff;
+          color: #0284c7;
         }
       }
     }
   }
+}
+
+// Add these utility classes if needed.
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
