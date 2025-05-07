@@ -25,7 +25,6 @@ export class OrdersComponent implements OnInit {
   }
 
   constructor(
-    private giftBoxService: GiftBoxService,
     private _orderService: OrderService,
     private messageService: MessageService,
     private router: Router
