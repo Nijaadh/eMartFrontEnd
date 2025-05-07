@@ -34,15 +34,16 @@ export class OrderService {
   getAllDeliveredOrders(): Observable<any> {
     return this.http.get(this.baseUrl + 'delivered');
   }
-  
+
+  updatePayment(cart: any): Observable<any> {
+    return this.http.put(this.baseUrl + 'update-payment-status', cart, { responseType: 'json' });
+  }
+
   addCartItem(cartBox: any): Observable<any> {
       // Set the responseType to 'text' as expected
       return this.http.post(this.baseUrl + 'create', cartBox, {
         responseType: 'json',
       });
-    }
-    updatePayment(cart: any): Observable<any> {
-      return this.http.put(this.baseUrl + 'paid', cart, { responseType: 'json' });
     }
   
     getcartsByUserId(userId: string): Observable<any> {

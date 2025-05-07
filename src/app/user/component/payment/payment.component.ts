@@ -3,7 +3,6 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { GiftBoxService } from '../../../services/cart.service';
 import { StripeService } from '../../../services/stripe.service';
 import { OrderService } from '../../../services/order.service';
 
@@ -23,8 +22,7 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private stripeService: StripeService,
-    private giftBoxservice: GiftBoxService,
-    private orderService: OrderService,
+    private _orderService: OrderService,
     private router:Router,
     private messageService: MessageService,
   ) {
@@ -68,19 +66,17 @@ export class PaymentComponent implements OnInit {
         } else if (paymentIntent.status === 'succeeded') {
           console.log('Payment succeeded!');
 
-          const gift = {
+          const order = {
             id: this.orderId,
             paymentStatus: "PAID"
           }
-          this.giftBoxservice.updatePayment(gift).subscribe((response) => {
+          this._orderService.updatePayment(order).subscribe((response) => {
             console.log('Paid  succeeded!');
             this.router.navigate(['/success']);
           }, (error) => {
             console.log("ERROR PAID  :: " + error)
             this.paymentFaildMsg();
           })
-
-
         }
       } else {
         console.error('Failed to retrieve clientSecret.');
