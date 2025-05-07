@@ -21,6 +21,7 @@ export class OrdersComponent implements OnInit {
     this.getPendingOrders();
     this.getProcessingOrders();
     this.getShippedOrders();
+    this.getDeliveredOrders();
   }
 
   constructor(
@@ -72,6 +73,7 @@ export class OrdersComponent implements OnInit {
         this.getPendingOrders();
         this.getProcessingOrders();
         this.getShippedOrders();
+        this.getDeliveredOrders();
       },
       (error) => {
         console.log('ERROR PAID  :: ' + error);
