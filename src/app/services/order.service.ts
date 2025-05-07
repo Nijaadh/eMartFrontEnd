@@ -12,10 +12,24 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
+  createOrders(cartBox: any): Observable<any> {
+    // Set the responseType to 'text' as expected
+    return this.http.post(this.baseUrl + 'create', cartBox, {
+      responseType: 'json',
+    });
+  }
+
   getAllPendingOrders(): Observable<any> {
     return this.http.get(this.baseUrl + 'pending');
   }
 
+  getAllProcessingOrders(): Observable<any> {
+    return this.http.get(this.baseUrl + 'processing');
+  }
+
+  getAllShippedOrders(): Observable<any> {
+    return this.http.get(this.baseUrl + 'shipped');
+  }
 
 
   addCartItem(cartBox: any): Observable<any> {

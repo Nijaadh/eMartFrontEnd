@@ -13,13 +13,13 @@ export class OrdersComponent implements OnInit {
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
   fetchingPendingOrders: any[] = [];
-  fetchingAcceptedGift: any[] = [];
-  fetchingDeliveredGift: any[] = [];
+  fetchingProcessingOrders: any[] = [];
+  fetchingShippedOrders: any[] = [];
   ngOnInit(): void {
     this.items = [{ label: 'EMart' }, { label: 'Admin' }, { label: 'Orders' }];
-    this.getNewGiftBox();
-    this.getAcceptedGift();
-    this.getDeliveredGift();
+    this.getPendingOrders();
+    this.getProcessingOrders();
+    this.getShippedOrders();
   }
 
   constructor(
@@ -28,23 +28,23 @@ export class OrdersComponent implements OnInit {
     private messageService: MessageService,
     private router: Router
   ) {}
-  getNewGiftBox() {
+  getPendingOrders() {
     this.orderService.getAllPendingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingPendingOrders = data.payload;
       console.log(this.fetchingPendingOrders);
     });
   }
-  getAcceptedGift() {
-    this.giftBoxService.getAllCartBoxAccepted().subscribe((data) => {
+  getProcessingOrders() {
+    this.orderService.getAllProcessingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
-      this.fetchingAcceptedGift = data.payload;
+      this.fetchingProcessingOrders = data.payload;
     });
   }
-  getDeliveredGift() {
-    this.giftBoxService.getAllCartBoxDelivered().subscribe((data) => {
+  getShippedOrders() {
+    this.orderService.getAllShippedOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
-      this.fetchingDeliveredGift = data.payload;
+      this.fetchingShippedOrders = data.payload;
     });
   }
 
@@ -58,10 +58,9 @@ export class OrdersComponent implements OnInit {
         console.log('Paid  succeeded!');
         console.log(response);
         this.successMsg();
-        // window.location.reload();
-        this.getNewGiftBox();
-        this.getAcceptedGift();
-        this.getDeliveredGift();
+        this.getPendingOrders();
+        this.getProcessingOrders();
+        this.getShippedOrders();
       },
       (error) => {
         console.log('ERROR PAID  :: ' + error);

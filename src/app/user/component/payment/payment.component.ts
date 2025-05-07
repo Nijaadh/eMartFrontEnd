@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { GiftBoxService } from '../../../services/cart.service';
 import { StripeService } from '../../../services/stripe.service';
+import { OrderService } from '../../../services/order.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class PaymentComponent implements OnInit {
   constructor(
     private stripeService: StripeService,
     private giftBoxservice: GiftBoxService,
+    private orderService: OrderService,
     private router:Router,
     private messageService: MessageService,
   ) {
