@@ -26,13 +26,13 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private giftBoxService: GiftBoxService,
-    private orderService: OrderService,
+    private _orderService: OrderService,
     private messageService: MessageService,
     private router: Router
   ) {}
 
   getPendingOrders() {
-    this.orderService.getAllPendingOrders().subscribe((data) => {
+    this._orderService.getAllPendingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingPendingOrders = data.payload;
       console.log(this.fetchingPendingOrders);
@@ -40,21 +40,21 @@ export class OrdersComponent implements OnInit {
   }
 
   getProcessingOrders() {
-    this.orderService.getAllProcessingOrders().subscribe((data) => {
+    this._orderService.getAllProcessingOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingProcessingOrders = data.payload;
     });
   }
 
   getShippedOrders() {
-    this.orderService.getAllShippedOrders().subscribe((data) => {
+    this._orderService.getAllShippedOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingShippedOrders = data.payload;
     });
   }
 
   getDeliveredOrders() {
-    this.orderService.getAllDeliveredOrders().subscribe((data) => {
+    this._orderService.getAllDeliveredOrders().subscribe((data) => {
       // Assuming data.payload contains the array of users
       this.fetchingDeliveredOrders = data.payload;
     });
@@ -63,11 +63,11 @@ export class OrdersComponent implements OnInit {
   updateStatus(id: any, status: any) {
     const data = {
       id: id,
-      commonStatus: status,
+      orderStatus: status,
     };
-    this.giftBoxService.updateCommonStatus(data).subscribe(
+    this._orderService.updateOrderStatus(data).subscribe(
       (response) => {
-        console.log('Paid  succeeded!');
+        console.log('order updated!');
         console.log(response);
         this.successMsg();
         this.getPendingOrders();
@@ -76,7 +76,7 @@ export class OrdersComponent implements OnInit {
         this.getDeliveredOrders();
       },
       (error) => {
-        console.log('ERROR PAID  :: ' + error);
+        console.log('ERROR PAID  :: ' + error.message);
         this.unsuccesMsg();
       }
     );
@@ -86,14 +86,14 @@ export class OrdersComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'GiftBox updated Successfully!',
+      detail: 'Order status updated successfully!',
     });
   }
   unsuccesMsg() {
     this.messageService.add({
       severity: 'error',
       summary: 'Success',
-      detail: 'GiftBox updated Unsuccessfully!',
+      detail: 'Unable to update Order status!',
     });
   }
 }

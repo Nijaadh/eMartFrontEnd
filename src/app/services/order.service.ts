@@ -39,26 +39,8 @@ export class OrderService {
     return this.http.put(this.baseUrl + 'update-payment-status', cart, { responseType: 'json' });
   }
 
-  addCartItem(cartBox: any): Observable<any> {
-      // Set the responseType to 'text' as expected
-      return this.http.post(this.baseUrl + 'create', cartBox, {
-        responseType: 'json',
-      });
-    }
-  
-    getcartsByUserId(userId: string): Observable<any> {
-      return this.http.get(`${this.baseUrl}getAllByUser/${userId}`);
-    }
-  
-    
-    getAllCartBoxAccepted(): Observable<any> {
-      return this.http.get(this.baseUrl + 'getAllAcc');
-    }
-    getAllCartBoxDelivered(): Observable<any> {
-      return this.http.get(this.baseUrl + 'getAllDeli');
-    }
-    updateCommonStatus(data: any): Observable<any> {
-      return this.http.put(this.baseUrl + 'status', data, {
+  updateOrderStatus(data: any): Observable<any> {
+      return this.http.put(this.baseUrl + 'update-order-status', data, {
         responseType: 'json',
       });
     }

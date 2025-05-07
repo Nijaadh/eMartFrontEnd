@@ -19,7 +19,7 @@
                             <span class="font-bold white-space-nowrap">
                                 <p>User ID : {{order.userId}}</p>
                             </span>
-                            <button pButton pRipple label="Ready to procceed" class="p-button-success" (click)="updateStatus(order.id,'INACTIVE')">
+                            <button pButton pRipple label="Ready to procceed" class="p-button-success" (click)="updateStatus(order.id,'PROCESSING')">
                             </button>
                         </span>
                     </ng-template>
@@ -53,7 +53,7 @@
                             <span class="font-bold white-space-nowrap">
                                 <p>User ID : {{order.userId}}</p>
                             </span>
-                            <p-button label="Delivered" (click)="updateStatus(order.id,'DELETED')" />
+                            <p-button label="Ready to transport" (click)="updateStatus(order.id,'SHIPPED')" />
                         </span>
                     </ng-template>
                     <div class="m-0 xz">
@@ -86,7 +86,7 @@
                             <span class="font-bold white-space-nowrap">
                                 <p>User ID : {{order.userId}}</p>
                             </span>
-                            <p-button label="Delivered" severity="contrast" [disabled]="true" icon="pi pi-check" />
+                            <p-button label="Delivered" (click)="updateStatus(order.id,'DELEVERD')" />
                         </span>
                     </ng-template>
                     <div class="m-0 xz">
