@@ -28,7 +28,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   item = {
-    recieverAddress: "",
+    receiverAddress: "",
     zip: "",
     totalPrice: "",
     commonStatus: "ACTIVE",
@@ -108,7 +108,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   }
 
   saveReceiverInfo(): boolean {
-    this.item.recieverAddress = this.address;
+    this.item.receiverAddress = this.address;
     this.item.zip = this.zip;
     
     
@@ -131,7 +131,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveGift(): void {
+  saveOrder(): void {
     // Validate form fields
     if (!this.validateInputs()) {
       return;
@@ -192,7 +192,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
     
     // If validation passes, proceed with checkout
     this.isLoading = true;
-    this.saveGift();
+    this.saveOrder();
   }
 
   GiftBoxSaveSuccessMsg(): void {
