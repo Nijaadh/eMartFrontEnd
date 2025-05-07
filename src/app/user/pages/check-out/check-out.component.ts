@@ -6,6 +6,7 @@ import { GiftBoxService } from '../../../services/cart.service';
 import { CartItem } from '../../model/cart.item';
 import { ShoppingCartService } from '../../services/shopping.cart/shopping-cart.service';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../../../services/order.service';
 
 @Component({
   selector: 'app-check-out',
@@ -27,14 +28,13 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   item = {
-    giftName: "Gift Order",
-    createdAt: "",
-    sendingDate: "",
     recieverAddress: "",
     zip: "",
     totalPrice: "",
     commonStatus: "ACTIVE",
-    itemIds: [] as number[],
+    orderStatus: "PENDING",
+    paymentStatus: "NOT_PAID",
+    itemQuantities: {} = {},
     userId: ""
   }
 
@@ -44,8 +44,9 @@ export class CheckOutComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private giftBoxService: GiftBoxService,
+    private _orderService: OrderService,
     private authService: AuthService,
+
     private messageService: MessageService,
     public shoppingCartService: ShoppingCartService
   ) { }
@@ -100,16 +101,16 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   }
 
   calculateItemIds(): void {
-    this.item.itemIds = this.giftBoxitems.map(item => item.id);
+    this.item.itemQuantities = this.giftBoxitems.reduce((quantities, item) => {
+      quantities[`${item.id}`] = item.quantity || 0;
+      return quantities;
+    }, {} as { [key: string]: number });
   }
 
   saveReceiverInfo(): boolean {
     this.item.recieverAddress = this.address;
     this.item.zip = this.zip;
     
-    // Set current date as sending date since we removed the date field
-    const today = new Date();
-    this.item.sendingDate = today.toISOString().split('T')[0];
     
     return true;
   }
@@ -143,13 +144,6 @@ export class CheckOutComponent implements OnInit, OnDestroy {
     }
 
     this.isLoading = true;
-
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
-
-    this.item.createdAt = `${year}-${month}-${day}`;
     this.item.totalPrice = this.totalPrice.toString();
     
     // Save receiver details
@@ -158,7 +152,9 @@ export class CheckOutComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.giftBoxService.addCartItem(this.item).subscribe({
+    console.log("Item to be saved:", this.item);
+
+    this._orderService.createOrders(this.item).subscribe({
       next: response => {
         const id = response.payload;
         this.giftBoxID = id;
