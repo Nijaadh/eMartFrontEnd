@@ -35,6 +35,10 @@ export class OrderService {
     return this.http.get(this.baseUrl + 'delivered');
   }
 
+  getAllOrdersList(): Observable<any> {
+    return this.http.get(this.baseUrl + 'list');
+  }
+
   updatePayment(cart: any): Observable<any> {
     return this.http.put(this.baseUrl + 'update-payment-status', cart, { responseType: 'json' });
   }
