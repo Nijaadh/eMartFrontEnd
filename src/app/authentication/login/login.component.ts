@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
         setTimeout(() => {
           const role = localStorage.getItem('role');
           if (role === 'Admin') {
-            this.router.navigate(['/admin/dash']);
+            this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/home']);
           }
