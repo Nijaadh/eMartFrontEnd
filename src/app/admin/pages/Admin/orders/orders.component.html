@@ -9,52 +9,63 @@
       <div class="mb-6">
         <p-iconField iconPosition="left" class="w-full md:w-80">
           <p-inputIcon styleClass="pi pi-search text-gray-500" />
-          <input 
-            type="text" 
-            pInputText 
-            placeholder="Search orders..." 
-            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all" 
+          <input
+            type="text"
+            pInputText
+            placeholder="Search orders..."
+            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all"
           />
         </p-iconField>
       </div>
-    
+
       <!-- Orders Accordion -->
       <p-accordion
         class="w-full"
         expandIcon="pi pi-plus"
         collapseIcon="pi pi-minus"
       >
-        <p-accordionTab *ngFor="let order of pendingOrders" class="mb-4 border border-gray-100 rounded-lg">
+        <p-accordionTab
+          *ngFor="let order of pendingOrders"
+          class="mb-4 border border-gray-100 rounded-lg"
+        >
           <ng-template pTemplate="header">
-            <div class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2">
+            <div
+              class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2"
+            >
               <div class="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Order Date:</span>
-                  <span class="font-medium">{{ order.createdAt | date:'medium' }}</span>
+                  <span class="font-medium">{{
+                    order.createdAt | date : "medium"
+                  }}</span>
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Total:</span>
-                  <span class="font-bold text-blue-600">${{ order.totalPrice }}</span>
+                  <span class="font-bold text-blue-600"
+                    >${{ order.totalPrice }}</span
+                  >
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">User ID:</span>
                   <span class="font-medium">{{ order.userId }}</span>
                 </div>
               </div>
-              
+
               <button
                 pButton
                 pRipple
                 label="Ready to Process"
                 icon="pi pi-check"
                 class="p-button-success p-button-sm md:p-button-md shadow-sm hover:shadow-md transition-all"
-                (click)="updateStatus(order.id, 'PROCESSING'); $event.stopPropagation()"
+                (click)="
+                  updateStatus(order.id, 'PROCESSING'); $event.stopPropagation()
+                "
               ></button>
             </div>
           </ng-template>
-          
+
           <div class="p-4 bg-gray-50 rounded-b-lg">
             <!-- Order Details -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -62,33 +73,47 @@
                 <span class="text-gray-500 text-sm block mb-1">Order ID</span>
                 <span class="font-medium">{{ order.id }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
-                <span class="text-gray-500 text-sm block mb-1">Shipping Address</span>
+                <span class="text-gray-500 text-sm block mb-1"
+                  >Shipping Address</span
+                >
                 <span class="font-medium">{{ order.receiverAddress }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
                 <span class="text-gray-500 text-sm block mb-1">ZIP Code</span>
                 <span class="font-medium">{{ order.zip }}</span>
               </div>
             </div>
-            
+
             <!-- Order Items Table -->
             <div class="overflow-x-auto">
-              <p-table 
-                [value]="order.orderItems" 
+              <p-table
+                [value]="order.orderItems"
                 styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                [tableStyle]="{'min-width': '60rem'}"
+                [tableStyle]="{ 'min-width': '60rem' }"
               >
                 <ng-template pTemplate="header">
                   <tr class="bg-gray-100">
-                    <th class="text-left p-3 font-medium text-gray-600">Item ID</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Product Name</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Discount</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Quantity</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Price</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Category</th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Item ID
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Product Name
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Discount
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Quantity
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Price
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Category
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
@@ -96,26 +121,36 @@
                     <td class="p-3">{{ item.item.id }}</td>
                     <td class="p-3 font-medium">{{ item.item.name }}</td>
                     <td class="p-3">
-                      <span class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs">
+                      <span
+                        class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs"
+                      >
                         {{ item.item.discount }}%
                       </span>
                     </td>
                     <td class="p-3">
-                      <span class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full">
+                      <span
+                        class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full"
+                      >
                         {{ item.quantity }}
                       </span>
                     </td>
-                    <td class="p-3 font-medium">${{ item.item.price }}</td>
+                    <td class="p-3 font-medium">{{ item.item.unitPrice }}</td>
                     <td class="p-3">
-                      <span class="text-gray-600">{{ item.item.category }}</span>
+                      <span class="text-gray-600">{{
+                        item.item.category
+                      }}</span>
                       <span class="text-gray-400 mx-1">→</span>
-                      <span class="text-gray-800">{{ item.item.subCategoryName }}</span>
+                      <span class="text-gray-800">{{
+                        item.item.subCategoryName
+                      }}</span>
                     </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="6" class="text-center p-4 text-gray-500">No items found in this order</td>
+                    <td colspan="6" class="text-center p-4 text-gray-500">
+                      No items found in this order
+                    </td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -123,12 +158,17 @@
           </div>
         </p-accordionTab>
       </p-accordion>
-      
+
       <!-- Empty State -->
-      <div *ngIf="!pendingOrders || pendingOrders.length === 0" class="text-center py-12">
+      <div
+        *ngIf="!pendingOrders || pendingOrders.length === 0"
+        class="text-center py-12"
+      >
         <i class="pi pi-inbox text-5xl text-gray-300 mb-4"></i>
         <h3 class="text-xl font-medium text-gray-600 mb-2">No New Orders</h3>
-        <p class="text-gray-500">When customers place new orders, they will appear here</p>
+        <p class="text-gray-500">
+          When customers place new orders, they will appear here
+        </p>
       </div>
     </p-tabPanel>
     <p-tabPanel header="Processing" class="bg-white rounded-lg shadow-sm">
@@ -136,52 +176,63 @@
       <div class="mb-6">
         <p-iconField iconPosition="left" class="w-full md:w-80">
           <p-inputIcon styleClass="pi pi-search text-gray-500" />
-          <input 
-            type="text" 
-            pInputText 
-            placeholder="Search orders..." 
-            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all" 
+          <input
+            type="text"
+            pInputText
+            placeholder="Search orders..."
+            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all"
           />
         </p-iconField>
       </div>
-    
+
       <!-- Orders Accordion -->
       <p-accordion
         class="w-full"
         expandIcon="pi pi-plus"
         collapseIcon="pi pi-minus"
       >
-        <p-accordionTab *ngFor="let order of processingOrders" class="mb-4 border border-gray-100 rounded-lg">
+        <p-accordionTab
+          *ngFor="let order of processingOrders"
+          class="mb-4 border border-gray-100 rounded-lg"
+        >
           <ng-template pTemplate="header">
-            <div class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2">
+            <div
+              class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2"
+            >
               <div class="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Order Date:</span>
-                  <span class="font-medium">{{ order.createdAt | date:'medium' }}</span>
+                  <span class="font-medium">{{
+                    order.createdAt | date : "medium"
+                  }}</span>
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Total:</span>
-                  <span class="font-bold text-blue-600">${{ order.totalPrice }}</span>
+                  <span class="font-bold text-blue-600"
+                    >${{ order.totalPrice }}</span
+                  >
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">User ID:</span>
                   <span class="font-medium">{{ order.userId }}</span>
                 </div>
               </div>
-              
+
               <button
                 pButton
                 pRipple
                 label="Ready to transport"
                 icon="pi pi-check"
                 class="p-button-success p-button-sm md:p-button-md shadow-sm hover:shadow-md transition-all"
-                (click)="updateStatus(order.id, 'SHIPPED'); $event.stopPropagation()"
+                (click)="
+                  updateStatus(order.id, 'SHIPPED'); $event.stopPropagation()
+                "
               ></button>
             </div>
           </ng-template>
-          
+
           <div class="p-4 bg-gray-50 rounded-b-lg">
             <!-- Order Details -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -189,33 +240,47 @@
                 <span class="text-gray-500 text-sm block mb-1">Order ID</span>
                 <span class="font-medium">{{ order.id }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
-                <span class="text-gray-500 text-sm block mb-1">Shipping Address</span>
+                <span class="text-gray-500 text-sm block mb-1"
+                  >Shipping Address</span
+                >
                 <span class="font-medium">{{ order.receiverAddress }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
                 <span class="text-gray-500 text-sm block mb-1">ZIP Code</span>
                 <span class="font-medium">{{ order.zip }}</span>
               </div>
             </div>
-            
+
             <!-- Order Items Table -->
             <div class="overflow-x-auto">
-              <p-table 
-                [value]="order.orderItems" 
+              <p-table
+                [value]="order.orderItems"
                 styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                [tableStyle]="{'min-width': '60rem'}"
+                [tableStyle]="{ 'min-width': '60rem' }"
               >
                 <ng-template pTemplate="header">
                   <tr class="bg-gray-100">
-                    <th class="text-left p-3 font-medium text-gray-600">Item ID</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Product Name</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Discount</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Quantity</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Price</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Category</th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Item ID
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Product Name
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Discount
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Quantity
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Price
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Category
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
@@ -223,26 +288,36 @@
                     <td class="p-3">{{ item.item.id }}</td>
                     <td class="p-3 font-medium">{{ item.item.name }}</td>
                     <td class="p-3">
-                      <span class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs">
+                      <span
+                        class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs"
+                      >
                         {{ item.item.discount }}%
                       </span>
                     </td>
                     <td class="p-3">
-                      <span class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full">
+                      <span
+                        class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full"
+                      >
                         {{ item.quantity }}
                       </span>
                     </td>
-                    <td class="p-3 font-medium">${{ item.item.price }}</td>
+                    <td class="p-3 font-medium">${{ item.item.unitPrice }}</td>
                     <td class="p-3">
-                      <span class="text-gray-600">{{ item.item.category }}</span>
+                      <span class="text-gray-600">{{
+                        item.item.category
+                      }}</span>
                       <span class="text-gray-400 mx-1">→</span>
-                      <span class="text-gray-800">{{ item.item.subCategoryName }}</span>
+                      <span class="text-gray-800">{{
+                        item.item.subCategoryName
+                      }}</span>
                     </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="6" class="text-center p-4 text-gray-500">No items found in this order</td>
+                    <td colspan="6" class="text-center p-4 text-gray-500">
+                      No items found in this order
+                    </td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -250,12 +325,17 @@
           </div>
         </p-accordionTab>
       </p-accordion>
-      
+
       <!-- Empty State -->
-      <div *ngIf="!pendingOrders || pendingOrders.length === 0" class="text-center py-12">
+      <div
+        *ngIf="!pendingOrders || pendingOrders.length === 0"
+        class="text-center py-12"
+      >
         <i class="pi pi-inbox text-5xl text-gray-300 mb-4"></i>
         <h3 class="text-xl font-medium text-gray-600 mb-2">No New Orders</h3>
-        <p class="text-gray-500">When customers place new orders, they will appear here</p>
+        <p class="text-gray-500">
+          When customers place new orders, they will appear here
+        </p>
       </div>
     </p-tabPanel>
     <p-tabPanel header="Shipped Orders" class="bg-white rounded-lg shadow-sm">
@@ -263,52 +343,63 @@
       <div class="mb-6">
         <p-iconField iconPosition="left" class="w-full md:w-80">
           <p-inputIcon styleClass="pi pi-search text-gray-500" />
-          <input 
-            type="text" 
-            pInputText 
-            placeholder="Search orders..." 
-            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all" 
+          <input
+            type="text"
+            pInputText
+            placeholder="Search orders..."
+            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all"
           />
         </p-iconField>
       </div>
-    
+
       <!-- Orders Accordion -->
       <p-accordion
         class="w-full"
         expandIcon="pi pi-plus"
         collapseIcon="pi pi-minus"
       >
-        <p-accordionTab *ngFor="let order of shippedOrders" class="mb-4 border border-gray-100 rounded-lg">
+        <p-accordionTab
+          *ngFor="let order of shippedOrders"
+          class="mb-4 border border-gray-100 rounded-lg"
+        >
           <ng-template pTemplate="header">
-            <div class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2">
+            <div
+              class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2"
+            >
               <div class="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Order Date:</span>
-                  <span class="font-medium">{{ order.createdAt | date:'medium' }}</span>
+                  <span class="font-medium">{{
+                    order.createdAt | date : "medium"
+                  }}</span>
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Total:</span>
-                  <span class="font-bold text-blue-600">${{ order.totalPrice }}</span>
+                  <span class="font-bold text-blue-600"
+                    >${{ order.totalPrice }}</span
+                  >
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">User ID:</span>
                   <span class="font-medium">{{ order.userId }}</span>
                 </div>
               </div>
-              
+
               <button
                 pButton
                 pRipple
                 label="Delivered"
                 icon="pi pi-check"
                 class="p-button-success p-button-sm md:p-button-md shadow-sm hover:shadow-md transition-all"
-                (click)="updateStatus(order.id, 'DELEVERD'); $event.stopPropagation()"
+                (click)="
+                  updateStatus(order.id, 'DELEVERD'); $event.stopPropagation()
+                "
               ></button>
             </div>
           </ng-template>
-          
+
           <div class="p-4 bg-gray-50 rounded-b-lg">
             <!-- Order Details -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -316,33 +407,47 @@
                 <span class="text-gray-500 text-sm block mb-1">Order ID</span>
                 <span class="font-medium">{{ order.id }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
-                <span class="text-gray-500 text-sm block mb-1">Shipping Address</span>
+                <span class="text-gray-500 text-sm block mb-1"
+                  >Shipping Address</span
+                >
                 <span class="font-medium">{{ order.receiverAddress }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
                 <span class="text-gray-500 text-sm block mb-1">ZIP Code</span>
                 <span class="font-medium">{{ order.zip }}</span>
               </div>
             </div>
-            
+
             <!-- Order Items Table -->
             <div class="overflow-x-auto">
-              <p-table 
-                [value]="order.orderItems" 
+              <p-table
+                [value]="order.orderItems"
                 styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                [tableStyle]="{'min-width': '60rem'}"
+                [tableStyle]="{ 'min-width': '60rem' }"
               >
                 <ng-template pTemplate="header">
                   <tr class="bg-gray-100">
-                    <th class="text-left p-3 font-medium text-gray-600">Item ID</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Product Name</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Discount</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Quantity</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Price</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Category</th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Item ID
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Product Name
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Discount
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Quantity
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Price
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Category
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
@@ -350,26 +455,36 @@
                     <td class="p-3">{{ item.item.id }}</td>
                     <td class="p-3 font-medium">{{ item.item.name }}</td>
                     <td class="p-3">
-                      <span class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs">
+                      <span
+                        class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs"
+                      >
                         {{ item.item.discount }}%
                       </span>
                     </td>
                     <td class="p-3">
-                      <span class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full">
+                      <span
+                        class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full"
+                      >
                         {{ item.quantity }}
                       </span>
                     </td>
-                    <td class="p-3 font-medium">${{ item.item.price }}</td>
+                    <td class="p-3 font-medium">${{ item.item.unitPrice }}</td>
                     <td class="p-3">
-                      <span class="text-gray-600">{{ item.item.category }}</span>
+                      <span class="text-gray-600">{{
+                        item.item.category
+                      }}</span>
                       <span class="text-gray-400 mx-1">→</span>
-                      <span class="text-gray-800">{{ item.item.subCategoryName }}</span>
+                      <span class="text-gray-800">{{
+                        item.item.subCategoryName
+                      }}</span>
                     </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="6" class="text-center p-4 text-gray-500">No items found in this order</td>
+                    <td colspan="6" class="text-center p-4 text-gray-500">
+                      No items found in this order
+                    </td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -377,12 +492,17 @@
           </div>
         </p-accordionTab>
       </p-accordion>
-      
+
       <!-- Empty State -->
-      <div *ngIf="!pendingOrders || pendingOrders.length === 0" class="text-center py-12">
+      <div
+        *ngIf="!pendingOrders || pendingOrders.length === 0"
+        class="text-center py-12"
+      >
         <i class="pi pi-inbox text-5xl text-gray-300 mb-4"></i>
         <h3 class="text-xl font-medium text-gray-600 mb-2">No New Orders</h3>
-        <p class="text-gray-500">When customers place new orders, they will appear here</p>
+        <p class="text-gray-500">
+          When customers place new orders, they will appear here
+        </p>
       </div>
     </p-tabPanel>
     <p-tabPanel header="Dilivered Orders" class="bg-white rounded-lg shadow-sm">
@@ -390,41 +510,50 @@
       <div class="mb-6">
         <p-iconField iconPosition="left" class="w-full md:w-80">
           <p-inputIcon styleClass="pi pi-search text-gray-500" />
-          <input 
-            type="text" 
-            pInputText 
-            placeholder="Search orders..." 
-            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all" 
+          <input
+            type="text"
+            pInputText
+            placeholder="Search orders..."
+            class="w-full p-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all"
           />
         </p-iconField>
       </div>
-    
+
       <!-- Orders Accordion -->
       <p-accordion
         class="w-full"
         expandIcon="pi pi-plus"
         collapseIcon="pi pi-minus"
       >
-        <p-accordionTab *ngFor="let order of deliveredOrders" class="mb-4 border border-gray-100 rounded-lg">
+        <p-accordionTab
+          *ngFor="let order of deliveredOrders"
+          class="mb-4 border border-gray-100 rounded-lg"
+        >
           <ng-template pTemplate="header">
-            <div class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2">
+            <div
+              class="flex flex-col md:flex-row w-full justify-between items-start md:items-center gap-4 py-2"
+            >
               <div class="flex flex-col md:flex-row gap-4 md:gap-8">
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Order Date:</span>
-                  <span class="font-medium">{{ order.createdAt | date:'medium' }}</span>
+                  <span class="font-medium">{{
+                    order.createdAt | date : "medium"
+                  }}</span>
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">Total:</span>
-                  <span class="font-bold text-blue-600">${{ order.totalPrice }}</span>
+                  <span class="font-bold text-blue-600"
+                    >${{ order.totalPrice }}</span
+                  >
                 </div>
-                
+
                 <div class="flex items-center">
                   <span class="text-gray-500 text-sm mr-2">User ID:</span>
                   <span class="font-medium">{{ order.userId }}</span>
                 </div>
               </div>
-              
+
               <button
                 pButton
                 pRipple
@@ -435,7 +564,7 @@
               ></button>
             </div>
           </ng-template>
-          
+
           <div class="p-4 bg-gray-50 rounded-b-lg">
             <!-- Order Details -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -443,33 +572,47 @@
                 <span class="text-gray-500 text-sm block mb-1">Order ID</span>
                 <span class="font-medium">{{ order.id }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
-                <span class="text-gray-500 text-sm block mb-1">Shipping Address</span>
+                <span class="text-gray-500 text-sm block mb-1"
+                  >Shipping Address</span
+                >
                 <span class="font-medium">{{ order.receiverAddress }}</span>
               </div>
-              
+
               <div class="bg-white p-3 rounded-lg shadow-sm">
                 <span class="text-gray-500 text-sm block mb-1">ZIP Code</span>
                 <span class="font-medium">{{ order.zip }}</span>
               </div>
             </div>
-            
+
             <!-- Order Items Table -->
             <div class="overflow-x-auto">
-              <p-table 
-                [value]="order.orderItems" 
+              <p-table
+                [value]="order.orderItems"
                 styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                [tableStyle]="{'min-width': '60rem'}"
+                [tableStyle]="{ 'min-width': '60rem' }"
               >
                 <ng-template pTemplate="header">
                   <tr class="bg-gray-100">
-                    <th class="text-left p-3 font-medium text-gray-600">Item ID</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Product Name</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Discount</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Quantity</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Price</th>
-                    <th class="text-left p-3 font-medium text-gray-600">Category</th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Item ID
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Product Name
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Discount
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Quantity
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Price
+                    </th>
+                    <th class="text-left p-3 font-medium text-gray-600">
+                      Category
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
@@ -477,26 +620,36 @@
                     <td class="p-3">{{ item.item.id }}</td>
                     <td class="p-3 font-medium">{{ item.item.name }}</td>
                     <td class="p-3">
-                      <span class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs">
+                      <span
+                        class="bg-green-100 text-green-800 py-1 px-2 rounded-full text-xs"
+                      >
                         {{ item.item.discount }}%
                       </span>
                     </td>
                     <td class="p-3">
-                      <span class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full">
+                      <span
+                        class="bg-blue-100 text-blue-800 py-1 px-2 rounded-full"
+                      >
                         {{ item.quantity }}
                       </span>
                     </td>
-                    <td class="p-3 font-medium">${{ item.item.price }}</td>
+                    <td class="p-3 font-medium">${{ item.item.unitPrice }}</td>
                     <td class="p-3">
-                      <span class="text-gray-600">{{ item.item.category }}</span>
+                      <span class="text-gray-600">{{
+                        item.item.category
+                      }}</span>
                       <span class="text-gray-400 mx-1">→</span>
-                      <span class="text-gray-800">{{ item.item.subCategoryName }}</span>
+                      <span class="text-gray-800">{{
+                        item.item.subCategoryName
+                      }}</span>
                     </td>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="6" class="text-center p-4 text-gray-500">No items found in this order</td>
+                    <td colspan="6" class="text-center p-4 text-gray-500">
+                      No items found in this order
+                    </td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -504,12 +657,17 @@
           </div>
         </p-accordionTab>
       </p-accordion>
-      
+
       <!-- Empty State -->
-      <div *ngIf="!pendingOrders || pendingOrders.length === 0" class="text-center py-12">
+      <div
+        *ngIf="!pendingOrders || pendingOrders.length === 0"
+        class="text-center py-12"
+      >
         <i class="pi pi-inbox text-5xl text-gray-300 mb-4"></i>
         <h3 class="text-xl font-medium text-gray-600 mb-2">No New Orders</h3>
-        <p class="text-gray-500">When customers place new orders, they will appear here</p>
+        <p class="text-gray-500">
+          When customers place new orders, they will appear here
+        </p>
       </div>
     </p-tabPanel>
   </p-tabView>
