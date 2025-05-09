@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
-import { GiftItemsService } from '../../../services/items.service';
-import { CategoryService } from '../../../services/category.service';
-import { Item } from '../../model/itemModel';
+import { GiftItemsService } from '../../../../services/items.service';
+import { CategoryService } from '../../../../services/category.service';
+import { Item } from '../../../model/itemModel';
 
 @Component({
   selector: 'app-products',

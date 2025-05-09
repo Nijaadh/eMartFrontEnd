@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
-import { DashComponent } from './admin/pages/dash/dash.component';
-import { OrdersComponent } from './admin/pages/orders/orders.component';
-import { ProductsComponent } from './admin/pages/products/products.component';
-import { UsersComponent } from './admin/pages/users/users.component';
+import { DashComponent } from './admin/pages/Admin/dash/dash.component';
+import { OrdersComponent } from './admin/pages/Admin/orders/orders.component';
+import { ProductsComponent } from './admin/pages/Admin/products/products.component';
+import { UsersComponent } from './admin/pages/Admin/users/users.component';
 import { authGuard } from './authentication/auth.guard';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
@@ -15,11 +15,14 @@ import { CheckOutComponent } from './user/pages/check-out/check-out.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
-import { CategoryComponent } from './admin/pages/category/category.component';
+import { CategoryComponent } from './admin/pages/Admin/category/category.component';
 import { ItemsComponent } from './user/pages/items/items.component';
 import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component'; 
+import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.component';
+import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
+import { ProfileComponent } from './admin/pages/user/profile/profile.component';
 const routes: Routes = [
   {
     path: '',
@@ -48,8 +51,8 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: '/admin/dash', pathMatch: 'full' },
-      { path: 'dash', component: DashComponent, canActivate: [authGuard] },
+      { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashComponent, canActivate: [authGuard] },
       {
         path: 'product',
         component: ProductsComponent,
@@ -62,7 +65,7 @@ const routes: Routes = [
         component: CategoryComponent,
         canActivate: [authGuard],
       },
-      { path: 'admin', redirectTo: 'dash', pathMatch: 'full' },
+      { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   {
@@ -70,15 +73,15 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: '/user/dash', pathMatch: 'full' },
-      { path: 'dash', component: DashComponent, canActivate: [authGuard] },
-      { path: 'order', component: OrdersComponent, canActivate: [authGuard] },
+      { path: '', redirectTo: '/user/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: UserDashComponent, canActivate: [authGuard] },
+      { path: 'order', component: MyOrdersComponent, canActivate: [authGuard] },
       {
         path: 'profile',
-        component: CategoryComponent,
+        component: ProfileComponent,
         canActivate: [authGuard],
       },
-      { path: 'user', redirectTo: 'dash', pathMatch: 'full' },
+      { path: 'user', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   { path: 'login', component: LoginComponent },

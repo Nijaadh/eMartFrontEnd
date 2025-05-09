@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     
     this.loginForm = this.fb.group({
       userName: [savedUsername || '', [Validators.required]],
-      userPassword: [savedPassword || '', [Validators.required, Validators.minLength(6)]]
+      userPassword: [savedPassword || '', [Validators.required, Validators.minLength(5)]]
     });
     
     // If we have saved credentials, set rememberMe to true

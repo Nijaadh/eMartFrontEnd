@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
-import { GiftBoxService } from '../../../services/cart.service';
-import { OrderService } from '../../../services/order.service';
+import { GiftBoxService } from '../../../../services/cart.service';
+import { OrderService } from '../../../../services/order.service';
 
 @Component({
   selector: 'app-orders',

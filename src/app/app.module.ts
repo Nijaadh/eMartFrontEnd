@@ -38,10 +38,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
-import { DashComponent } from './admin/pages/dash/dash.component';
-import { OrdersComponent } from './admin/pages/orders/orders.component';
-import { ProductsComponent } from './admin/pages/products/products.component';
-import { UsersComponent } from './admin/pages/users/users.component';
+import { DashComponent } from './admin/pages/Admin/dash/dash.component';
+import { OrdersComponent } from './admin/pages/Admin/orders/orders.component';
+import { ProductsComponent } from './admin/pages/Admin/products/products.component';
+import { UsersComponent } from './admin/pages/Admin/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
@@ -58,7 +58,7 @@ import { CheckOutComponent } from './user/pages/check-out/check-out.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
-import { CategoryComponent } from './admin/pages/category/category.component';
+import { CategoryComponent } from './admin/pages/Admin/category/category.component';
 import { ItemsComponent } from './user/pages/items/items.component';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -83,6 +83,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
+import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.component';
+import { ProfileComponent } from './admin/pages/user/profile/profile.component';
+import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
 
 
 
@@ -113,6 +116,9 @@ import { ForgotPasswordComponent } from './authentication/forgot-password/forgot
     AboutUsComponent,
     ItemProfileComponent,
     ForgotPasswordComponent,
+    UserDashComponent,
+    ProfileComponent,
+    MyOrdersComponent,
     
     
   ],

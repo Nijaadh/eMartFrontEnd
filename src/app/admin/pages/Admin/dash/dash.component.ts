@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import * as AOS from 'aos';
-import { DashboardService } from '../../../services/dashboard.service';
+import { DashboardService } from '../../../../services/dashboard.service';
 
 interface LowStockItem {
   id: number;

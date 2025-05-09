@@ -7,8 +7,8 @@ import {
   DeleteCategory,
   UpCategory,
   UpSubCategory,
-} from '../../model/categoryModel';
-import { CategoryService } from '../../../services/category.service';
+} from '../../../model/categoryModel';
+import { CategoryService } from '../../../../services/category.service';
 
 @Component({
   selector: 'app-category',

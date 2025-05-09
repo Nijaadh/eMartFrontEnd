@@ -105,7 +105,7 @@ export class NavBarComponent implements OnInit {
 
   goToProfile() {
     if (this.userRole === 'Admin') {
-      this.router.navigate(['/admin/dash']);
+      this.router.navigate(['/admin/dashboard']);
     } else{
       this.router.navigate(['/user/profile']);
     }
