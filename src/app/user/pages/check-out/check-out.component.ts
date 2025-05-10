@@ -156,6 +156,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
 
     this._orderService.createOrders(this.item).subscribe({
       next: response => {
+        console.log("Response:", response);
         const id = response.payload;
         console.log("Order ID:", response);
         console.log("Order ID:", id);
