@@ -3,7 +3,8 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
-import { GiftBoxService } from '../../../services/gift-box.service';
+import { GiftBoxService } from '../../../services/cart.service';
+import { SharedDataService } from '../../../services/shared-data.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -22,22 +23,24 @@ export class NavBarComponent implements OnInit {
   email: any = '';
   gifts: any[] = [];
   errorMessage: string = '';
-  toggleMenu() {
-    this.menuActive = !this.menuActive;
-  }
-
+  visible: boolean = false;
   items: MenuItem[] | undefined;
-
+  giftboxCount: number = 0;
+  giftBoxItems: number[] = [];
+  giftBoxItemsDetails: any[] = [];
+  userRole: string = ''
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
     private router: Router,
-    private giftBoxService: GiftBoxService
+    private giftBoxService: GiftBoxService,
+    private sharedDataService: SharedDataService
   ) {
     if (typeof window !== 'undefined') {
       this.username = localStorage.getItem('username');
       this.imageUrl = `data:image/png;base64,${localStorage.getItem('imgUrl')}`;
       this.email = localStorage.getItem('email');
+      this.userRole = localStorage.getItem('role') || '';
     }
   }
   ngOnInit() {
@@ -54,10 +57,19 @@ export class NavBarComponent implements OnInit {
             label: this.username,
             items: [
               {
-                label: 'My Account',
+                label: 'My Profile',
                 icon: 'pi pi-user',
                 command: () => {
                   this.sidebarVisible = true;
+                  this.goToProfile();
+                },
+              },
+              {
+                label: 'My Orders',
+                icon: 'pi pi-shopping-cart',
+                command: () => {
+                  this.sidebarVisible = true;
+                  this.goToOrders();
                 },
               },
               {
@@ -91,6 +103,23 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+  goToProfile() {
+    if (this.userRole === 'Admin') {
+      this.router.navigate(['/admin/dashboard']);
+    } else{
+      this.router.navigate(['/user/profile']);
+    }
+  }
+
+  goToOrders() {
+    this.router.navigate(['/user/order']);
+  }
+
+  toggleMenu() {
+    this.menuActive = !this.menuActive;
+  }
+
+
   fetchGiftsByUserId(userId: string) {
     // const storedUserId = localStorage.getItem('id');
     // if (!storedUserId) {
@@ -98,11 +127,10 @@ export class NavBarComponent implements OnInit {
     // }
     // const userId: string = storedUserId;
 
-    this.giftBoxService.getGiftsByUserId(userId).subscribe({
+    this.giftBoxService.getcartsByUserId(userId).subscribe({
       next: (response) => {
         if (response.status) {
           this.gifts = response.payload[0];
-          console.log('Hutto::::::' + response.payload[0]);
         } else {
           this.errorMessage = 'No active gifts found for this user.';
         }
@@ -121,6 +149,28 @@ export class NavBarComponent implements OnInit {
     window.location.reload();
     this.router.navigate(['/home']); // Redirect to login page
     this.isLoggedIn = false;
-    console.log('Logout');
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  sendArray() {
+    localStorage.setItem('item', JSON.stringify(this.giftBoxItems));
+    this.sharedDataService.setData(this.giftBoxItems);
+    this.router.navigate(['/check-out']);
+  }
+
+  removeItemFromArray(item: number): void {
+    const index = this.giftBoxItems.indexOf(item);
+
+    if (index !== -1) {
+      // Item exists in the array, so remove it
+      this.giftBoxItems.splice(index, 1);
+      this.giftboxCount = this.giftBoxItems.length;
+      console.log(`Item ${item} removed. Updated array:`, this.giftBoxItems);
+    } else {
+      console.log(`Item ${item} not found in the array.`);
+    }
   }
 }

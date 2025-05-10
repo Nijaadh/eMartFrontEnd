@@ -7,4 +7,7 @@ export interface Item {
   subCategoryId: string;
   description: string;
   category: string;
+  itemCount: Number;
+  discount : string;
+  reOrderLevel: string;
 }

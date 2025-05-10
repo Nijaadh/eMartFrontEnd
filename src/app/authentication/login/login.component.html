@@ -1,52 +1,142 @@
-<div class="main">
-    <div class="img">
-        <img src="/assets/login.jpeg" alt="">
-    </div>
-    <div class="lgform">
-        <form class="form" (submit)="login()">
-            <div class="flex-column">
-                <label>Email </label>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl w-full flex rounded-xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] overflow-hidden" data-aos="fade-up">
+      <!-- Left side - Image with overlay -->
+      <div class="hidden lg:block w-1/2 relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-700/90 to-primary-900/90 z-10"></div>
+        <img src="/assets/login.jpeg" alt="Login" class="h-full w-full object-cover relative z-0" />
+        <div class="absolute inset-0 flex flex-col justify-center items-center z-20 p-10 text-white" data-aos="fade-right" data-aos-delay="300">
+          <div class="mb-6">
+            <img src="/assets/blogo.png" alt="EMart.lk Logo" class="h-16 w-auto filter brightness-0 invert" />
+          </div>
+          <h1 class="text-4xl font-bold mb-4 text-center">Welcome to EMart.lk</h1>
+          <p class="text-lg text-center mb-6 text-gray-100 max-w-md">Your one-stop destination for all your shopping needs.</p>
+          <div class="flex space-x-4 mt-4">
+            <div class="flex items-center">
+              <i class="pi pi-check-circle text-xl mr-2"></i>
+              <span>Quality Products</span>
             </div>
-            <div class="inputForm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 32 32" height="20">
-                    <g data-name="Layer 3" id="Layer_3">
-                        <path
-                            d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z">
-                        </path>
-                    </g>
-                </svg>
-                <input placeholder="Username" class="input" type="text" [(ngModel)]="user.userName" name="userName">
+            <div class="flex items-center">
+              <i class="pi pi-check-circle text-xl mr-2"></i>
+              <span>Fast Delivery</span>
             </div>
+          </div>
+          <div class="flex space-x-4 mt-3">
+            <div class="flex items-center">
+              <i class="pi pi-check-circle text-xl mr-2"></i>
+              <span>Secure Payments</span>
+            </div>
+            <div class="flex items-center">
+              <i class="pi pi-check-circle text-xl mr-2"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right side - Form -->
+      <div class="w-full lg:w-1/2 bg-white p-8 lg:p-12">
+        <div class="lg:hidden flex justify-center mb-6" data-aos="fade-down">
+          <img src="/assets/blogo.png" alt="EMart.lk Logo" class="h-12 w-auto" />
+        </div>
         
-            <div class="flex-column">
-                <label>Password </label>
-            </div>
-            <div class="inputForm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="-64 0 512 512" height="20">
-                    <path
-                        d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0">
-                    </path>
-                    <path
-                        d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0">
-                    </path>
-                </svg>
-                <input placeholder="Password" class="input" type="password" [(ngModel)]="user.userPassword" name="userPassword">
-            </div>
+        <div class="mb-8" data-aos="fade-up" data-aos-delay="200">
+          <h2 class="text-3xl font-bold text-gray-900">Sign in to your account</h2>
+          <p class="mt-2 text-gray-600">Welcome back! Please enter your credentials to access your account.</p>
+        </div>
         
-            <div class="flex-row">
-                <div>
-                    <input type="radio">
-                    <label>Remember me </label>
-                </div>
-                <span class="span">Forgot password?</span>
+        <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-5" data-aos="fade-up" data-aos-delay="300">
+          <div>
+            <label for="userName" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
+                <i class="pi pi-user"></i>
+              </span>
+              <input
+                id="userName"
+                formControlName="userName"
+                pInputText
+                autocomplete="off"
+                class="w-full pl-12 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                placeholder="Enter your username"
+              />
             </div>
-            <button class="button-submit" type="submit">Log In</button>
-            <p class="p">Don't have an account? <span class="span" routerLink="/register">Sign Up</span>
-        
-            </p>
-            <div class="logo" routerLink="/home">
-                <img src="/assets/blogo.png" alt="GiftWave Logo" width="50px"> GiftWave.com
+            <small
+              *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+              class="text-red-500 text-xs mt-1 flex items-center">
+              <i class="pi pi-exclamation-circle mr-1"></i> Username is required
+            </small>
+          </div>
+          
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="userPassword" class="block text-sm font-medium text-gray-700">Password</label>
+              <a (click)="navigateToForgotPassword()" class="text-sm text-primary-600 hover:text-primary-500 font-medium transition-colors duration-200 cursor-pointer">
+                Forgot password?
+              </a>              
             </div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 z-10">
+                <i class="pi pi-lock"></i>
+              </span>
+              <p-password
+                id="userPassword"
+                formControlName="userPassword"
+                [feedback]="false"
+                [toggleMask]="true"
+                styleClass="w-full"
+                inputStyleClass="w-full pl-12 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                placeholder="Enter your password"
+              ></p-password>
+            </div>
+            <small
+              *ngIf="loginForm.get('userPassword')?.invalid && loginForm.get('userPassword')?.touched"
+              class="text-red-500 text-xs mt-1 flex items-center">
+              <i class="pi pi-exclamation-circle mr-1"></i> Password is required (min 6 characters)
+            </small>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <p-checkbox
+                [(ngModel)]="rememberMe"
+                [ngModelOptions]="{standalone: true}"
+                [binary]="true"
+                inputId="rememberMe"
+                styleClass="mr-2">
+              </p-checkbox>
+              <label for="rememberMe" class="text-sm text-gray-700">Remember me</label>
+            </div>
+          </div>
+          
+          <div class="pt-1">
+            <p-button
+              type="submit"
+              [loading]="loading"
+              styleClass="w-full p-button-primary shadow-lg"
+              [style]="{'height': '44px'}"
+              label="Sign in">
+            </p-button>
+          </div>
         </form>
+        
+        <div class="mt-6 text-center" data-aos="fade-up" data-aos-delay="400">
+          <p class="text-gray-600">
+            Don't have an account?
+            <a routerLink="/register" class="font-semibold text-primary-600 hover:text-primary-500 transition-colors duration-200 ml-1">
+              Create an account
+            </a>
+          </p>
+        </div>
+        
+        <div class="mt-8 pt-4 border-t border-gray-200 text-center" data-aos="fade-up" data-aos-delay="500">
+          <a routerLink="/home" class="inline-flex items-center text-primary-800 font-semibold hover:text-primary-600 transition-colors duration-200">
+            <img src="/assets/blogo.png" alt="EMart.lk Logo" class="h-6 w-auto mr-2" />
+            <span>© 2023 EMart.lk. All rights reserved.</span>
+          </a>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  
+  <p-toast position="top-right"></p-toast>
+  

@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>GiftWave</title>
+  <title>EMart</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <script src="https://js.stripe.com/v3/"></script>
 
   <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+      });
+    });
+  </script>
 </body>
 </html>

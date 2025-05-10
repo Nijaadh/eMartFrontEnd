@@ -1,72 +1,173 @@
-<div class="date">
-    <h4>Today's Date  </h4> &nbsp;<h3> {{ currentDate | date:'yyyy-MM-dd' }}</h3>
-</div>
-<div class="card flex flex-wrap justify-content-center gap-2">
-    <p-sidebar [(visible)]="sidebarVisible" position="left">
-
-
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <img src="/assets/blogo.png" alt="GiftWave Logo" height="50px">
-                    <span>EMart</span>
-                </div>
-            </div>
-            <div class="sidebar-menu">
-                <ul>
-                    <li class="menu-item">
-                        <a routerLink="/admin/dash" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-home"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/product" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-warehouse"></i>
-                            <span>Products</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/order" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-cart-plus"></i>
-                            <span>Track orders</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/category" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-users"></i>
-                            <span>Category</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a routerLink="/admin/users" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <i class="pi pi-users"></i>
-                            <span>Users</span>
-                        </a>
-                    </li>
-                    <!-- <li class="menu-item">
-                        <a routerLink="/admin/setting">
-                            <i class="pi pi-cog"></i>
-                            <span>Settings</span>
-                        </a>
-                    </li> -->
-                </ul>
-            </div>
-            <div class="btnHome">
-                <button routerLink="/">Back to home</button>
-            </div>
-            <div class="sidebar-footer">
-                <a  (click)="logout()" class="user-profile">
-                    <i class="pi pi-sign-out"></i>
-                    <span>Log out</span>
-                </a>
-            </div>
+<div class="flex min-h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <div class="sidebar-wrapper" [ngClass]="{'sidebar-expanded': sidebarVisible, 'sidebar-collapsed': !sidebarVisible}">
+    <div class="sidebar-content" data-aos="fade-right" data-aos-duration="600">
+      <!-- Logo Section -->
+      <div class="logo-section p-4 flex items-center justify-between">
+        <div class="flex items-center">
+          <img src="/assets/blogo.png" alt="EMart Logo" class="h-10 w-10 object-contain">
+          <h1 class="text-xl font-bold text-gray-800 ml-3 transition-all duration-300" 
+              [ngClass]="{'opacity-0 w-0': !sidebarVisible, 'opacity-100': sidebarVisible}">EMart</h1>
         </div>
+        <button *ngIf="sidebarVisible" (click)="toggleSidebar()" 
+                class="p-2 rounded-full hover:bg-gray-100 text-gray-500 focus:outline-none lg:hidden">
+          <i class="pi pi-times text-sm"></i>
+        </button>
+      </div>
+      
+      <!-- Divider -->
+      <div class="px-4 pt-2">
+        <div class="border-t border-gray-200"></div>
+      </div>
+      
+      <!-- Navigation Menu -->
+      <div class="flex-grow overflow-y-auto py-4 px-3">
+        <ul class="space-y-1">
+          <li *ngFor="let item of menuList; let i = index" 
+              data-aos="fade-right" [attr.data-aos-delay]="50 + i * 30">
+            <a [routerLink]="item.path" 
+               routerLinkActive="bg-blue-100 text-blue-700 border-l-4 border-blue-700" 
+               [routerLinkActiveOptions]="{exact:true}" 
+               class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
+              <i [class]="item.icon + ' text-lg mr-3 text-gray-500 group-hover:text-blue-600'"></i>
+              <span class="transition-all duration-300" 
+                    [ngClass]="{'opacity-0 w-0': !sidebarVisible, 'opacity-100': sidebarVisible}">
+                {{ item.label }}
+              </span>
+              <span *ngIf="!sidebarVisible" 
+                    class="absolute left-full ml-3 px-2 py-1 text-xs font-medium text-white bg-gray-700 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
+                {{ item.label }}
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Bottom Actions -->
+      <div class="p-3 space-y-1 mt-auto">
+        <!-- Home Button -->
+        <a routerLink="/" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
+          <i class="pi pi-home text-lg mr-3 text-gray-500 group-hover:text-blue-600"></i>
+          <span class="transition-opacity duration-300" 
+                [ngClass]="{'opacity-0 w-0': !sidebarVisible, 'opacity-100': sidebarVisible}">
+            Back to Home
+          </span>
+        </a>
+        
+        <!-- Divider -->
+        <div class="border-t border-gray-200 my-2"></div>
+        
+        <!-- Logout Button -->
+        <a (click)="logout()" 
+           class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-red-50 transition-all duration-200 group cursor-pointer">
+          <i class="pi pi-sign-out text-lg mr-3 text-gray-500 group-hover:text-red-600"></i>
+          <span class="transition-opacity duration-300" 
+                [ngClass]="{'opacity-0 w-0': !sidebarVisible, 'opacity-100': sidebarVisible}">
+            Logout
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
 
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Top Header -->
+    <header class="bg-white shadow-sm z-10">
+      <div class="flex items-center justify-between p-4">
+        <!-- Toggle Sidebar Button -->
+        <button (click)="toggleSidebar()" 
+                class="p-2 rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" 
+                pTooltip="Toggle Sidebar" tooltipPosition="right">
+          <i class="pi" [ngClass]="sidebarVisible ? 'pi-arrow-left' : 'pi-arrow-right'"></i>
+        </button>
+        
+        <!-- Page Title -->
+        <h1 class="text-xl font-semibold text-gray-800 hidden md:block" 
+            data-aos="fade-down" data-aos-duration="600">
+          {{pageTitle}}
+        </h1>
+        
+        <!-- User Profile & Actions -->
+        <div class="flex items-center space-x-4">
+          <!-- Notifications -->
+          <p-button icon="pi pi-bell" styleClass="p-button-text p-button-rounded" 
+                   [badge]="notificationCount.toString()" badgeClass="p-badge-danger" 
+                   *ngIf="notificationCount > 0" (onClick)="showNotifications()"></p-button>
+          
+          <!-- Date Display -->
+          <div class="hidden md:flex items-center bg-white rounded-lg shadow-sm px-4 py-2" 
+               data-aos="fade-left" data-aos-duration="600">
+            <i class="pi pi-calendar text-blue-600 mr-2"></i>
+            <div>
+              <p class="text-xs text-gray-500">Today's Date</p>
+              <p class="text-sm font-medium text-gray-800">{{ currentDate | date:'MMM d, yyyy' }}</p>
+            </div>
+          </div>
+          
+          <!-- User Profile -->
+          <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+          <div class="flex items-center cursor-pointer" (click)="userMenu.toggle($event)">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 font-bold mr-2">
+              {{userInitials}}
+            </div>
+            <span class="hidden md:block font-medium text-gray-700">{{userName}}</span>
+            <i class="pi pi-chevron-down text-xs ml-2 text-gray-500"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Secondary Header - Breadcrumbs -->
+    <div class="bg-white border-b border-gray-200 px-6 py-2">
+      <p-breadcrumb [model]="breadcrumbItems" [home]="breadcrumbHome"></p-breadcrumb>
+    </div>
+    
+    <!-- Main Content Area -->
+    <main class="main-content-area p-6 bg-gray-50">
+      <div data-aos="fade-up" data-aos-duration="800">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>
 
+<!-- Notifications -->
+<p-toast position="bottom-right"></p-toast>
 
+<!-- Overlay when mobile sidebar is open -->
+<div *ngIf="sidebarVisible" 
+     class="fixed inset-0 bg-gray-600 bg-opacity-50 z-10 lg:hidden transition-opacity duration-300" 
+     (click)="toggleSidebar()">
+</div>
 
-    </p-sidebar>
-    <p-button type="button" class="mr-2" (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
-
-    <router-outlet></router-outlet>
+<!-- Notifications Overlay -->
+<p-dialog [(visible)]="showNotificationsPanel" 
+          [style]="{width: '400px'}" 
+          header="Notifications" 
+          [modal]="true" 
+          [dismissableMask]="true" 
+          [draggable]="false">
+  <div class="p-2">
+    <div *ngIf="notifications.length === 0" class="text-center py-4 text-gray-500">
+      No new notifications
+    </div>
+    <div *ngFor="let notification of notifications" class="mb-3 p-3 border-b border-gray-100 last:border-0">
+      <div class="flex">
+        <i [class]="notification.icon + ' mr-3 text-lg ' + notification.iconClass"></i>
+        <div class="flex-1">
+          <h5 class="font-medium text-gray-800">{{notification.title}}</h5>
+          <p class="text-sm text-gray-600">{{notification.message}}</p>
+          <span class="text-xs text-gray-400 mt-1 block">{{notification.time | date:'short'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-between">
+      <p-button label="Clear All" icon="pi pi-trash" styleClass="p-button-text" (onClick)="clearNotifications()"></p-button>
+      <p-button label="View All" icon="pi pi-external-link" styleClass="p-button-text" 
+               routerLink="/notifications" (onClick)="showNotificationsPanel = false"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
