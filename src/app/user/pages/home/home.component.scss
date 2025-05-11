@@ -1,136 +1,139 @@
 /* Hero Image Slider */
 .image-slider {
-    @apply relative h-[600px] w-full overflow-hidden;
+  @apply absolute inset-0 h-[600px] w-full overflow-hidden;
+  
+  .slider-image {
+    @apply absolute inset-0 w-full h-full object-cover;
+    opacity: 0;
+    animation: imageSlider 21s infinite;
+    transform: scale(1);
+    transition: transform 7s ease;
     
-    .slider-image {
-      @apply absolute inset-0 w-full h-full object-cover;
-      opacity: 0;
-      animation: imageSlider 14s infinite;
-      transform: scale(1);
-      transition: transform 7s ease;
-      
-      &:nth-child(1) {
-        animation-delay: 0s;
-      }
-      
-      &:nth-child(2) {
-        animation-delay: 7s;
-      }
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    &:nth-child(2) {
+      animation-delay: 7s;
+    }
+    
+    &:nth-child(3) {
+      animation-delay: 14s;
     }
   }
-  
-  @keyframes imageSlider {
-    0%, 45% {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-    50%, 95% {
-      opacity: 0;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
+}
+
+@keyframes imageSlider {
+  0%, 30% {
+    opacity: 1;
+    transform: scale(1.05);
   }
-  
-  /* Custom Animations */
-  .hover-scale {
-    @apply transition-transform duration-300;
-    
-    &:hover {
-      @apply transform scale-105;
-    }
+  33%, 95% {
+    opacity: 0;
+    transform: scale(1);
   }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Custom Animations */
+.hover-scale {
+  @apply transition-transform duration-300;
   
-  /* Category Cards */
-  .category-card {
-    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300;
-    
-    &:hover {
-      @apply shadow-lg transform -translate-y-1;
-      
-      .category-icon {
-        @apply transform scale-110;
-      }
-    }
+  &:hover {
+    @apply transform scale-105;
+  }
+}
+
+/* Category Cards */
+.category-card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300;
+  
+  &:hover {
+    @apply shadow-lg transform -translate-y-1;
     
     .category-icon {
-      @apply transition-transform duration-300;
+      @apply transform scale-110;
     }
   }
   
-  /* Banner Section */
-  .banner-overlay {
-    @apply absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent;
-    
-    &:hover {
-      @apply from-blue-800/70;
-    }
+  .category-icon {
+    @apply transition-transform duration-300;
   }
+}
+
+/* Banner Section */
+.banner-overlay {
+  @apply absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent;
   
-  /* Feature Cards */
-  .feature-card {
-    @apply transition-all duration-300;
-    
-    &:hover {
-      @apply shadow-lg transform -translate-y-1;
-      
-      .feature-icon-wrapper {
-        @apply transform scale-110;
-      }
-    }
+  &:hover {
+    @apply from-blue-800/70;
+  }
+}
+
+/* Feature Cards */
+.feature-card {
+  @apply transition-all duration-300;
+  
+  &:hover {
+    @apply shadow-lg transform -translate-y-1;
     
     .feature-icon-wrapper {
-      @apply transition-transform duration-300;
+      @apply transform scale-110;
     }
   }
   
-  /* Newsletter Input */
-  :host ::ng-deep {
-    .p-inputtext {
-      @apply border-0 shadow-md;
-    }
-    
-    .p-button {
-      @apply shadow-md;
-    }
-    
-    /* PrimeNG Button Customization */
-    .p-button.p-button-lg {
-      @apply text-base px-6;
-    }
-    
-    /* PrimeNG Carousel Customization */
-    .p-carousel {
-      .p-carousel-indicators {
-        @apply mt-4;
-        
-        .p-carousel-indicator button {
-          @apply bg-gray-300;
-        }
-        
-        .p-carousel-indicator.p-highlight button {
-          @apply bg-blue-600;
-        }
+  .feature-icon-wrapper {
+    @apply transition-transform duration-300;
+  }
+}
+
+/* Newsletter Input */
+:host ::ng-deep {
+  .p-inputtext {
+    @apply border-0 shadow-md;
+  }
+  
+  .p-button {
+    @apply shadow-md;
+  }
+  
+  /* PrimeNG Button Customization */
+  .p-button.p-button-lg {
+    @apply text-base px-6;
+  }
+  
+  /* PrimeNG Carousel Customization */
+  .p-carousel {
+    .p-carousel-indicators {
+      @apply mt-4;
+      
+      .p-carousel-indicator button {
+        @apply bg-gray-300;
+      }
+      
+      .p-carousel-indicator.p-highlight button {
+        @apply bg-blue-600;
       }
     }
   }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .image-slider {
-      @apply h-[500px];
-    }
-    
-    .banner-content {
-      @apply p-6 max-w-full;
-    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .image-slider {
+    @apply h-[500px];
   }
   
-  @media (max-width: 640px) {
-    .image-slider {
-      @apply h-[400px];
-    }
+  .banner-content {
+    @apply p-6 max-w-full;
   }
-  
+}
+
+@media (max-width: 640px) {
+  .image-slider {
+    @apply h-[400px];
+  }
+}
