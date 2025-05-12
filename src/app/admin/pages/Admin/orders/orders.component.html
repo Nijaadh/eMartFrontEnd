@@ -1,0 +1,869 @@
+<div class="dashboard-container p-4" data-aos="fade-in">
+  <!-- Loading overlay -->
+  <div *ngIf="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <p-progressSpinner styleClass="w-12 h-12" strokeWidth="4"></p-progressSpinner>
+  </div>
+  
+  <!-- Breadcrumb -->
+  <div class="mb-6">
+    <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+  </div>
+  
+  <!-- Order Management Header Card -->
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-8" data-aos="fade-up" data-aos-delay="100">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Order Management</h1>
+        <p class="text-gray-600 mt-1">Track and manage customer orders</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+            <i class="pi pi-search"></i>
+          </span>
+          <input
+            type="text"
+            pInputText
+            placeholder="Search orders..."
+            class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 w-full"
+          />
+        </div>
+        <p-button
+          icon="pi pi-refresh"
+          (onClick)="getAllOrdersList()"
+          styleClass="p-button-rounded p-button-outlined"
+          pTooltip="Refresh orders"
+          tooltipPosition="top"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dashboard Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" data-aos="fade-up" data-aos-delay="150">
+    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-500 hover:shadow-lg transition-all duration-300">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-gray-500 text-sm font-medium">Pending Orders</h3>
+          <p class="text-2xl font-bold text-gray-800">{{ pendingOrders.length }}</p>
+        </div>
+        <div class="bg-blue-100 p-3 rounded-full">
+          <i class="pi pi-clock text-blue-500 text-xl"></i>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Awaiting processing</p>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-amber-500 hover:shadow-lg transition-all duration-300">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-gray-500 text-sm font-medium">Processing</h3>
+          <p class="text-2xl font-bold text-gray-800">{{ processingOrders.length }}</p>
+        </div>
+        <div class="bg-amber-100 p-3 rounded-full">
+          <i class="pi pi-sync text-amber-500 text-xl"></i>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Being prepared for shipping</p>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-purple-500 hover:shadow-lg transition-all duration-300">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-gray-500 text-sm font-medium">Shipped</h3>
+          <p class="text-2xl font-bold text-gray-800">{{ shippedOrders.length }}</p>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-full">
+          <i class="pi pi-send text-purple-500 text-xl"></i>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">On the way to customers</p>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500 hover:shadow-lg transition-all duration-300">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-gray-500 text-sm font-medium">Delivered</h3>
+          <p class="text-2xl font-bold text-gray-800">{{ deliveredOrders.length }}</p>
+        </div>
+        <div class="bg-green-100 p-3 rounded-full">
+          <i class="pi pi-check-circle text-green-500 text-xl"></i>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Successfully delivered</p>
+    </div>
+  </div>
+
+  <!-- Orders Tab View -->
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-8" data-aos="fade-up" data-aos-delay="200">
+    <p-tabView styleClass="order-tabs" (onChange)="onTabChange($event)">
+      <!-- New Orders Tab -->
+      <p-tabPanel header="New Orders">
+        <div class="p-4">
+          <!-- Search and Filter Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <!-- Use this pattern for ALL search bars in your tabs -->
+<div class="w-full md:w-80 relative">
+  <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10 pointer-events-none"></i>
+  <input 
+    type="text" 
+    pInputText 
+    placeholder="Search orders..." 
+    class="w-full pl-10"
+  />
+</div>
+
+            <div class="flex gap-2">
+              <p-button 
+                icon="pi pi-filter" 
+                label="Filter" 
+                styleClass="p-button-outlined p-button-sm"
+              ></p-button>
+              <p-button 
+                icon="pi pi-refresh" 
+                styleClass="p-button-outlined p-button-sm"
+                (onClick)="getAllOrdersList()"
+              ></p-button>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="overflow-x-auto">
+            <p-table 
+              [value]="pendingOrders" 
+              styleClass="p-datatable-sm p-datatable-gridlines"
+              [tableStyle]="{'min-width': '960px'}"
+              [paginator]="true" 
+              [rows]="5"
+              [rowsPerPageOptions]="[5,10,25]"
+              responsiveLayout="scroll"
+              dataKey="id"
+              [rowHover]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="createdAt" style="width: 15%">Date <p-sortIcon field="createdAt"></p-sortIcon></th>
+                  <th pSortableColumn="receiverName" style="width: 15%">Customer <p-sortIcon field="receiverName"></p-sortIcon></th>
+                  <th pSortableColumn="totalPrice" style="width: 10%">Total <p-sortIcon field="totalPrice"></p-sortIcon></th>
+                  <th style="width: 15%">Shipping Address</th>
+                  <th pSortableColumn="paymentMethod" style="width: 10%">Payment <p-sortIcon field="paymentMethod"></p-sortIcon></th>
+                  <th style="width: 10%">Items</th>
+                  <th style="width: 10%">Status</th>
+                  <th style="width: 10%">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.createdAt | date:'shortDate' }}</span>
+                      <span class="text-xs text-gray-500">{{ order.createdAt | date:'shortTime' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.receiverName || 'User #' + order.userId }}</span>
+                      <span class="text-xs text-gray-500">{{ order.receiverPhone || 'No phone' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="font-bold text-blue-600">{{ order.totalPrice | currency:'USD':'symbol':'1.2-2' }}</span>
+                  </td>
+                  <td>
+                    <div class="line-clamp-2 overflow-hidden" style="max-width: 200px;"
+                         pTooltip="{{ order.receiverAddress }}" tooltipPosition="top">
+                      {{ order.receiverAddress }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {{ order.paymentMethod || 'Not specified' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {{ order.orderItems?.length || 0 }} items
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      PENDING
+                    </span>
+                  </td>
+                  <td>
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-eye"
+                        styleClass="p-button-rounded p-button-info p-button-sm"
+                        (onClick)="viewOrderDetails(order)"
+                        pTooltip="View details"
+                        tooltipPosition="top"
+                      ></p-button>
+                      <p-button
+                        icon="pi pi-check"
+                        styleClass="p-button-rounded p-button-success p-button-sm"
+                        (onClick)="updateStatus(order.id, 'PROCESSING')"
+                        pTooltip="Process order"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="9" class="text-center py-6">
+                    <div class="flex flex-col items-center">
+                      <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
+                      <span class="text-gray-500">No pending orders found</span>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Processing Tab -->
+      <p-tabPanel header="Processing">
+        <div class="p-4">
+          <!-- Search and Filter Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <!-- Use this pattern for ALL search bars in your tabs -->
+<div class="w-full md:w-80 relative">
+  <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10 pointer-events-none"></i>
+  <input 
+    type="text" 
+    pInputText 
+    placeholder="Search orders..." 
+    class="w-full pl-10"
+  />
+</div>
+
+            <div class="flex gap-2">
+              <p-button 
+                icon="pi pi-filter" 
+                label="Filter" 
+                styleClass="p-button-outlined p-button-sm"
+              ></p-button>
+              <p-button 
+                icon="pi pi-refresh" 
+                styleClass="p-button-outlined p-button-sm"
+                (onClick)="getAllOrdersList()"
+              ></p-button>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="overflow-x-auto">
+            <p-table 
+              [value]="processingOrders" 
+              styleClass="p-datatable-sm p-datatable-gridlines"
+              [tableStyle]="{'min-width': '960px'}"
+              [paginator]="true" 
+              [rows]="5"
+              [rowsPerPageOptions]="[5,10,25]"
+              responsiveLayout="scroll"
+              dataKey="id"
+              [rowHover]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="createdAt" style="width: 15%">Date <p-sortIcon field="createdAt"></p-sortIcon></th>
+                  <th pSortableColumn="receiverName" style="width: 15%">Customer <p-sortIcon field="receiverName"></p-sortIcon></th>
+                  <th pSortableColumn="totalPrice" style="width: 10%">Total <p-sortIcon field="totalPrice"></p-sortIcon></th>
+                  <th style="width: 15%">Shipping Address</th>
+                  <th pSortableColumn="paymentMethod" style="width: 10%">Payment <p-sortIcon field="paymentMethod"></p-sortIcon></th>
+                  <th style="width: 10%">Items</th>
+                  <th style="width: 10%">Status</th>
+                  <th style="width: 10%">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.createdAt | date:'shortDate' }}</span>
+                      <span class="text-xs text-gray-500">{{ order.createdAt | date:'shortTime' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.receiverName || 'User #' + order.userId }}</span>
+                      <span class="text-xs text-gray-500">{{ order.receiverPhone || 'No phone' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="font-bold text-amber-600">{{ order.totalPrice | currency:'USD':'symbol':'1.2-2' }}</span>
+                  </td>
+                  <td>
+                    <div class="line-clamp-2 overflow-hidden" style="max-width: 200px;"
+                         pTooltip="{{ order.receiverAddress }}" tooltipPosition="top">
+                      {{ order.receiverAddress }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                      {{ order.paymentMethod || 'Not specified' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                      {{ order.orderItems?.length || 0 }} items
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                      PROCESSING
+                    </span>
+                  </td>
+                  <td>
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-eye"
+                        styleClass="p-button-rounded p-button-info p-button-sm"
+                        (onClick)="viewOrderDetails(order)"
+                        pTooltip="View details"
+                        tooltipPosition="top"
+                      ></p-button>
+                      <p-button
+                        icon="pi pi-send"
+                        styleClass="p-button-rounded p-button-warning p-button-sm"
+                        (onClick)="updateStatus(order.id, 'SHIPPED')"
+                        pTooltip="Ship order"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="9" class="text-center py-6">
+                    <div class="flex flex-col items-center">
+                      <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
+                      <span class="text-gray-500">No processing orders found</span>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Shipped Orders Tab -->
+      <p-tabPanel header="Shipped">
+        <div class="p-4">
+          <!-- Search and Filter Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <!-- Use this pattern for ALL search bars in your tabs -->
+<div class="w-full md:w-80 relative">
+  <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10 pointer-events-none"></i>
+  <input 
+    type="text" 
+    pInputText 
+    placeholder="Search orders..." 
+    class="w-full pl-10"
+  />
+</div>
+
+            <div class="flex gap-2">
+              <p-button 
+                icon="pi pi-filter" 
+                label="Filter" 
+                styleClass="p-button-outlined p-button-sm"
+              ></p-button>
+              <p-button 
+                icon="pi pi-refresh" 
+                styleClass="p-button-outlined p-button-sm"
+                (onClick)="getAllOrdersList()"
+              ></p-button>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="overflow-x-auto">
+            <p-table 
+              [value]="shippedOrders" 
+              styleClass="p-datatable-sm p-datatable-gridlines"
+              [tableStyle]="{'min-width': '960px'}"
+              [paginator]="true" 
+              [rows]="5"
+              [rowsPerPageOptions]="[5,10,25]"
+              responsiveLayout="scroll"
+              dataKey="id"
+              [rowHover]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="createdAt" style="width: 15%">Date <p-sortIcon field="createdAt"></p-sortIcon></th>
+                  <th pSortableColumn="receiverName" style="width: 15%">Customer <p-sortIcon field="receiverName"></p-sortIcon></th>
+                  <th pSortableColumn="totalPrice" style="width: 10%">Total <p-sortIcon field="totalPrice"></p-sortIcon></th>
+                  <th style="width: 15%">Shipping Address</th>
+                  <th pSortableColumn="paymentMethod" style="width: 10%">Payment <p-sortIcon field="paymentMethod"></p-sortIcon></th>
+                  <th style="width: 10%">Items</th>
+                  <th style="width: 10%">Status</th>
+                  <th style="width: 10%">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.createdAt | date:'shortDate' }}</span>
+                      <span class="text-xs text-gray-500">{{ order.createdAt | date:'shortTime' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.receiverName || 'User #' + order.userId }}</span>
+                      <span class="text-xs text-gray-500">{{ order.receiverPhone || 'No phone' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="font-bold text-purple-600">{{ order.totalPrice | currency:'USD':'symbol':'1.2-2' }}</span>
+                  </td>
+                  <td>
+                    <div class="line-clamp-2 overflow-hidden" style="max-width: 200px;"
+                         pTooltip="{{ order.receiverAddress }}" tooltipPosition="top">
+                      {{ order.receiverAddress }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      {{ order.paymentMethod || 'Not specified' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      {{ order.orderItems?.length || 0 }} items
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      SHIPPED
+                    </span>
+                  </td>
+                  <td>
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-eye"
+                        styleClass="p-button-rounded p-button-info p-button-sm"
+                        (onClick)="viewOrderDetails(order)"
+                        pTooltip="View details"
+                        tooltipPosition="top"
+                      ></p-button>
+                      <p-button
+                        icon="pi pi-check-circle"
+                        styleClass="p-button-rounded p-button-success p-button-sm"
+                        (onClick)="updateStatus(order.id, 'DELEVERD')"
+                        pTooltip="Mark as delivered"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="9" class="text-center py-6">
+                    <div class="flex flex-col items-center">
+                      <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
+                      <span class="text-gray-500">No shipped orders found</span>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <!-- Delivered Orders Tab -->
+      <p-tabPanel header="Delivered">
+        <div class="p-4">
+          <!-- Search and Filter Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <!-- Use this pattern for ALL search bars in your tabs -->
+<div class="w-full md:w-80 relative">
+  <i class="pi pi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10 pointer-events-none"></i>
+  <input 
+    type="text" 
+    pInputText 
+    placeholder="Search orders..." 
+    class="w-full pl-10"
+  />
+</div>
+
+            <div class="flex gap-2">
+              <p-button 
+                icon="pi pi-filter" 
+                label="Filter" 
+                styleClass="p-button-outlined p-button-sm"
+              ></p-button>
+              <p-button 
+                icon="pi pi-refresh" 
+                styleClass="p-button-outlined p-button-sm"
+                (onClick)="getAllOrdersList()"
+              ></p-button>
+            </div>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="overflow-x-auto">
+            <p-table 
+              [value]="deliveredOrders" 
+              styleClass="p-datatable-sm p-datatable-gridlines"
+              [tableStyle]="{'min-width': '960px'}"
+              [paginator]="true" 
+              [rows]="5"
+              [rowsPerPageOptions]="[5,10,25]"
+              responsiveLayout="scroll"
+              dataKey="id"
+              [rowHover]="true"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="createdAt" style="width: 15%">Date <p-sortIcon field="createdAt"></p-sortIcon></th>
+                  <th pSortableColumn="receiverName" style="width: 15%">Customer <p-sortIcon field="receiverName"></p-sortIcon></th>
+                  <th pSortableColumn="totalPrice" style="width: 10%">Total <p-sortIcon field="totalPrice"></p-sortIcon></th>
+                  <th style="width: 15%">Shipping Address</th>
+                  <th pSortableColumn="paymentMethod" style="width: 10%">Payment <p-sortIcon field="paymentMethod"></p-sortIcon></th>
+                  <th style="width: 10%">Items</th>
+                  <th style="width: 10%">Status</th>
+                  <th style="width: 10%">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-order>
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.createdAt | date:'shortDate' }}</span>
+                      <span class="text-xs text-gray-500">{{ order.createdAt | date:'shortTime' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex flex-col">
+                      <span class="font-medium">{{ order.receiverName || 'User #' + order.userId }}</span>
+                      <span class="text-xs text-gray-500">{{ order.receiverPhone || 'No phone' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="font-bold text-green-600">{{ order.totalPrice | currency:'USD':'symbol':'1.2-2' }}</span>
+                  </td>
+                  <td>
+                    <div class="line-clamp-2 overflow-hidden" style="max-width: 200px;"
+                         pTooltip="{{ order.receiverAddress }}" tooltipPosition="top">
+                      {{ order.receiverAddress }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ order.paymentMethod || 'Not specified' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ order.orderItems?.length || 0 }} items
+                    </span>
+                  </td>
+                  <td>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      DELIVERED
+                    </span>
+                  </td>
+                  <td>
+                    <div class="flex gap-2">
+                      <p-button
+                        icon="pi pi-eye"
+                        styleClass="p-button-rounded p-button-info p-button-sm"
+                        (onClick)="viewOrderDetails(order)"
+                        pTooltip="View details"
+                        tooltipPosition="top"
+
+                        ></p-button>
+                        <p-button
+                          icon="pi pi-print"
+                          styleClass="p-button-rounded p-button-secondary p-button-sm"
+                          (onClick)="printOrder(order)"
+                          pTooltip="Print order"
+                          tooltipPosition="top"
+                        ></p-button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="9" class="text-center py-6">
+                      <div class="flex flex-col items-center">
+                        <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
+                        <span class="text-gray-500">No delivered orders found</span>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </p-tabPanel>
+  
+
+  
+  <!-- Order Details Dialog -->
+  <p-dialog 
+    [(visible)]="displayOrderDetails" 
+    [style]="{width: '90vw', maxWidth: '1200px'}" 
+    [modal]="true" 
+    [draggable]="false" 
+    [resizable]="false"
+    styleClass="p-fluid"
+    header="Order Details"
+  >
+    <div *ngIf="selectedOrder" class="p-4">
+      <!-- Order Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div class="flex flex-col">
+          <div class="flex items-center mb-2">
+            <span 
+              [ngClass]="{
+                'bg-blue-100 text-blue-800': selectedOrder.orderStatus === 'PENDING',
+                'bg-amber-100 text-amber-800': selectedOrder.orderStatus === 'PROCESSING',
+                'bg-purple-100 text-purple-800': selectedOrder.orderStatus === 'SHIPPED',
+                'bg-green-100 text-green-800': selectedOrder.orderStatus === 'DELEVERD',
+                'bg-red-100 text-red-800': selectedOrder.orderStatus === 'CANCELLED'
+              }"
+              class="text-xs font-semibold px-2.5 py-1 rounded-full mr-2"
+            >
+              {{ selectedOrder.orderStatus }}
+            </span>
+            <span class="text-gray-500 text-sm">Order #{{ selectedOrder.id }}</span>
+          </div>
+          <h2 class="text-xl font-bold text-gray-800">{{ selectedOrder.totalPrice | currency:'USD':'symbol':'1.2-2' }}</h2>
+          <p class="text-sm text-gray-500">Placed on {{ selectedOrder.createdAt | date:'medium' }}</p>
+        </div>
+        <div class="flex gap-2">
+          <p-button 
+            *ngIf="selectedOrder.orderStatus === 'PENDING'"
+            icon="pi pi-cog" 
+            label="Process" 
+            styleClass="p-button-warning p-button-sm"
+            (onClick)="updateStatus(selectedOrder.id, 'PROCESSING')"
+          ></p-button>
+          <p-button 
+            *ngIf="selectedOrder.orderStatus === 'PROCESSING'"
+            icon="pi pi-send" 
+            label="Ship" 
+            styleClass="p-button-info p-button-sm"
+            (onClick)="updateStatus(selectedOrder.id, 'SHIPPED')"
+          ></p-button>
+          <p-button 
+            *ngIf="selectedOrder.orderStatus === 'SHIPPED'"
+            icon="pi pi-check-circle" 
+            label="Deliver" 
+            styleClass="p-button-success p-button-sm"
+            (onClick)="updateStatus(selectedOrder.id, 'DELEVERD')"
+          ></p-button>
+          <p-button 
+            *ngIf="selectedOrder.orderStatus !== 'CANCELLED' && selectedOrder.orderStatus !== 'DELEVERD'"
+            icon="pi pi-times" 
+            label="Cancel" 
+            styleClass="p-button-danger p-button-outlined p-button-sm"
+            (onClick)="updateStatus(selectedOrder.id, 'CANCELLED')"
+          ></p-button>
+          <p-button 
+            icon="pi pi-print" 
+            styleClass="p-button-outlined p-button-sm"
+            (onClick)="printOrder(selectedOrder)"
+          ></p-button>
+        </div>
+      </div>
+  
+      <!-- Order Details Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="flex items-center mb-2">
+            <i class="pi pi-user text-blue-500 mr-2"></i>
+            <span class="text-gray-500 text-sm">Customer Info</span>
+          </div>
+          <p class="font-medium">ID: {{ selectedOrder.userId }}</p>
+          <p class="text-gray-600 text-sm mt-1">{{ selectedOrder.receiverName || 'Name not provided' }}</p>
+          <p class="text-gray-600 text-sm mt-1">{{ selectedOrder.receiverPhone || 'Phone not provided' }}</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="flex items-center mb-2">
+            <i class="pi pi-map-marker text-red-500 mr-2"></i>
+            <span class="text-gray-500 text-sm">Shipping Address</span>
+          </div>
+          <p class="font-medium">{{ selectedOrder.receiverAddress }}</p>
+          <p class="text-gray-600 text-sm mt-1">ZIP: {{ selectedOrder.zip }}</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm">
+          <div class="flex items-center mb-2">
+            <i class="pi pi-credit-card text-green-500 mr-2"></i>
+            <span class="text-gray-500 text-sm">Payment Info</span>
+          </div>
+          <p class="font-medium">Method: {{ selectedOrder.paymentMethod || 'Not specified' }}</p>
+          <p class="text-gray-600 text-sm mt-1">Status: 
+            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+              {{ selectedOrder.paymentStatus || 'PENDING' }}
+            </span>
+          </p>
+        </div>
+      </div>
+  
+      <!-- Order Items Table -->
+      <div class="overflow-x-auto bg-white rounded-lg shadow-sm mb-6">
+        <p-table 
+          [value]="selectedOrder.orderItems" 
+          styleClass="p-datatable-sm p-datatable-gridlines"
+          [tableStyle]="{'min-width': '60rem'}"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-left p-3 font-medium text-gray-600 w-16">Image</th>
+              <th class="text-left p-3 font-medium text-gray-600">Product</th>
+              <th class="text-left p-3 font-medium text-gray-600 w-24">Price</th>
+              <th class="text-left p-3 font-medium text-gray-600 w-24">Discount</th>
+              <th class="text-left p-3 font-medium text-gray-600 w-24">Quantity</th>
+              <th class="text-left p-3 font-medium text-gray-600 w-32">Subtotal</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td class="p-3">
+                <img 
+                  [src]="item.item.imageUrl || 'assets/images/product-placeholder.png'" 
+                  [alt]="item.item.name"
+                  class="w-12 h-12 object-cover rounded-md shadow-sm"
+                  onError="this.src='assets/images/product-placeholder.png'"
+                />
+              </td>
+              <td class="p-3">
+                <p class="font-medium text-gray-800">{{ item.item.name }}</p>
+                <p class="text-xs text-gray-500">ID: {{ item.item.id }}</p>
+                <p class="text-xs text-gray-500">
+                  {{ item.item.category }} > {{ item.item.subCategoryName }}
+              </p>
+            </td>
+            <td class="p-3 font-medium">{{ item.item.unitPrice | currency:'USD':'symbol':'1.2-2' }}</td>
+            <td class="p-3">
+              <span 
+                *ngIf="item.item.discount > 0" 
+                class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full"
+              >
+                {{ item.item.discount }}% OFF
+              </span>
+              <span *ngIf="!item.item.discount || item.item.discount === 0" class="text-gray-400">-</span>
+            </td>
+            <td class="p-3">
+              <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                {{ item.quantity }}
+              </span>
+            </td>
+            <td class="p-3 font-bold text-gray-800">
+              {{ (item.item.unitPrice * item.quantity) | currency:'USD':'symbol':'1.2-2' }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td colspan="5" class="text-right font-medium p-3">Order Total:</td>
+            <td class="p-3 font-bold text-lg text-gray-800">
+              {{ selectedOrder.totalPrice | currency:'USD':'symbol':'1.2-2' }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="text-center p-4 text-gray-500">
+              No items found in this order
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Order Timeline -->
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+      <h4 class="text-lg font-medium text-gray-700 mb-3">Order Timeline</h4>
+      <p-timeline [value]="[
+        {status: 'Order Placed', date: selectedOrder.createdAt, icon: 'pi pi-shopping-cart', color: '#4B5563', active: true},
+        {status: 'Processing', date: selectedOrder.orderStatus === 'PROCESSING' || selectedOrder.orderStatus === 'SHIPPED' || selectedOrder.orderStatus === 'DELEVERD' ? selectedOrder.updatedAt : null, icon: 'pi pi-cog', color: '#F59E0B', active: selectedOrder.orderStatus === 'PROCESSING' || selectedOrder.orderStatus === 'SHIPPED' || selectedOrder.orderStatus === 'DELEVERD'},
+        {status: 'Shipped', date: selectedOrder.orderStatus === 'SHIPPED' || selectedOrder.orderStatus === 'DELEVERD' ? selectedOrder.updatedAt : null, icon: 'pi pi-send', color: '#8B5CF6', active: selectedOrder.orderStatus === 'SHIPPED' || selectedOrder.orderStatus === 'DELEVERD'},
+        {status: 'Delivered', date: selectedOrder.orderStatus === 'DELEVERD' ? selectedOrder.updatedAt : null, icon: 'pi pi-check-circle', color: '#10B981', active: selectedOrder.orderStatus === 'DELEVERD'}
+      ]" align="alternate">
+        <ng-template pTemplate="content" let-event>
+          <div class="flex flex-col p-3" [ngClass]="{'opacity-50': !event.active}">
+            <span class="font-medium mb-1">{{ event.status }}</span>
+            <small class="text-gray-500" *ngIf="event.date">{{ event.date | date:'medium' }}</small>
+            <small class="text-gray-400 italic" *ngIf="!event.date">Pending</small>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="opposite" let-event>
+          <div class="flex justify-center items-center h-full">
+            <div 
+              class="w-10 h-10 flex items-center justify-center rounded-full shadow-sm"
+              [ngStyle]="{'background-color': event.active ? event.color + '20' : '#E5E7EB', 'color': event.active ? event.color : '#9CA3AF'}"
+            >
+              <i [class]="'text-xl ' + event.icon"></i>
+            </div>
+          </div>
+        </ng-template>
+      </p-timeline>
+    </div>
+
+    <!-- Admin Notes -->
+    <div class="bg-white p-4 rounded-lg shadow-sm">
+      <h4 class="text-lg font-medium text-gray-700 mb-3">Admin Notes</h4>
+      <textarea 
+        pInputTextarea 
+        [rows]="3" 
+        placeholder="Add notes about this order (only visible to admins)"
+        class="w-full"
+      ></textarea>
+      <div class="flex justify-end mt-2">
+        <p-button 
+          icon="pi pi-save" 
+          label="Save Notes" 
+          styleClass="p-button-sm"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button 
+        icon="pi pi-times" 
+        label="Close" 
+        styleClass="p-button-outlined p-button-sm"
+        (onClick)="displayOrderDetails = false"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Confirmation Dialog for Status Changes -->
+<p-confirmDialog
+  header="Confirm Action"
+  icon="pi pi-exclamation-triangle"
+  acceptButtonStyleClass="p-button-danger"
+  rejectButtonStyleClass="p-button-text"
+  acceptLabel="Yes"
+  rejectLabel="No"></p-confirmDialog>
+
+<!-- Toast Notifications -->
+<p-toast position="top-right"></p-toast>

@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
-  private apiUrl = 'http://api.exchangeratesapi.io/v1/latest';
-  private accessKey = 'a03a895c06b17882dc091ebfb6bcb612';
+  private apiUrl = environment.currencyConversionUrl;
+  private accessKey = environment.accessKey;
 
   constructor(private http: HttpClient) {}
 

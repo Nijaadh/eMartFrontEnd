@@ -3,8 +3,8 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { GiftBoxService } from '../../../services/gift-box.service';
 import { StripeService } from '../../../services/stripe.service';
+import { OrderService } from '../../../services/order.service';
 
 
 @Component({
@@ -18,11 +18,11 @@ export class PaymentComponent implements OnInit {
   private card: any;
   amount: number = 2000; // Example amount
   clientSecret: string = 'your-client-secret';
-  giftBoxID: any;
+  orderId: any;
 
   constructor(
     private stripeService: StripeService,
-    private giftBoxservice: GiftBoxService,
+    private _orderService: OrderService,
     private router:Router,
     private messageService: MessageService,
   ) {
@@ -30,14 +30,14 @@ export class PaymentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.giftBoxID = localStorage.getItem('giftBoxID');
+    this.orderId = localStorage.getItem('giftBoxID');
     const priceFromStorage = localStorage.getItem('giftBoxPrice');
     if (priceFromStorage !== null) {
       this.amount = parseInt(priceFromStorage);
     } else {
       console.log('No giftBoxPrice found in localStorage.');
     }
-    console.log("ID" + this.giftBoxID);
+    console.log("ID" + this.orderId);
     console.log("PRICE" + this.amount);
 
     this.stripe = await loadStripe('pk_test_51PzFfeFoTp81ofWkg2JjvjfPhCy0lCbKkMWMJ1bUp2tRqcGuq9bo20r6vbMCMPiJMcb1qLUMG9PFPCp70M1Nx9uw007sAbMw3d');
@@ -66,19 +66,17 @@ export class PaymentComponent implements OnInit {
         } else if (paymentIntent.status === 'succeeded') {
           console.log('Payment succeeded!');
 
-          const gift = {
-            id: this.giftBoxID,
+          const order = {
+            id: this.orderId,
             paymentStatus: "PAID"
           }
-          this.giftBoxservice.updatePayment(gift).subscribe((response) => {
+          this._orderService.updatePayment(order).subscribe((response) => {
             console.log('Paid  succeeded!');
             this.router.navigate(['/success']);
           }, (error) => {
             console.log("ERROR PAID  :: " + error)
             this.paymentFaildMsg();
           })
-
-
         }
       } else {
         console.error('Failed to retrieve clientSecret.');
@@ -97,5 +95,4 @@ export class PaymentComponent implements OnInit {
   showErrorMsg() {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'An error occurred ! ' });
   }
-
 }

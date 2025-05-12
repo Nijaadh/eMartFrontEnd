@@ -38,10 +38,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
-import { DashComponent } from './admin/pages/dash/dash.component';
-import { OrdersComponent } from './admin/pages/orders/orders.component';
-import { ProductsComponent } from './admin/pages/products/products.component';
-import { UsersComponent } from './admin/pages/users/users.component';
+import { DashComponent } from './admin/pages/Admin/dash/dash.component';
+import { OrdersComponent } from './admin/pages/Admin/orders/orders.component';
+import { ProductsComponent } from './admin/pages/Admin/products/products.component';
+import { UsersComponent } from './admin/pages/Admin/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './authentication/auth-interceptor.service';
@@ -55,12 +55,40 @@ import { HeaderComponent } from './user/component/header/header.component';
 import { NavBarComponent } from './user/component/nav-bar/nav-bar.component';
 import { PaymentComponent } from './user/component/payment/payment.component';
 import { CheckOutComponent } from './user/pages/check-out/check-out.component';
-import { GiftsComponent } from './user/pages/gifts/gifts.component';
 import { HomeComponent } from './user/pages/home/home.component';
 import { TermsAndServicesComponent } from './user/pages/terms-and-services/terms-and-services.component';
 import { UserLayoutComponent } from './user/user-layout/user-layout.component';
-import { CategoryComponent } from './admin/pages/category/category.component';
- 
+import { CategoryComponent } from './admin/pages/Admin/category/category.component';
+import { ItemsComponent } from './user/pages/items/items.component';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TreeModule } from 'primeng/tree';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { AboutUsComponent } from './user/pages/about-us/about-us.component';
+import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
+import { ShoppingCartService } from './user/services/shopping.cart/shopping-cart.service';
+import { CardModule } from 'primeng/card';
+import { TimelineModule } from 'primeng/timeline';
+import { RatingModule } from 'primeng/rating';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
+import { PaginatorModule } from 'primeng/paginator';
+
+import { InputMaskModule } from 'primeng/inputmask';
+import { ConfirmationService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PasswordModule } from 'primeng/password';
+import { InputNumberModule } from 'primeng/inputnumber';
+
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
+import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.component';
+import { ProfileComponent } from './admin/pages/user/profile/profile.component';
+import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
+
+
+
 @NgModule({
   declarations: [
     
@@ -75,7 +103,6 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     LoginComponent,
     RegisterComponent,
     NotFoundPageComponent,
-    GiftsComponent,
     TermsAndServicesComponent,
     DashComponent,
     ProductsComponent,
@@ -85,6 +112,14 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     SuccessPaymentMsgComponent,
     OrdersComponent,
     CategoryComponent,
+    ItemsComponent,
+    AboutUsComponent,
+    ItemProfileComponent,
+    ForgotPasswordComponent,
+    UserDashComponent,
+    ProfileComponent,
+    MyOrdersComponent,
+    
     
   ],
   imports: [
@@ -115,16 +150,48 @@ import { CategoryComponent } from './admin/pages/category/category.component';
     DropdownModule,
     SidebarModule,
     AccordionModule,
-    BadgeModule,FieldsetModule,PanelModule,
-    DialogModule,DataViewModule,TableModule,BreadcrumbModule,
-    ChartModule,TabViewModule,MegaMenuModule, 
+    BadgeModule,
+    FieldsetModule,
+    PanelModule,
+    DialogModule,
+    DataViewModule,
+    TableModule,
+    BreadcrumbModule,
+    ChartModule,
+    TabViewModule,
+    MegaMenuModule,
+    ButtonModule,
+    CheckboxModule,
+    TreeModule,
+    TreeSelectModule,
+    CardModule,
+    TimelineModule,
+    RatingModule,
+    TooltipModule,
+    PaginatorModule,
+    InputNumberModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    CheckboxModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    InputMaskModule,
+
+
+
+    
   ],
+  
   providers: [
-     
+    ShoppingCartService,
     provideClientHydration(),
     MessageService,
     provideHttpClient(withFetch()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
+    ConfirmationService
      
   ],
   bootstrap: [AppComponent]

@@ -1,234 +1,208 @@
-.error-message{
-color: red;
-font-size: xx-small;
-}
-.lgform{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.image-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    position: relative;
-    bottom: 12px;
-
-    label {
-        cursor: pointer;
-        display: block;
-        text-align: center;
+:host ::ng-deep {
+    // PrimeNG customizations
+    .p-password {
+      width: 100%;
+      
+      .p-password-input {
         width: 100%;
+        padding-left: 2.5rem !important;
+      }
+      
+      .p-password-panel {
+        margin-top: 0.5rem;
+      }
+      
+      .p-password-icon {
+        right: 0.75rem;
+      }
     }
-
-    #file-input {
-        display: none; // Hides the default input field
+    
+    .p-button {
+      background: linear-gradient(to right, #2795ac, #1a7a8c);
+      border: none;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      
+      &:hover {
+        background: linear-gradient(to right, #1a7a8c, #0e5e6e);
+        box-shadow: 0 4px 15px rgba(39, 149, 172, 0.3) !important;
+      }
+      
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(39, 149, 172, 0.2);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+      
+      .p-button-label {
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
     }
-
-    .image-preview {
-        border: 1px solid #ecedec;
-        border-radius: 35px;
-        padding: 5px;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
+    
+    .p-inputtext {
+      &:enabled:focus {
+        border-color: #2795ac;
+        box-shadow: 0 0 0 1px rgba(39, 149, 172, 0.2);
+      }
+      
+      &::placeholder {
+        color: #a0aec0;
+        font-size: 0.875rem;
+      }
+    }
+    
+    .p-checkbox {
+      .p-checkbox-box {
+        border-radius: 4px;
+        border: 2px solid #cbd5e0;
+        width: 1.25rem;
+        height: 1.25rem;
+        
+        &.p-highlight {
+          border-color: #2795ac;
+          background: #2795ac;
         }
-
-        &:hover img {
-            transform: scale(1.1); // Adds a zoom effect on hover
+        
+        &:not(.p-disabled):hover {
+          border-color: #2795ac;
         }
+      }
+      
+      &:not(.p-checkbox-disabled).p-checkbox-focused .p-checkbox-box.p-highlight {
+        border-color: #2795ac;
+        background: #2795ac;
+        box-shadow: 0 0 0 2px rgba(39, 149, 172, 0.2);
+      }
     }
-
-    .image-placeholder {
-        border: 2px dashed #2d79f3;
-        border-radius: 35px;
-        padding: 10px;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #2d79f3;
-        font-weight: bold;
-        font-size: 16px;
-        text-align: center;
-        transition: background-color 0.2s ease;
-
-        &:hover {
-            background-color: rgba(45, 121, 243, 0.1);
+    
+    .p-toast {
+      .p-toast-message {
+        border-radius: 8px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        
+        &.p-toast-message-success {
+          background: #f0fdf4;
+          border-left: 6px solid #22c55e;
+          color: #166534;
         }
-    }
-}
-
-.main {
-    box-shadow: 1px 1px 5px 1px darkgray;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 6rem;
-    border-radius: 8px;
-    width: 800px;
-    display: flex;
-    height: 600px;
-
-    .img {
-        img {
-            height: 100%;
-            width: 400px;
-            border-radius: 8px;
+        
+        &.p-toast-message-error {
+          background: #fef2f2;
+          border-left: 6px solid #ef4444;
+          color: #991b1b;
         }
+        
+        &.p-toast-message-warn {
+          background: #fffbeb;
+          border-left: 6px solid #f59e0b;
+          color: #92400e;
+        }
+      }
     }
-}
-
-.logo {
-    display: flex;
-    font-weight: bold;
-    color: #00445b;
-    cursor: pointer;
-    margin-left: auto;
-    margin-right: auto;
-    text-decoration: none;
-    align-items: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-
-    img {
-        margin-right: 10px;
+    
+    .p-password-meter {
+      margin-top: 0.5rem;
+      background: #e2e8f0;
+      height: 4px;
+      
+      .p-password-strength {
+        height: 4px;
+        &.weak { background-color: #ef4444; }
+        &.medium { background-color: #f59e0b; }
+        &.strong { background-color: #22c55e; }
+      }
     }
-}
-
-@media screen and (max-width: 768px) {
-    .main {
-        width: 400px;
-        margin-top: 3rem;
+    
+    .p-password-info {
+      font-size: 0.7rem;
+      margin-top: 0.25rem;
+      color: #64748b;
     }
-
-    .img {
-        display: none;
+  }
+  
+  // Profile image upload styles
+  .profile-upload {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: 0 auto;
+    
+    .profile-preview {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #2795ac;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
     }
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background: transparent;
-    padding: 30px;
-    width: 400px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-::placeholder {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.form button {
-    align-self: flex-end;
-}
-
-.flex-column>label {
-    color: #151717;
-    font-weight: 600;
-}
-
-.inputForm {
-    border: 1.5px solid #ecedec;
-    border-radius: 10px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    transition: 0.2s ease-in-out;
-}
-
-.input {
-    margin-left: 10px;
-    border-radius: 10px;
-    border: none;
-    width: 100%;
-    height: 100%;
-}
-
-.input:focus {
-    outline: none;
-}
-
-.inputForm:focus-within {
-    border: 1.5px solid #2d79f3;
-}
-
-.flex-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    justify-content: space-between;
-}
-
-.flex-row>div>label {
-    font-size: 14px;
-    color: black;
-    font-weight: 400;
-}
-
-.span {
-    font-size: 14px;
-    margin-left: 5px;
-    color: #2d79f3;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.button-submit {
-    margin: 20px 0 10px 0;
+    
+    .profile-placeholder {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #f1f5f9;
+      border: 2px dashed #2795ac;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2795ac;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background-color: #e2e8f0;
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  // Additional custom styles
+  .bg-primary-700 {
     background-color: #2795ac;
-    border: none;
-    color: white;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: 10px;
-    height: 50px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.button-submit:hover {
-    background-color: #21768c;
-}
-
-.p {
-    text-align: center;
-    color: black;
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-.btn {
-    margin-top: 10px;
-    width: 100%;
-    height: 50px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    gap: 10px;
-    border: 1px solid #ededef;
-    background-color: white;
-    cursor: pointer;
-    transition: border 0.2s ease-in-out;
-}
-
-.btn:hover {
-    border: 1px solid #2d79f3;
-}
+  }
+  
+  .bg-primary-900 {
+    background-color: #00445b;
+  }
+  
+  .text-primary-600 {
+    color: #2795ac;
+  }
+  
+  .text-primary-800 {
+    color: #00445b;
+  }
+  
+  .hover\:text-primary-500:hover {
+    color: #3aacbf;
+  }
+  
+  .hover\:text-primary-600:hover {
+    color: #2795ac;
+  }
+  
+  .focus\:ring-primary-500:focus {
+    --tw-ring-color: rgba(39, 149, 172, 0.5);
+  }
+  
+  .focus\:border-primary-500:focus {
+    border-color: #2795ac;
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 1023px) {
+    .max-w-6xl {
+      max-width: 28rem;
+    }
+  }
+  

@@ -1,34 +1,221 @@
-<div class="image-container">
-    <img src="/assets/home2.png" alt="Image 1">
-    <img src="/assets/home1.png" alt="Image 2">
-</div>
-
-
-<div>
-    <app-carousel></app-carousel>
-</div>
-
-<div class="home-img">
-    <img src="/assets/hm.png" alt="">
-</div>
-
-<div class="background-section">
-    <div class="text-center">
-        <div class="powered-by-discord">
-            <i class="pi pi-crown"></i>&nbsp;POWERED BY EMart
-        </div>
-        <div class="design-community-heading">
-            Send Wave of Happiness
-        </div>
-        <div class="subheading-text">
-            Welcome to GiftWave, the premier online platform for sending heartfelt gifts to your loved ones. With a few
-            clicks, you can browse our wide selection of curated items, create personalized gift bundles, and send them
-            directly to the people who matter most. Whether it's a special occasion or just because, GiftWave makes it
-            easy to express your feelings and make someone's day brighter. Start gifting with us today and let your love
-            and appreciation ride the wave to those who deserve it.
-        </div>
-        <button pButton pRipple class="join-now-button">
-            Sign Now
-        </button>
+<!-- Hero Section with Image Slider -->
+<section class="relative overflow-hidden">
+  <!-- Hero Background with Animated Gradient Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-indigo-900/70 z-10"></div>
+  
+  <!-- Image Slider -->
+  <div class="image-slider">
+    <img src="/assets/bg-Cart.jpg" alt="EMart Shopping Experience" class="slider-image" data-aos="fade-in" data-aos-duration="1500">
+    <img src="/assets/sale_01.jpg" alt="EMart Special Offers" class="slider-image" data-aos="fade-in" data-aos-duration="1500">
+    <img src="/assets/hm2.png" alt="EMart Collection" class="slider-image" data-aos="fade-in" data-aos-duration="1500">
+  </div>
+  
+  <!-- Hero Content -->
+  <div class="container mx-auto px-4 relative z-20 h-[600px] flex items-center">
+    <div class="max-w-2xl" data-aos="fade-right" data-aos-duration="1000">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+        Shop Smarter, <span class="text-yellow-400">Live Better</span>
+      </h1>
+      <p class="text-xl text-gray-100 mb-8">
+        Discover thousands of products at unbeatable prices with fast delivery right to your doorstep.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <button pButton pRipple label="Shop Now" icon="pi pi-shopping-cart" 
+                class="p-button-rounded p-button-lg" routerLink="/items"></button>
+        <button pButton pRipple label="Learn More" icon="pi pi-info-circle" 
+                class="p-button-rounded p-button-outlined p-button-lg p-button-secondary"></button>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+
+  
+  <!-- Featured Categories Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Shop by Category</h2>
+        <p class="text-gray-600 text-lg">Explore our wide range of products</p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Category Card 1 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" 
+             data-aos="fade-up" data-aos-delay="100">
+          <div class="h-48 bg-blue-100 flex items-center justify-center">
+            <i class="pi pi-desktop text-5xl text-blue-600"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="font-semibold text-lg mb-1">Electronics</h3>
+            <p class="text-gray-600 text-sm mb-3">Latest gadgets & devices</p>
+            <button pButton pRipple type="button" label="Browse" 
+                    class="p-button-sm p-button-outlined"></button>
+          </div>
+        </div>
+        
+        <!-- Category Card 2 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" 
+             data-aos="fade-up" data-aos-delay="200">
+          <div class="h-48 bg-green-100 flex items-center justify-center">
+            <i class="pi pi-shopping-bag text-5xl text-green-600"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="font-semibold text-lg mb-1">Fashion</h3>
+            <p class="text-gray-600 text-sm mb-3">Trendy clothes & accessories</p>
+            <button pButton pRipple type="button" label="Browse" 
+                    class="p-button-sm p-button-outlined"></button>
+          </div>
+        </div>
+        
+        <!-- Category Card 3 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" 
+             data-aos="fade-up" data-aos-delay="300">
+          <div class="h-48 bg-amber-100 flex items-center justify-center">
+            <i class="pi pi-home text-5xl text-amber-600"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="font-semibold text-lg mb-1">Home & Kitchen</h3>
+            <p class="text-gray-600 text-sm mb-3">Everything for your home</p>
+            <button pButton pRipple type="button" label="Browse" 
+                    class="p-button-sm p-button-outlined"></button>
+          </div>
+        </div>
+        
+        <!-- Category Card 4 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105" 
+             data-aos="fade-up" data-aos-delay="400">
+          <div class="h-48 bg-purple-100 flex items-center justify-center">
+            <i class="pi pi-heart text-5xl text-purple-600"></i>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="font-semibold text-lg mb-1">Beauty & Health</h3>
+            <p class="text-gray-600 text-sm mb-3">Self-care essentials</p>
+            <button pButton pRipple type="button" label="Browse" 
+                    class="p-button-sm p-button-outlined"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Carousel Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Featured Products</h2>
+        <p class="text-gray-600 text-lg">Handpicked for you</p>
+      </div>
+      
+      <div data-aos="fade-up" data-aos-delay="200">
+        <app-carousel></app-carousel>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Banner Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="rounded-2xl overflow-hidden shadow-lg relative" data-aos="zoom-in">
+        <img src="/assets/hm2.png" alt="EMart Special Offer" class="w-full h-auto object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/60 to-transparent flex items-center">
+          <div class="p-8 md:p-12 lg:p-16 max-w-xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Summer Sale</h2>
+            <p class="text-xl text-gray-100 mb-6">Get up to 50% off on selected items. Limited time offer!</p>
+            <button pButton pRipple label="Shop Now" icon="pi pi-arrow-right" 
+                    class="p-button-rounded p-button-lg"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 md:p-12 shadow-lg" 
+           data-aos="fade-up">
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center bg-blue-100 text-blue-600 rounded-full px-4 py-1 text-sm font-medium mb-4">
+            <i class="pi pi-crown mr-2"></i>POWERED BY EMart
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Send Order of Happiness</h2>
+        </div>
+        
+        <p class="text-gray-700 text-lg leading-relaxed mb-8">
+          Welcome to eMart, your one-stop online destination for everything you need—from everyday essentials to the latest gadgets and fashion trends. With thousands of products across a wide range of categories, eMart makes shopping easy, affordable, and secure. Whether you're upgrading your tech, refreshing your wardrobe, or stocking up for your home, we've got you covered. Experience hassle-free online shopping with fast delivery and unbeatable deals, only at eMart.
+        </p>
+        
+        <div class="flex justify-center">
+          <button pButton pRipple label="Sign Up Now" icon="pi pi-user-plus" 
+                  class="p-button-rounded p-button-lg" routerLink="/register"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Why Choose EMart?</h2>
+        <p class="text-gray-600 text-lg">We make online shopping better</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="pi pi-truck text-2xl text-blue-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
+          <p class="text-gray-600">Get your orders delivered quickly and reliably</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="pi pi-shield text-2xl text-green-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+          <p class="text-gray-600">Your transactions are protected with advanced security</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="300">
+          <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="pi pi-sync text-2xl text-amber-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Easy Returns</h3>
+          <p class="text-gray-600">Hassle-free return policy for your peace of mind</p>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center" data-aos="fade-up" data-aos-delay="400">
+          <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="pi pi-comments text-2xl text-purple-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+          <p class="text-gray-600">Our customer service team is always ready to help</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter Section -->
+  <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
+        <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+        <p class="text-lg text-blue-100 mb-8">Subscribe to our newsletter for exclusive deals and updates</p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <span class="p-input-icon-left flex-grow max-w-md">
+            <i class="pi pi-envelope"></i>
+            <input type="text" pInputText placeholder="Your email address" class="w-full p-inputtext-lg" />
+          </span>
+          <button pButton pRipple label="Subscribe" class="p-button-lg"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
