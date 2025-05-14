@@ -274,7 +274,7 @@ export class ProductsComponent implements OnInit {
           unitPrice: item.unitPrice,
           commonStatus: item.commonStatus,
           description: item.description,
-          subCategory: item.subCategory,
+          subCategory: item.subCategoryId,
           category: item.category,
           image: item.image,
           itemCount: item.itemCount,
