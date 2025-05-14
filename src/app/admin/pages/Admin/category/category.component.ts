@@ -157,6 +157,7 @@ export class CategoryComponent implements OnInit {
     this._apim.deleteSubCategory(Obj).subscribe((response) => {
       console.log(response);
       this.detete();
+      this.fetchSubAllCategories();
       this.fetchAllCategories();
     });
   }
