@@ -1,124 +1,138 @@
-.path {
-  position: absolute;
-  left: 4rem;
-  top: 6px;
-  height: 40px;
+:host ::ng-deep .custom-tabs .p-tabview-nav {
+  background: #f8fafc;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.card {
-  width: 90%;
-  margin-top: 10px;
-  margin-left: 4rem;
+:host ::ng-deep .custom-tabs .p-tabview-nav li .p-tabview-nav-link {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  transition: all 0.2s;
 }
 
-.head {
-  display: flex;
-  width: 100%;
+:host ::ng-deep .custom-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: white;
+  color: #3b82f6;
+  border-bottom: 2px solid #3b82f6;
+}
+
+:host ::ng-deep .custom-tabs .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+/* Custom Button Styling */
+:host ::ng-deep .custom-button-primary {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  transition: all 0.2s;
+}
+
+:host ::ng-deep .custom-button-primary:hover:not(.p-disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:host ::ng-deep .custom-button {
+  transition: all 0.2s;
+}
+
+:host ::ng-deep .custom-button:hover:not(.p-disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:host ::ng-deep .custom-button-edit:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+:host ::ng-deep .custom-button-delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+:host ::ng-deep .custom-button-refresh:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+/* Custom Dialog Styling */
+:host ::ng-deep .custom-dialog .p-dialog-header {
+  background: #f8fafc;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+:host ::ng-deep .custom-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .custom-dialog .p-dialog-footer {
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+:host ::ng-deep .custom-dialog .p-dialog-mask {
+  backdrop-filter: blur(4px);
+}
+
+/* Form Input Focus */
+:host ::ng-deep input:focus, :host ::ng-deep select:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Status Badge */
+:host ::ng-deep .status-badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-}
-.xz {
-  display: flex;
-  justify-content: space-between;
-}
-
-.dialog-description {
-  display: block;
-  color: #6c757d;
-  margin-bottom: 20px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.75rem;
 }
 
-.form-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
+/* Custom Accordion */
+:host ::ng-deep .custom-accordion .p-accordion-header-link {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
 }
 
-.form-group label {
+:host ::ng-deep .custom-accordion .p-accordion-header-text {
   font-weight: 600;
-  width: 100px;
+  color: #334155;
 }
 
-.form-group input {
-  flex-grow: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+:host ::ng-deep .p-tooltip {
+  max-width: 250px;
 }
 
-.button-group {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.empty-state-icon {
+  font-size: 3rem;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
 }
 
-.table-container {
-  width: 100%;
-  overflow-x: auto;
+/* Alternate row styling */
+.table-striped tr:nth-child(even) {
+  background-color: #f8fafc;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.table th,
-.table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.table th {
-  background: #f8f9fa;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.table tbody tr:hover {
-  background: #f1f1f1;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 5px;
-}
-
-select {
-  width: 70%;
-  padding: 10px 12px;
-  border: 1px solid #cccccc;
-  border-radius: 10px;
-  font-size: 16px;
-  color: #333333;
-  background: #f9f9f9;
-  appearance: none;
-  background-color: #ffffff;
-  background-image: linear-gradient(45deg, #2d79f3 50%, transparent 50%),
-    linear-gradient(135deg, #2d79f3 50%, transparent 50%);
-  background-repeat: no-repeat, no-repeat;
-  background-position: calc(100% - 16px) calc(100% - 16px),
-    calc(100% - 12px) center;
-  background-size: 8px 8px, 8px 8px;
-  transition: border-color 0.3s ease, background-color 0.3s ease,
-    box-shadow 0.3s ease;
-
-  &:focus {
-    border-color: #2d79f3;
-    background-color: #ffffff;
-    outline: none;
-  }
-
-  // Custom styling for the dropdown arrow
-  &::-ms-expand {
-    display: none;
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  :host ::ng-deep .custom-tabs .p-tabview-nav li .p-tabview-nav-link {
+    padding: 0.75rem 1rem;
   }
 }

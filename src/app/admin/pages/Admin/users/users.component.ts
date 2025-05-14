@@ -23,18 +23,24 @@ export class UsersComponent implements OnInit {
       ];
     
       this.home = { icon: 'pi pi-slack', routerLink: '/admin/dash' };
-      console.log("shanuka")
 
       this.fetchAllUser();
+      console.log("shanuka")
+      console.log(this.fetchingUser)
   }
+
   fetchAllUser(): void {
     this.userService.getAllUser().subscribe(data => {
       // Assuming data.payload contains the array of users
-      this.fetchingUser = data.payload.map((user: any) => ({
-        ...user,
-        image: user.image ? 'data:image/png;base64,' + user.image : '' // Convert base64 to image URL
-      }));
-    });
-    console.log(this.fetchingUser);
+      this.fetchingUser = data.payload.map((user: any) => {
+        console.log(user);
+        return {
+          ...user,
+          image: user.image ? 'data:image/png;base64,' + user.image : '' // Convert base64 to image URL
+        };
+      });
+    },
+
+  );
   }
 }
