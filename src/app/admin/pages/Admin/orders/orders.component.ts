@@ -154,23 +154,38 @@ export class OrdersComponent implements OnInit {
   }
 
   viewOrderDetails(order: Order): void {
-    this.selectedOrder = { ...order };
-    
-    // Find user details if available
-    if (order.userId && this.users.length > 0) {
-      const user = this.users.find(u => u.id === order.userId);
-      if (user) {
-        // If user found, enhance the order with additional user information
-        this.selectedOrder.userDetails = {
-          name: user.name || user.userName,
-          email: user.email,
-          phone: user.phone || user.contactNumber
-        };
+  this.selectedOrder = { ...order };
+  
+  // Process images in order items
+  if (this.selectedOrder.orderItems) {
+    this.selectedOrder.orderItems = this.selectedOrder.orderItems.map(item => {
+      if (item.item) {
+        // If item has an image property, format it
+        if (item.item.imageUrl) {
+          item.item.imageUrl = this.formatImageUrl(item.item.imageUrl);
+        } else if (item.item.imageUrl) {
+          item.item.imageUrl = this.formatImageUrl(item.item.imageUrl);
+        }
       }
-    }
-    
-    this.displayOrderDetails = true;
+      return item;
+    });
   }
+  
+  // Find user details if available
+  if (order.userId && this.users.length > 0) {
+    const user = this.users.find(u => u.id === order.userId);
+    if (user) {
+      // If user found, enhance the order with additional user information
+      this.selectedOrder.userDetails = {
+        name: user.name || user.userName,
+        email: user.email,
+        phone: user.phone || user.contactNumber
+      };
+    }
+  }
+  
+  this.displayOrderDetails = true;
+}
 
   printOrder(order: Order): void {
     // Find user details if available
@@ -326,4 +341,18 @@ export class OrdersComponent implements OnInit {
       detail: 'Unable to update Order status!',
     });
   }
+
+  formatImageUrl(imageData: string): string {
+  if (!imageData) {
+    return 'assets/images/product-placeholder.png';
+  }
+  
+  // Check if the image is already a URL or a data URL
+  if (imageData.startsWith('http') || imageData.startsWith('data:')) {
+    return imageData;
+  }
+  
+  // Convert base64 to data URL
+  return `data:image/png;base64,${imageData}`;
+}
 }

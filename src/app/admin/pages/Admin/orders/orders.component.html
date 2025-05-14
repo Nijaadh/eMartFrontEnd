@@ -752,13 +752,13 @@
           <ng-template pTemplate="body" let-item>
             <tr>
               <td class="p-3">
-                <img 
-                  [src]="item.item.imageUrl || 'assets/images/product-placeholder.png'" 
-                  [alt]="item.item.name"
-                  class="w-12 h-12 object-cover rounded-md shadow-sm"
-                  onError="this.src='assets/images/product-placeholder.png'"
-                />
-              </td>
+  <img 
+    [src]="item.item.imageUrl || formatImageUrl(item.item.image) || 'assets/images/product-placeholder.png'" 
+    [alt]="item.item.name"
+    class="w-12 h-12 object-cover rounded-md shadow-sm"
+    onerror="this.onerror=null; this.src='assets/images/product-placeholder.png';"
+  />
+</td>
               <td class="p-3">
                 <p class="font-medium text-gray-800">{{ item.item.name }}</p>
                 <p class="text-xs text-gray-500">ID: {{ item.item.id }}</p>
