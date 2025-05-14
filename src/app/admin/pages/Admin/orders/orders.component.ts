@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { OrderService } from '../../../../services/order.service';
 import { Order } from '../../../../admin/model/Order';
-import { OrderItem } from '../../../../admin/model/OrderItem'; // Corrected path
-
+import { OrderItem } from '../../../../admin/model/OrderItem';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-orders',
@@ -24,6 +24,8 @@ export class OrdersComponent implements OnInit {
   deliveredOrders: Order[] = [];
   cancelledOrders: Order[] = [];
   
+  users: any[] = [];
+  
   // UI state
   loading: boolean = false;
   displayOrderDetails: boolean = false;
@@ -33,6 +35,7 @@ export class OrdersComponent implements OnInit {
   constructor(
     private _orderService: OrderService,
     private messageService: MessageService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -40,6 +43,7 @@ export class OrdersComponent implements OnInit {
     this.items = [{ label: 'EMart' }, { label: 'Admin' }, { label: 'Orders' }];
     this.home = { icon: 'pi pi-home', routerLink: '/' };
     this.getAllOrdersList();
+    this.getAllUsers();
   }
 
   getAllOrdersList() {
@@ -60,7 +64,17 @@ export class OrdersComponent implements OnInit {
           return;
         }
         
-        this.fetchAllOrdersList = orders as Order[];
+        // Transform orders to ensure totalPrice is present
+        this.fetchAllOrdersList = orders.map(order => {
+          // If totalPrice is missing, calculate it from order items
+          if (order.totalPrice === undefined || order.totalPrice === null) {
+            order.totalPrice = order.orderItems?.reduce((total: number, item: OrderItem) => {
+              return total + (item.item.unitPrice * item.quantity);
+            }, 0) || 0;
+          }
+          return order;
+        }) as Order[];
+        
         this.filterOrdersByStatus();
         this.loading = false;
       },
@@ -72,6 +86,18 @@ export class OrdersComponent implements OnInit {
           detail: 'Failed to load orders. Please try again.'
         });
         this.loading = false;
+      }
+    });
+  }
+
+  getAllUsers() {
+    this.userService.getAllUser().subscribe({
+      next: (data) => {
+        this.users = data?.payload || [];
+        console.log('Users loaded:', this.users.length);
+      },
+      error: (error) => {
+        console.error('Error fetching users:', error);
       }
     });
   }
@@ -129,10 +155,38 @@ export class OrdersComponent implements OnInit {
 
   viewOrderDetails(order: Order): void {
     this.selectedOrder = { ...order };
+    
+    // Find user details if available
+    if (order.userId && this.users.length > 0) {
+      const user = this.users.find(u => u.id === order.userId);
+      if (user) {
+        // If user found, enhance the order with additional user information
+        this.selectedOrder.userDetails = {
+          name: user.name || user.userName,
+          email: user.email,
+          phone: user.phone || user.contactNumber
+        };
+      }
+    }
+    
     this.displayOrderDetails = true;
   }
 
   printOrder(order: Order): void {
+    // Find user details if available
+    let userName = order.receiverName || 'Not provided';
+    let userPhone = order.receiverPhone || 'Not provided';
+    let userEmail = '';
+    
+    if (order.userId && this.users.length > 0) {
+      const user = this.users.find(u => u.id === order.userId);
+      if (user) {
+        userName = user.name || user.userName || order.receiverName || 'Not provided';
+        userPhone = user.phone || user.contactNumber || order.receiverPhone || 'Not provided';
+        userEmail = user.email || '';
+      }
+    }
+    
     // Create a printable version of the order
     const printContent = document.createElement('div');
     printContent.innerHTML = `
@@ -144,14 +198,15 @@ export class OrdersComponent implements OnInit {
             <p style="margin: 5px 0; color: #666;">Status: ${order.orderStatus}</p>
           </div>
           <div style="text-align: right;">
-            <h2 style="margin: 0;">TOTAL: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.totalPrice)}</h2>
+            <h2 style="margin: 0;">TOTAL: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'LKR' }).format(order.totalPrice)}</h2>
           </div>
         </div>
         
         <div style="margin-bottom: 20px;">
           <h3 style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">Customer Information</h3>
-          <p style="margin: 5px 0;"><strong>Name:</strong> ${order.receiverName || 'Not provided'}</p>
-          <p style="margin: 5px 0;"><strong>Phone:</strong> ${order.receiverPhone || 'Not provided'}</p>
+          <p style="margin: 5px 0;"><strong>Name:</strong> ${userName}</p>
+          <p style="margin: 5px 0;"><strong>Phone:</strong> ${userPhone}</p>
+          ${userEmail ? `<p style="margin: 5px 0;"><strong>Email:</strong> ${userEmail}</p>` : ''}
           <p style="margin: 5px 0;"><strong>Address:</strong> ${order.receiverAddress}</p>
           <p style="margin: 5px 0;"><strong>ZIP:</strong> ${order.zip}</p>
         </div>
@@ -175,11 +230,11 @@ export class OrdersComponent implements OnInit {
                     <div style="font-size: 12px; color: #666;">ID: ${item.item?.id || 'N/A'}</div>
                   </td>
                   <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">
-                    ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.item?.unitPrice || 0)}
+                    ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'LKR' }).format(item.item?.unitPrice || 0)}
                   </td>
                   <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">${item.quantity || 1}</td>
                   <td style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">
-                    ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((item.item?.unitPrice || 0) * (item.quantity || 1))}
+                    ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'LKR' }).format((item.item?.unitPrice || 0) * (item.quantity || 1))}
                   </td>
                 </tr>
               `).join('') : '<tr><td colspan="4" style="text-align: center; padding: 8px;">No items found</td></tr>'}
@@ -188,7 +243,7 @@ export class OrdersComponent implements OnInit {
               <tr>
                 <td colspan="3" style="text-align: right; padding: 8px; font-weight: bold;">Total:</td>
                 <td style="text-align: right; padding: 8px; font-weight: bold;">
-                  ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.totalPrice || 0)}
+                  ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'LKR' }).format(order.totalPrice || 0)}
                 </td>
               </tr>
             </tfoot>

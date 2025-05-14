@@ -15,4 +15,9 @@ export interface Order {
     orderItems: OrderItem[];
     createdAt: string;
     updatedAt: string;
-  }
+    userDetails?: {
+      name: string;
+      email: string;
+      phone: string;
+    };
+}
