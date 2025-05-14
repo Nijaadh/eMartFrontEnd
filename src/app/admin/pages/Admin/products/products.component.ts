@@ -265,8 +265,8 @@ export class ProductsComponent implements OnInit {
         const item = data.payload[0][0];
         
         // Set selected category and load subcategories
-        this.selectedCategory = item.categoryId;
-        this.fetchSubCategoriesByCategoryId(item.categoryId);
+        this.selectedCategory = item.category;
+        this.fetchSubCategoriesByCategoryId(item.category);
         
         this.productForm.patchValue({
           id: item.id,
@@ -274,8 +274,8 @@ export class ProductsComponent implements OnInit {
           unitPrice: item.unitPrice,
           commonStatus: item.commonStatus,
           description: item.description,
-          subCategory: item.subCategoryId,
-          category: item.categoryId,
+          subCategory: item.subCategory,
+          category: item.category,
           image: item.image,
           itemCount: item.itemCount,
           discount: item.discount,
