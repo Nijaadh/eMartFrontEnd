@@ -1,37 +1,99 @@
-<div class="path">
-    <p-breadcrumb class="max-w-full" [model]="items" [home]="home" />
-</div>
-
-
-
-<div class="card flex justify-content-center">
-    <div style="display: flex;width: 100%;justify-content: space-between;align-items: center;border-bottom: 1px solid gainsboro;">
-    <h3 style="color: cornflowerblue;font-size: 30px;margin: 15px;">Registerd Users</h3>
-    <p-iconField iconPosition="left">
-        <p-inputIcon styleClass="pi pi-search" />
-        <input type="text" pInputText placeholder="Search" />
-    </p-iconField></div><br><br>
-    <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+<div class="w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <!-- Breadcrumb Navigation -->
+    <div class="px-6 py-4 bg-gray-50">
+      <p-breadcrumb class="max-w-full text-sm" [model]="items" [home]="home"></p-breadcrumb>
+    </div>
+  
+    <!-- Header Section with Search -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+      <h3 class="text-2xl font-bold text-blue-600">Registered Users</h3>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <i class="pi pi-search text-gray-400"></i>
+        </span>
+        <input 
+          type="text" 
+          pInputText 
+          placeholder="Search users..." 
+          class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64"
+        />
+      </div>
+    </div>
+  
+    <!-- User Accordion List -->
+    <div class="p-6">
+      <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
         <p-accordionTab *ngFor="let user of fetchingUser">
-            <ng-template pTemplate="header">
-                <span class="head">
-                    <p-avatar [image]="user.image" 
-                        shape="circle" />
-                    <span class="font-bold white-space-nowrap">
-                        {{ user.userName}}
-                    </span>
-                    <p-badge value="ACTIVE" class="ml-auto mr-2" />
-                </span>
-            </ng-template>
-            <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-                id est laborum.
-            </p>
+          <ng-template pTemplate="header">
+            <div class="flex items-center w-full">
+              <p-avatar 
+                [image]="user.image" 
+                shape="circle" 
+                styleClass="mr-4 border-2 border-gray-200"
+                [style]="{'width': '42px', 'height': '42px'}"
+              ></p-avatar>
+              <div class="flex flex-col">
+                <span class="font-semibold text-gray-800">{{ user.userName }}</span>
+                <span class="text-xs text-gray-500">User ID: {{user.id || 'N/A'}}</span>
+              </div>
+              <p-badge 
+                value="ACTIVE" 
+                severity="success" 
+                class="ml-auto"
+                [style]="{'font-size': '0.75rem'}"
+              ></p-badge>
+            </div>
+          </ng-template>
+          
+          <!-- User Details Content -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="text-lg font-medium text-gray-800 mb-2">User Information</h4>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <span class="text-gray-500 w-24">Full Name:</span>
+                  <span class="font-medium">{{user.fullName || user.userName}}</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="text-gray-500 w-24">Email:</span>
+                  <span class="font-medium">{{user.email || 'Not provided'}}</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="text-gray-500 w-24">Role:</span>
+                  <span class="font-medium">{{user.role || 'Standard User'}}</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-500 w-24">Mobile</span>
+                    <span class="font-medium">{{user.tel || 'Not Provided'}}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="text-gray-500 w-24">Address</span>
+                    <span class="font-medium">{{user.address || 'Not Provided'}}</span>
+                  </div>
+                <div class="flex items-center">
+                  <span class="text-gray-500 w-24">Joined:</span>
+                  <span class="font-medium">{{user.joinDate || 'Unknown'}}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="text-lg font-medium text-gray-800 mb-2">Activity</h4>
+              <p class="text-gray-600">
+                Last login: {{user.lastLogin || 'N/A'}}
+              </p>
+              <div class="mt-3 flex space-x-2">
+                <button pButton type="button" label="View Details" icon="pi pi-user" class="p-button-sm p-button-outlined"></button>
+                <button pButton type="button" label="Edit" icon="pi pi-pencil" class="p-button-sm p-button-secondary p-button-outlined"></button>
+              </div>
+            </div>
+          </div>
         </p-accordionTab>
-
-    </p-accordion>
-</div>
+      </p-accordion>
+    </div>
+    
+    <!-- Pagination (Optional) -->
+    <div class="px-6 py-4 border-t border-gray-200 flex justify-center">
+      <p-paginator [rows]="10" [totalRecords]="100"></p-paginator>
+    </div>
+  </div>
