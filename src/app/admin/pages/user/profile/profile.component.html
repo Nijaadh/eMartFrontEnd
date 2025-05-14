@@ -1,1 +1,208 @@
-<p>profile works!</p>
+<div class="w-full bg-gray-50 min-h-screen">
+    <!-- Top Navigation Bar -->
+    <div class="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
+      <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <i class="pi pi-users text-blue-600 text-xl"></i>
+          <h2 class="text-lg font-semibold text-gray-800">User Management</h2>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container mx-auto p-4">
+      <!-- User Profile Cards -->
+      <div class="space-y-6">
+        
+        <!-- Single User Profile Card (GitHub Style) -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+          <!-- Profile Header Section -->
+          <div class="w-full bg-gray-800 h-24 relative">
+            <!-- Status Badge (Absolute positioned) -->
+            <div class="absolute top-3 right-3">
+              <p-badge value="ACTIVE" severity="success"></p-badge>
+            </div>
+          </div>
+          
+          <div class="px-6 pb-5">
+            <!-- Avatar (Positioned to overlap the header) -->
+            <div class="flex items-end -mt-12 mb-4">
+              <p-avatar 
+                image="https://via.placeholder.com/150" 
+                styleClass="border-4 border-white shadow-md" 
+                shape="circle"
+                size="xlarge"
+              ></p-avatar>
+              <div class="ml-4 pt-12">
+                <h3 class="text-xl font-bold text-gray-800">Ravi Kumar</h3>
+                <p class="text-gray-500">Standard User</p>
+              </div>
+              <!-- Action Buttons -->
+              <div class="ml-auto flex gap-2 items-center pt-12">
+                <button pButton type="button" icon="pi pi-envelope" class="p-button-outlined p-button-rounded"></button>
+                <button pButton type="button" icon="pi pi-pencil" class="p-button-outlined p-button-rounded p-button-secondary"></button>
+                <button pButton type="button" label="View Details" icon="pi pi-user" class="p-button-sm"></button>
+              </div>
+            </div>
+            
+            <!-- User Info Sections -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+              <!-- Personal Information -->
+              <div class="col-span-1">
+                <h4 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">Personal Information</h4>
+                
+                <!-- User ID Field (Read-only) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-id-card text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">User ID</p>
+                      <p class="text-gray-800 font-medium">USR-29045</p>
+                    </div>
+                  </div>
+                  <!-- No edit button for read-only field -->
+                </div>
+                
+                <!-- Email Field (Editable) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-envelope text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Email</p>
+                      <p class="text-gray-800 font-medium">kumarxample.com</p>
+                    </div>
+                  </div>
+                  <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm"></button>
+                </div>
+                
+                <!-- Phone Field (Editable) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-phone text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Phone</p>
+                      <p class="text-gray-800 font-medium">+1 (555) 123-4567</p>
+                    </div>
+                  </div>
+                  <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm"></button>
+                </div>
+                
+                <!-- Location Field (Editable) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-map-marker text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Location</p>
+                      <p class="text-gray-800 font-medium">San Francisco, CA</p>
+                    </div>
+                  </div>
+                  <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm"></button>
+                </div>
+                
+                <!-- Example of Editing Mode -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100 bg-blue-50">
+                  <div class="flex items-center flex-grow mr-2">
+                    <i class="pi pi-globe text-blue-500 mr-3"></i>
+                    <div class="flex-grow">
+                      <p class="text-sm text-gray-500">Website</p>
+                      <input 
+                        type="text" 
+                        pInputText 
+                        value="www.ravikumar.com" 
+                        class="w-full py-1 border border-blue-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <div class="flex space-x-1">
+                    <button pButton type="button" icon="pi pi-check" class="p-button-success p-button-rounded p-button-sm"></button>
+                    <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-rounded p-button-sm"></button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Account Information -->
+              <div class="col-span-1">
+                <h4 class="text-lg font-semibold text-gray-700 mb-3 border-b pb-2">Account Information</h4>
+                
+                <!-- Account Type Field (Editable) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-user text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Account Type</p>
+                      <p class="text-gray-800 font-medium">Premium</p>
+                    </div>
+                  </div>
+                  <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm"></button>
+                </div>
+                
+                <!-- Joined Date Field (Read-only) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-calendar text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Joined Date</p>
+                      <p class="text-gray-800 font-medium">May 10, 2023</p>
+                    </div>
+                  </div>
+                  <!-- No edit button for read-only field -->
+                </div>
+                
+                <!-- Last Login Field (Read-only) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-clock text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">Last Login</p>
+                      <p class="text-gray-800 font-medium">Today, 9:32 AM</p>
+                    </div>
+                  </div>
+                  <!-- No edit button for read-only field -->
+                </div>
+                
+                <!-- 2FA Status Field (Editable) -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                  <div class="flex items-center">
+                    <i class="pi pi-shield text-blue-500 mr-3"></i>
+                    <div>
+                      <p class="text-sm text-gray-500">2FA Status</p>
+                      <p class="text-gray-800 font-medium">Enabled</p>
+                    </div>
+                  </div>
+                  <button pButton type="button" icon="pi pi-pencil" class="p-button-text p-button-rounded p-button-sm"></button>
+                </div>
+                
+                <!-- Example of Dropdown Editing Mode -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100 bg-blue-50">
+                  <div class="flex items-center flex-grow mr-2">
+                    <i class="pi pi-users text-blue-500 mr-3"></i>
+                    <div class="flex-grow">
+                      <p class="text-sm text-gray-500">Team Access</p>
+                      <p-dropdown 
+                        [options]="[{label: 'All Teams', value: 'all'}, {label: 'Development Only', value: 'dev'}, {label: 'Marketing Only', value: 'marketing'}]" 
+                        [(ngModel)]="selectedTeam" 
+                        placeholder="Select Team Access" 
+                        styleClass="w-full"
+                      ></p-dropdown>
+                    </div>
+                  </div>
+                  <div class="flex space-x-1">
+                    <button pButton type="button" icon="pi pi-check" class="p-button-success p-button-rounded p-button-sm"></button>
+                    <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-rounded p-button-sm"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Save Changes Button -->
+            <div class="flex justify-end mt-6">
+              <button pButton type="button" label="Save All Changes" icon="pi pi-save" class="p-button-primary"></button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional user cards would be repeated here -->
+        
+      </div>
+    </div>
+  </div>
