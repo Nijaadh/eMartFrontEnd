@@ -87,7 +87,7 @@ import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.compon
 import { ProfileComponent } from './admin/pages/user/profile/profile.component';
 import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
 
-
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -179,7 +179,7 @@ import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.compon
     ToastModule,
     ProgressSpinnerModule,
     InputMaskModule,
-
+    MessageModule,
 
 
     

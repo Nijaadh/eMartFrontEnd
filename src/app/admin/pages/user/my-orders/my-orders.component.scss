@@ -1,0 +1,185 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// Custom styles to enhance PrimeNG components
+:host ::ng-deep {
+  .p-dataview {
+    .p-dataview-header {
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+    
+    .p-paginator {
+      border-radius: 0.5rem;
+      background-color: white;
+      margin-top: 1rem;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .p-dropdown {
+      .p-dropdown-label {
+        padding: 0.5rem 0.75rem;
+      }
+    }
+    
+    .p-inputtext {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .p-card {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      height: 100%;
+      
+      .p-card-body {
+        padding: 1rem;
+      }
+      
+      .p-card-content {
+        padding: 0;
+      }
+      
+      .p-card-footer {
+        padding: 1rem 0 0 0;
+        border-top: 1px solid #f3f4f6;
+      }
+    }
+  }
+  
+  .p-tag {
+    &.p-tag-success {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+    
+    &.p-tag-warning {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    &.p-tag-danger {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    &.p-tag-info {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    &.p-tag-primary {
+      background-color: #e0e7ff;
+      color: #3730a3;
+    }
+  }
+  
+  .p-button {
+    &.p-button-sm {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    
+    &.p-button-outlined {
+      &.p-button-primary {
+        color: #3b82f6;
+        border-color: #3b82f6;
+        
+        &:hover {
+          background: rgba(59, 130, 246, 0.04);
+        }
+      }
+      
+      &.p-button-secondary {
+        color: #6b7280;
+        border-color: #6b7280;
+        
+        &:hover {
+          background: rgba(107, 114, 128, 0.04);
+        }
+      }
+      
+      &.p-button-danger {
+        color: #ef4444;
+        border-color: #ef4444;
+        
+        &:hover {
+          background: rgba(239, 68, 68, 0.04);
+        }
+      }
+    }
+  }
+  
+  .p-progressspinner {
+    width: 50px;
+    height: 50px;
+    
+    .p-progressspinner-circle {
+      stroke: #3b82f6;
+    }
+  }
+  
+  .p-message {
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    
+    &.p-message-error {
+      background-color: #fee2e2;
+      border-color: #fecaca;
+      color: #b91c1c;
+      
+      .p-message-icon {
+        color: #b91c1c;
+      }
+    }
+  }
+}
+
+// Custom animations for AOS integration
+[data-aos] {
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .order-card {
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .order-status {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
+
+// Custom utility classes
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Order card hover effects
+.order-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// Placeholder image styling
+img {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+

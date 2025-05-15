@@ -1,1 +1,217 @@
-<p>my-orders works!</p>
+<div class="my-orders-container bg-gray-50 min-h-screen">
+  <p-toast></p-toast>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-8" data-aos="fade-down">
+      <h1 class="text-3xl font-bold text-gray-900">My Orders</h1>
+      <div class="flex items-center space-x-2">
+        <p-button icon="pi pi-list" (onClick)="layout = 'list'" [outlined]="layout !== 'list'" styleClass="p-button-sm"></p-button>
+        <p-button icon="pi pi-th-large" (onClick)="layout = 'grid'" [outlined]="layout !== 'grid'" styleClass="p-button-sm"></p-button>
+      </div>
+    </div>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex flex-col items-center justify-center py-16" data-aos="fade-in">
+      <p-progressSpinner styleClass="w-12 h-12" strokeWidth="4"></p-progressSpinner>
+      <p class="mt-4 text-gray-600">Loading your orders...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div *ngIf="error" class="mt-4" data-aos="fade-in">
+      <p-message severity="error" [text]="error" styleClass="w-full"></p-message>
+    </div>
+    
+    <!-- Empty State -->
+    <div *ngIf="!loading && !error && orders.length === 0" class="flex flex-col items-center justify-center py-16" data-aos="fade-up">
+      <i class="pi pi-shopping-bag text-6xl text-gray-300 mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-800 mb-2">No Orders Found</h3>
+      <p class="text-gray-600 mb-6">You haven't placed any orders yet.</p>
+      <p-button label="Start Shopping" icon="pi pi-shopping-cart" styleClass="p-button-primary"></p-button>
+    </div>
+    
+    <!-- Orders List View -->
+    <div *ngIf="!loading && !error && orders.length > 0 && layout === 'list'">
+      <p-dataView #dv [value]="orders" [paginator]="true" [rows]="5" filterBy="orderStatus"
+                 [sortField]="'createdAt'" [sortOrder]="-1">
+        <ng-template pTemplate="header">
+          <div class="flex justify-between items-center p-3 bg-white rounded-t-lg shadow-sm">
+            <p-dropdown [options]="[
+              {label: 'Newest First', value: '!createdAt'},
+              {label: 'Oldest First', value: 'createdAt'},
+              {label: 'Price: High to Low', value: '!totalPrice'},
+              {label: 'Price: Low to High', value: 'totalPrice'}
+            ]" placeholder="Sort By" styleClass="w-full sm:w-auto"></p-dropdown>
+            
+            <span class="p-input-icon-left w-full sm:w-auto mt-2 sm:mt-0">
+              <i class="pi pi-search"></i>
+              <input type="search" pInputText placeholder="Search by status" class="w-full">
+            </span>
+          </div>
+        </ng-template>
+        
+        <ng-template pTemplate="list" let-order>
+          <div class="order-card bg-white rounded-lg shadow-sm mb-4 overflow-hidden" data-aos="fade-up">
+            <div class="p-4 border-b border-gray-100">
+              <div class="flex flex-col sm:flex-row justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-3 sm:mb-0">
+                  <div>
+                    <span class="text-gray-500 text-sm">Order #</span>
+                    <p class="font-semibold text-gray-900">{{ order.id }}</p>
+                  </div>
+                  <div>
+                    <span class="text-gray-500 text-sm">Date</span>
+                    <p class="font-semibold text-gray-900">{{ formatDate(order.createdAt) }}</p>
+                  </div>
+                  <div>
+                    <span class="text-gray-500 text-sm">Total</span>
+                    <p class="font-semibold text-gray-900">{{ order.totalPrice | currency:'USD' }}</p>
+                  </div>
+                  <div>
+                    <span class="text-gray-500 text-sm">Items</span>
+                    <p class="font-semibold text-gray-900">{{ getTotalItems(order) }}</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                  <p-tag [severity]="getStatusSeverity(order.orderStatus)" [value]="order.orderStatus"></p-tag>
+                  <p-tag severity="success" value="PAID" *ngIf="order.paymentStatus === 'PAID'"></p-tag>
+                  <p-tag severity="danger" value="UNPAID" *ngIf="order.paymentStatus !== 'PAID'"></p-tag>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <div class="mb-3 sm:mb-0">
+                <span class="text-gray-500 text-sm">Shipping Address</span>
+                <p class="text-gray-800">{{ order.receiverAddress }}</p>
+                <p class="text-gray-600 text-sm">ZIP: {{ order.zip }}</p>
+              </div>
+              
+              <div class="flex flex-wrap gap-2">
+                <p-button icon="pi pi-map-marker" label="Track" 
+                         styleClass="p-button-outlined p-button-primary p-button-sm"
+                         (onClick)="trackOrder(order)"></p-button>
+                <p-button icon="pi pi-eye" label="Details" 
+                         styleClass="p-button-outlined p-button-secondary p-button-sm"
+                         (onClick)="toggleOrderDetails(order.id)"></p-button>
+                <p-button *ngIf="order.orderStatus === 'PENDING'" 
+                         icon="pi pi-times" label="Cancel" 
+                         styleClass="p-button-outlined p-button-danger p-button-sm"
+                         (onClick)="cancelOrder(order)"></p-button>
+              </div>
+            </div>
+            
+            <div *ngIf="expandedOrderId === order.id" class="p-4 bg-gray-50 border-t border-gray-100" 
+                 data-aos="fade-down">
+              <h4 class="text-lg font-semibold mb-3 text-gray-800">Order Items</h4>
+              <div class="space-y-4">
+                <div *ngFor="let item of order.itemDetails" class="flex flex-col sm:flex-row gap-4 p-3 bg-white rounded-lg shadow-sm">
+                  <div class="w-full sm:w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                    <img [src]="'assets/placeholder.png'" [alt]="item.name" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-grow">
+                    <h5 class="font-semibold text-gray-900">{{ item.name }}</h5>
+                    <p class="text-sm text-gray-600 line-clamp-2 mb-2">{{ item.description }}</p>
+                    <div class="flex flex-wrap gap-3 text-sm">
+                      <span class="px-2 py-1 bg-gray-100 rounded-full text-gray-700">{{ item.category }}</span>
+                      <span class="text-gray-600">Qty: {{ getItemQuantity(order, item.id) }}</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-col items-end justify-between">
+                    <div class="text-right">
+                      <p class="font-semibold text-gray-900">{{ item.unitPrice | currency:'USD' }}</p>
+                      <p *ngIf="item.discount > 0" class="text-sm text-green-600">
+                        {{ item.discount }}% OFF
+                      </p>
+                      <p *ngIf="item.discount > 0" class="text-xs text-gray-500 line-through">
+                        {{ (item.unitPrice / (1 - item.discount/100)) | currency:'USD' }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+    
+    <!-- Orders Grid View -->
+    <div *ngIf="!loading && !error && orders.length > 0 && layout === 'grid'">
+      <p-dataView #dv [value]="orders" [paginator]="true" [rows]="6" filterBy="orderStatus"
+                 [sortField]="'createdAt'" [sortOrder]="-1" layout="grid">
+        <ng-template pTemplate="header">
+          <div class="flex justify-between items-center p-3 bg-white rounded-t-lg shadow-sm">
+            <p-dropdown [options]="[
+              {label: 'Newest First', value: '!createdAt'},
+              {label: 'Oldest First', value: 'createdAt'},
+              {label: 'Price: High to Low', value: '!totalPrice'},
+              {label: 'Price: Low to High', value: 'totalPrice'}
+            ]" placeholder="Sort By" styleClass="w-full sm:w-auto"></p-dropdown>
+            
+            <span class="p-input-icon-left w-full sm:w-auto mt-2 sm:mt-0">
+              <i class="pi pi-search"></i>
+              <input type="search" pInputText placeholder="Search by status" class="w-full">
+            </span>
+          </div>
+        </ng-template>
+        
+        <ng-template pTemplate="grid" let-orders>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div *ngFor="let order of orders" class="col-12 sm:col-6 lg:col-4" data-aos="zoom-in">
+              <p-card styleClass="h-full">
+                <ng-template pTemplate="header">
+                  <div class="flex justify-between items-center p-3 bg-gray-50">
+                    <span class="font-semibold text-gray-800">Order #{{ order.id }}</span>
+                    <p-tag [severity]="getStatusSeverity(order.orderStatus)" [value]="order.orderStatus"></p-tag>
+                  </div>
+                </ng-template>
+                
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Date:</span>
+                    <span class="font-medium">{{ formatDate(order.createdAt) }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Total:</span>
+                    <span class="font-medium">{{ order.totalPrice | currency:'USD' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Items:</span>
+                    <span class="font-medium">{{ getTotalItems(order) }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Payment:</span>
+                    <p-tag severity="success" value="PAID" *ngIf="order.paymentStatus === 'PAID'" [rounded]="true"></p-tag>
+                    <p-tag severity="danger" value="UNPAID" *ngIf="order.paymentStatus !== 'PAID'" [rounded]="true"></p-tag>
+                  </div>
+                  
+                  <div class="pt-2">
+                    <p class="text-gray-600 text-sm mb-1">Shipping Address:</p>
+                    <p class="text-gray-800 text-sm">{{ order.receiverAddress }}</p>
+                    <p class="text-gray-600 text-xs">ZIP: {{ order.zip }}</p>
+                  </div>
+                </div>
+                
+                <ng-template pTemplate="footer">
+                  <div class="flex justify-between">
+                    <p-button icon="pi pi-eye" 
+                             styleClass="p-button-outlined p-button-secondary p-button-sm"
+                             (onClick)="viewOrderDetails(order)"></p-button>
+                    <p-button icon="pi pi-map-marker" 
+                             styleClass="p-button-outlined p-button-primary p-button-sm"
+                             (onClick)="trackOrder(order)"></p-button>
+                    <p-button *ngIf="order.orderStatus === 'PENDING'" 
+                             icon="pi pi-times" 
+                             styleClass="p-button-outlined p-button-danger p-button-sm"
+                             (onClick)="cancelOrder(order)"></p-button>
+                  </div>
+                </ng-template>
+              </p-card>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+  </div>
+</div>
