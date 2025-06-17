@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as AOS from 'aos';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  providers: [MessageService]
+  selector: 'app-admin-login',
+  templateUrl: './admin-login.component.html',
+  styleUrls: ['./admin-login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class AdminLoginComponent implements OnInit {
   loginForm: FormGroup;
   loading: boolean = false;
   rememberMe: boolean = false;
@@ -25,12 +23,15 @@ export class LoginComponent implements OnInit {
     // Check if we have saved credentials
     const savedUsername = localStorage.getItem('savedUsername');
     const savedPassword = localStorage.getItem('savedPassword');
-    
+
     this.loginForm = this.fb.group({
       userName: [savedUsername || '', [Validators.required]],
-      userPassword: [savedPassword || '', [Validators.required, Validators.minLength(5)]]
+      userPassword: [
+        savedPassword || '',
+        [Validators.required, Validators.minLength(5)],
+      ],
     });
-    
+
     // If we have saved credentials, set rememberMe to true
     this.rememberMe = !!savedUsername && !!savedPassword;
   }
@@ -40,14 +41,14 @@ export class LoginComponent implements OnInit {
       duration: 800,
       easing: 'ease-out-cubic',
       once: true,
-      offset: 50
+      offset: 50,
     });
   }
 
   login(): void {
     if (this.loginForm.invalid) {
       // Mark all fields as touched to trigger validation messages
-      Object.keys(this.loginForm.controls).forEach(key => {
+      Object.keys(this.loginForm.controls).forEach((key) => {
         const control = this.loginForm.get(key);
         control?.markAsTouched();
       });
@@ -55,14 +56,14 @@ export class LoginComponent implements OnInit {
         severity: 'error',
         summary: 'Validation Error',
         detail: 'Please fill all required fields correctly',
-        life: 5000
+        life: 5000,
       });
       return;
     }
 
     this.loading = true;
     const user = this.loginForm.value;
-    
+
     // Handle "Remember Me" functionality
     if (this.rememberMe) {
       // Save credentials to localStorage
@@ -76,36 +77,36 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(user).subscribe({
       next: (data) => {
+        if (data.user.role[0].roleName == 'Admin') {
+          this.authService.setToken(data.jwtToken);
+          localStorage.setItem('id', data.user.id);
+          localStorage.setItem('username', data.user.userName);
+          localStorage.setItem('imgUrl', data.user.image);
+          localStorage.setItem('email', data.user.email);
+          localStorage.setItem('role', data.user.role[0].roleName);
 
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Login Successful',
+            detail: 'Welcome back to EMart.lk!',
+            life: 3000,
+          });
 
-        if(data.user.role[0].roleName == 'Admin') {
-           this.loading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Authentication Failed',
-          detail: 'Please login as admin',
-          life: 5000
-        });
-        }else{
-        this.authService.setToken(data.jwtToken);
-        localStorage.setItem('id', data.user.id);
-        localStorage.setItem('username', data.user.userName);
-        localStorage.setItem('imgUrl', data.user.image);
-        localStorage.setItem('email', data.user.email);
-        localStorage.setItem('role', data.user.role[0].roleName);
-        
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Login Successful',
-          detail: 'Welcome back to EMart.lk!',
-          life: 3000
-        });
-      }
-        setTimeout(() => {
-          if(data.user.role[0].roleName != 'Admin'){
-            this.router.navigate(['/home']);
-          }
-        }, 1500);
+          setTimeout(() => {
+            const role = localStorage.getItem('role');
+            if (role === 'Admin') {
+              this.router.navigate(['/admin/dashboard']);
+            }
+          }, 1500);
+        } else {
+          this.loading = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Authentication Failed',
+            detail: 'Access Denied.',
+            life: 5000,
+          });
+        }
       },
       error: (err) => {
         this.loading = false;
@@ -113,9 +114,9 @@ export class LoginComponent implements OnInit {
           severity: 'error',
           summary: 'Authentication Failed',
           detail: 'Invalid username or password. Please try again.',
-          life: 5000
+          life: 5000,
         });
-      }
+      },
     });
   }
 
@@ -127,7 +128,7 @@ export class LoginComponent implements OnInit {
       severity: 'info',
       summary: 'Coming Soon',
       detail: `${provider} login will be available soon!`,
-      life: 3000
+      life: 3000,
     });
   }
 
@@ -135,5 +136,4 @@ export class LoginComponent implements OnInit {
     // You can perform any actions needed before navigation
     this.router.navigate(['/forgot-password']);
   }
-  
 }

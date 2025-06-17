@@ -1,0 +1,141 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 py-6 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl w-full flex rounded-xl shadow-[0_25px_60px_rgba(0,_0,_0,_0.3)] overflow-hidden" data-aos="fade-up">
+    <!-- Left side - Image with overlay -->
+    <div class="hidden lg:block w-1/2 relative">
+      <div class="absolute inset-0 bg-gradient-to-br from-amber-700/90 to-orange-900/90 z-10"></div>
+      <img src="/assets/logo01.png" alt="Admin Login" class="h-full w-full object-cover relative z-0" />
+      <div class="absolute inset-0 flex flex-col justify-center items-center z-20 p-10 text-white" data-aos="fade-right" data-aos-delay="300">
+        <div class="mb-6">
+          <img src="/assets/logo01.png" alt="EMart.lk Admin Logo" class="h-16 w-auto filter brightness-50 invert" />
+        </div>
+        <h1 class="text-4xl font-bold mb-4 text-center">Welcome to Admin Portal</h1>
+        <p class="text-lg text-center mb-6 text-gray-100 max-w-md">Secure administrative access to manage your e-commerce platform.</p>
+        <div class="flex space-x-4 mt-4">
+          <div class="flex items-center">
+            <i class="pi pi-check-circle text-xl mr-2"></i>
+            <span>System Management</span>
+          </div>
+          <div class="flex items-center">
+            <i class="pi pi-check-circle text-xl mr-2"></i>
+            <span>User Control</span>
+          </div>
+        </div>
+        <div class="flex space-x-4 mt-3">
+          <div class="flex items-center">
+            <i class="pi pi-check-circle text-xl mr-2"></i>
+            <span>Analytics Dashboard</span>
+          </div>
+          <div class="flex items-center">
+            <i class="pi pi-check-circle text-xl mr-2"></i>
+            <span>24/7 Monitoring</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right side - Form -->
+    <div class="w-full lg:w-1/2 bg-white p-8 lg:p-12">
+      <div class="lg:hidden flex justify-center mb-6" data-aos="fade-down">
+        <img src="/assets/logo01.png" alt="EMart.lk Admin Logo" class="h-12 w-auto" />
+      </div>
+      
+      <div class="mb-8" data-aos="fade-up" data-aos-delay="200">
+        <h2 class="text-3xl font-bold text-gray-900">Sign in to admin panel</h2>
+        <p class="mt-2 text-gray-600">Welcome back! Please enter your admin credentials to access the dashboard.</p>
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-5" data-aos="fade-up" data-aos-delay="300">
+        <div>
+          <label for="userName" class="block text-sm font-medium text-gray-700 mb-2">Admin Username</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500">
+              <i class="pi pi-user"></i>
+            </span>
+            <input
+              id="userName"
+              formControlName="userName"
+              pInputText
+              autocomplete="off"
+              class="w-full pl-12 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-admin-500 focus:border-admin-500 transition-all duration-200"
+              placeholder="Enter your admin username"
+            />
+          </div>
+          <small
+            *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+            class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="pi pi-exclamation-circle mr-1"></i> Username is required
+          </small>
+        </div>
+        
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label for="userPassword" class="block text-sm font-medium text-gray-700">Admin Password</label>
+            <a (click)="navigateToForgotPassword()" class="text-sm text-admin-600 hover:text-admin-500 font-medium transition-colors duration-200 cursor-pointer">
+              Forgot password?
+            </a>              
+          </div>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 z-10">
+              <i class="pi pi-lock"></i>
+            </span>
+            <p-password
+              id="userPassword"
+              formControlName="userPassword"
+              [feedback]="false"
+              [toggleMask]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full pl-12 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-admin-500 focus:border-admin-500 transition-all duration-200"
+              placeholder="Enter your admin password"
+            ></p-password>
+          </div>
+          <small
+            *ngIf="loginForm.get('userPassword')?.invalid && loginForm.get('userPassword')?.touched"
+            class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="pi pi-exclamation-circle mr-1"></i> Password is required (min 6 characters)
+          </small>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <p-checkbox
+              [(ngModel)]="rememberMe"
+              [ngModelOptions]="{standalone: true}"
+              [binary]="true"
+              inputId="rememberMe"
+              styleClass="mr-2">
+            </p-checkbox>
+            <label for="rememberMe" class="text-sm text-gray-700">Remember me</label>
+          </div>
+        </div>
+        
+        <div class="pt-1">
+          <p-button
+            type="submit"
+            [loading]="loading"
+            styleClass="w-full p-button-admin shadow-lg"
+            [style]="{'height': '44px'}"
+            label="Sign in to Admin">
+          </p-button>
+        </div>
+      </form>
+      
+      <div class="mt-6 text-center" data-aos="fade-up" data-aos-delay="400">
+        <p class="text-gray-600">
+          Need admin access?
+          <a routerLink="/admin/register" class="font-semibold text-admin-600 hover:text-admin-500 transition-colors duration-200 ml-1">
+            Request access
+          </a>
+        </p>
+      </div>
+      
+      <div class="mt-8 pt-4 border-t border-gray-200 text-center" data-aos="fade-up" data-aos-delay="500">
+        <a routerLink="/home" class="inline-flex items-center text-admin-800 font-semibold hover:text-admin-600 transition-colors duration-200">
+          <img src="/assets/logo01.png" alt="EMart.lk Admin Logo" class="h-6 w-auto mr-2" />
+          <span>© 2023 EMart.lk Admin Portal. All rights reserved.</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>

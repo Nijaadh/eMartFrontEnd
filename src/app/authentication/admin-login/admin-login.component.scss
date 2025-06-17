@@ -1,0 +1,151 @@
+:host ::ng-deep {
+    // PrimeNG customizations
+    .p-password {
+      width: 100%;
+      
+      .p-password-input {
+        width: 100%;
+        padding-left: 3rem !important;
+      }
+      
+      .p-password-panel {
+        margin-top: 0.5rem;
+      }
+      
+      .p-password-icon {
+        right: 1rem;
+      }
+    }
+    
+    .p-button {
+      &.p-button-admin {
+        background: linear-gradient(to right, #d97706, #b45309);
+        border: none;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        
+        &:hover {
+          background: linear-gradient(to right, #b45309, #92400e);
+          box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3) !important;
+        }
+        
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+        }
+        
+        .p-button-label {
+          font-weight: 600;
+        }
+        
+        &.p-button-loading {
+          background: linear-gradient(to right, #d97706, #b45309);
+        }
+      }
+    }
+    
+    .p-inputtext {
+      &:enabled:focus {
+        border-color: #d97706;
+        box-shadow: 0 0 0 1px rgba(217, 119, 6, 0.2);
+      }
+      
+      &::placeholder {
+        color: #a0aec0;
+      }
+    }
+    
+    .p-checkbox {
+      .p-checkbox-box {
+        border-radius: 4px;
+        border: 2px solid #cbd5e0;
+        
+        &.p-highlight {
+          border-color: #d97706;
+          background: #d97706;
+        }
+        
+        &:not(.p-disabled):hover {
+          border-color: #d97706;
+        }
+      }
+      
+      &:not(.p-checkbox-disabled).p-checkbox-focused .p-checkbox-box.p-highlight {
+        border-color: #d97706;
+        background: #d97706;
+        box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+      }
+    }
+    
+    .p-toast {
+      .p-toast-message {
+        border-radius: 8px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        
+        &.p-toast-message-success {
+          background: #f0fdf4;
+          border-left: 6px solid #22c55e;
+          color: #166534;
+        }
+        
+        &.p-toast-message-error {
+          background: #fef2f2;
+          border-left: 6px solid #ef4444;
+          color: #991b1b;
+        }
+      }
+    }
+  }
+  
+  // Admin theme colors
+  .bg-admin-700 {
+    background-color: #d97706;
+  }
+  
+  .bg-admin-900 {
+    background-color: #92400e;
+  }
+  
+  .text-admin-600 {
+    color: #d97706;
+  }
+  
+  .text-admin-800 {
+    color: #92400e;
+  }
+  
+  .hover\:text-admin-500:hover {
+    color: #f59e0b;
+  }
+  
+  .hover\:text-admin-600:hover {
+    color: #d97706;
+  }
+  
+  .focus\:ring-admin-500:focus {
+    --tw-ring-color: rgba(217, 119, 6, 0.5);
+  }
+  
+  .focus\:border-admin-500:focus {
+    border-color: #d97706;
+  }
+  
+  // Animation
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 1023px) {
+    .max-w-6xl {
+      max-width: 28rem;
+    }
+  }
