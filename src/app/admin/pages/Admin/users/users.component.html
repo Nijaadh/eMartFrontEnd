@@ -46,7 +46,8 @@
           </ng-template>
           
           <!-- User Details Content -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+           <div class="row">
+          <div class="col-12">
             <div class="bg-gray-50 p-4 rounded-lg">
               <h4 class="text-lg font-medium text-gray-800 mb-2">User Information</h4>
               <div class="space-y-2">
@@ -70,14 +71,14 @@
                     <span class="text-gray-500 w-24">Address</span>
                     <span class="font-medium">{{user.address || 'Not Provided'}}</span>
                   </div>
-                <div class="flex items-center">
+                <!-- <div class="flex items-center">
                   <span class="text-gray-500 w-24">Joined:</span>
                   <span class="font-medium">{{user.joinDate || 'Unknown'}}</span>
-                </div>
+                </div> -->
               </div>
             </div>
             
-            <div class="bg-gray-50 p-4 rounded-lg">
+            <!-- <div class="bg-gray-50 p-4 rounded-lg">
               <h4 class="text-lg font-medium text-gray-800 mb-2">Activity</h4>
               <p class="text-gray-600">
                 Last login: {{user.lastLogin || 'N/A'}}
@@ -86,8 +87,9 @@
                 <button pButton type="button" label="View Details" icon="pi pi-user" class="p-button-sm p-button-outlined"></button>
                 <button pButton type="button" label="Edit" icon="pi pi-pencil" class="p-button-sm p-button-secondary p-button-outlined"></button>
               </div>
-            </div>
+            </div> -->
           </div>
+        </div>
         </p-accordionTab>
       </p-accordion>
     </div>

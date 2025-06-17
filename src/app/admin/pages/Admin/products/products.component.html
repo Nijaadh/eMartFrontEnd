@@ -249,6 +249,7 @@
         currency="LKR"
         locale="en-US"
         placeholder="0.00"
+        [min]="0.01"
       ></p-inputNumber>
       <small *ngIf="productForm.get('unitPrice')?.invalid && productForm.get('unitPrice')?.touched" class="text-red-500 flex items-center mt-1">
         <i class="pi pi-exclamation-circle mr-1"></i> Price is required
