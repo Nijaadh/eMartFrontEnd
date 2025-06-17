@@ -69,26 +69,31 @@ const routes: Routes = [
       { path: 'admin', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
+  // {
+  //   path: 'user',
+  //   component: AdminLayoutComponent,
+  //   canActivate: [authGuard],
+  //   children: [
+  //     // { path: '', redirectTo: '/user/dashboard', pathMatch: 'full' },
+  //     // {
+  //     //   path: 'dashboard',
+  //     //   component: UserDashComponent,
+  //     //   canActivate: [authGuard],
+  //     // },
+  //     // { path: 'order', component: MyOrdersComponent, canActivate: [authGuard] },
+  //     {
+  //       path: 'profile',
+  //       component: ProfileComponent,
+  //       canActivate: [authGuard],
+  //     },
+  //     // { path: 'user', redirectTo: 'dashboard', pathMatch: 'full' },
+  //   ],
+  // },
   {
-    path: 'user',
-    component: AdminLayoutComponent,
-    canActivate: [authGuard],
-    children: [
-      { path: '', redirectTo: '/user/dashboard', pathMatch: 'full' },
-      {
-        path: 'dashboard',
-        component: UserDashComponent,
-        canActivate: [authGuard],
-      },
-      { path: 'order', component: MyOrdersComponent, canActivate: [authGuard] },
-      {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent,
         canActivate: [authGuard],
       },
-      { path: 'user', redirectTo: 'dashboard', pathMatch: 'full' },
-    ],
-  },
   {
     path: 'admin/login',
     component: AdminLoginComponent,

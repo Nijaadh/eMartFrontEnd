@@ -28,4 +28,12 @@ export class UserService {
   getAllUser(): Observable<any> {
     return this.http.get(this.baseUrl + 'getAll');
   }
+
+   getUserById(id: number): Observable<any> {
+    return this.http.get(this.baseUrl + id);
+  }
+
+  updateUser(user: any): Observable<any> {
+    return this.http.put(this.baseUrl + 'update', user);
+  }
 }

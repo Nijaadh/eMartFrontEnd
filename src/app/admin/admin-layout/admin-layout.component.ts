@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { MessageService, MenuItem } from 'primeng/api';
-import { ADMIN_MENU, USER_MENU } from '../menu/menu';
+import { ADMIN_MENU } from '../menu/menu';
 import * as AOS from 'aos';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -61,7 +61,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.userRole = localStorage.getItem('role') || 'User';
     this.userName = localStorage.getItem('username') || 'Admin User';
     this.setUserInitials();
-    this.menuList = this.userRole === 'Admin' ? ADMIN_MENU : USER_MENU;
+    this.menuList =  ADMIN_MENU;
 
     // Check if sidebar state is saved in localStorage
     const savedSidebarState = localStorage.getItem('sidebarState');

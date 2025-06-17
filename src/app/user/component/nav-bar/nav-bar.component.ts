@@ -56,14 +56,14 @@ export class NavBarComponent implements OnInit {
           {
             label: this.username,
             items: [
-              // {
-              //   label: 'My Profile',
-              //   icon: 'pi pi-user',
-              //   command: () => {
-              //     this.sidebarVisible = true;
-              //     this.goToProfile();
-              //   },
-              // },
+              {
+                label: 'My Profile',
+                icon: 'pi pi-user',
+                command: () => {
+                  this.sidebarVisible = true;
+                  this.goToProfile();
+                },
+              },
               // {
               //   label: 'My Orders',
               //   icon: 'pi pi-shopping-cart',
@@ -104,11 +104,7 @@ export class NavBarComponent implements OnInit {
   }
 
   goToProfile() {
-    if (this.userRole === 'Admin') {
-      this.router.navigate(['/admin/dashboard']);
-    } else{
-      this.router.navigate(['/user/profile']);
-    }
+      this.router.navigate(['profile/' + localStorage.getItem('id')]); 
   }
 
   goToOrders() {

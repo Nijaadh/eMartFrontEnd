@@ -6,8 +6,8 @@ export const ADMIN_MENU = [
   { path: '/admin/users', icon: 'pi pi-users', label: 'Users' },
 ];
 
-export const USER_MENU = [
-  { path: '/user/dashboard', icon: 'pi pi-home', label: 'Dashboard' },
-  { path: '/user/order', icon: 'pi pi-shopping-cart', label: 'My Orders' },
-  { path: '/user/profile', icon: 'pi pi-user', label: 'Profile' },
-];
+// export const USER_MENU = [
+//   { path: '/user/dashboard', icon: 'pi pi-home', label: 'Dashboard' },
+//   { path: '/user/order', icon: 'pi pi-shopping-cart', label: 'My Orders' },
+//   { path: '/user/profile', icon: 'pi pi-user', label: 'Profile' },
+// ];
