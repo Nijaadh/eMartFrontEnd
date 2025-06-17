@@ -19,10 +19,11 @@ import { CategoryComponent } from './admin/pages/Admin/category/category.compone
 import { ItemsComponent } from './user/pages/items/items.component';
 import { AboutUsComponent } from './user/pages/about-us/about-us.component';
 import { ItemProfileComponent } from './user/pages/item-profile/item-profile.component';
-import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component'; 
+import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.component';
 import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
 import { ProfileComponent } from './admin/pages/user/profile/profile.component';
+import { AdminLoginComponent } from './authentication/admin-login/admin-login.component';
 const routes: Routes = [
   {
     path: '',
@@ -74,7 +75,11 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', redirectTo: '/user/dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: UserDashComponent, canActivate: [authGuard] },
+      {
+        path: 'dashboard',
+        component: UserDashComponent,
+        canActivate: [authGuard],
+      },
       { path: 'order', component: MyOrdersComponent, canActivate: [authGuard] },
       {
         path: 'profile',
@@ -83,6 +88,10 @@ const routes: Routes = [
       },
       { path: 'user', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
+  },
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent,
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

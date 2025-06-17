@@ -86,6 +86,7 @@ import { ForgotPasswordComponent } from './authentication/forgot-password/forgot
 import { UserDashComponent } from './admin/pages/user/user-dash/user-dash.component';
 import { ProfileComponent } from './admin/pages/user/profile/profile.component';
 import { MyOrdersComponent } from './admin/pages/user/my-orders/my-orders.component';
+import { AdminLoginComponent } from './authentication/admin-login/admin-login.component';
 
 import { MessageModule } from 'primeng/message';
 
@@ -119,6 +120,7 @@ import { MessageModule } from 'primeng/message';
     UserDashComponent,
     ProfileComponent,
     MyOrdersComponent,
+    AdminLoginComponent,
     
     
   ],
