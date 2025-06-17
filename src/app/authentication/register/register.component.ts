@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
   // Phone number validation pattern for Sri Lankan numbers
   // Accepts formats: 07XXXXXXXX or +947XXXXXXXX
   phonePattern: string = '^(07\\d{8}|\\+947\\d{8})$';
+  emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
   
   user: any = {
     userName: '',
@@ -70,6 +71,7 @@ export class RegisterComponent implements OnInit {
         }
       );
     }
+    
   }
 
   onUserNameChange() {
