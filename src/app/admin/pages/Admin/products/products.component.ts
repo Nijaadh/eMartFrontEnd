@@ -54,7 +54,7 @@ export class ProductsComponent implements OnInit {
       image: ['', Validators.required],
       itemCount: ['', Validators.required],
       reOrderLevel: ['', Validators.required],
-      
+       discount: ['', Validators.required],
     });
   }
 

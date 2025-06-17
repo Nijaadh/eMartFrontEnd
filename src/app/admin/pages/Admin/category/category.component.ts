@@ -35,17 +35,17 @@ export class CategoryComponent implements OnInit {
     this.categoryForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-
+       description: ['', Validators.required],
       commonStatus: ['ACTIVE'],
-  
+        image: ['', Validators.required],
     });
 
     this.subCategoryForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-   
+       description: ['', Validators.required],
       commonStatus: ['ACTIVE'],
-
+            image: ['', Validators.required],
       category: ['', Validators.required],
     });
   }
