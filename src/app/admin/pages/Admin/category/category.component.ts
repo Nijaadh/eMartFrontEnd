@@ -35,17 +35,17 @@ export class CategoryComponent implements OnInit {
     this.categoryForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-       description: ['', Validators.required],
+      description: [''], // Removed Validators.required
       commonStatus: ['ACTIVE'],
-        image: ['', Validators.required],
+      image: [''], // Removed Validators.required
     });
 
     this.subCategoryForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-       description: ['', Validators.required],
+      description: [''], // Removed Validators.required
       commonStatus: ['ACTIVE'],
-            image: ['', Validators.required],
+      image: [''], // Removed Validators.required
       category: ['', Validators.required],
     });
   }
@@ -63,6 +63,14 @@ export class CategoryComponent implements OnInit {
   }
 
   addCategory() {
+    // Add debugging
+    console.log('Category Form valid:', this.categoryForm.valid);
+    console.log('Category Form errors:', this.categoryForm.errors);
+    Object.keys(this.categoryForm.controls).forEach(key => {
+      const control = this.categoryForm.get(key);
+      console.log(`${key}: valid=${control?.valid}, value=${control?.value}, errors=`, control?.errors);
+    });
+
     if (this.categoryForm.invalid) {
       this.showError();
       return;
@@ -70,14 +78,15 @@ export class CategoryComponent implements OnInit {
 
     let Obj: Category = {
       name: this.categoryForm.value.name,
-      description: this.categoryForm.value.description,
-      image: this.categoryForm.value.image,
+      description: this.categoryForm.value.description || '', // Provide default empty string
+      image: this.categoryForm.value.image || '', // Provide default empty string
       commonStatus: this.categoryForm.value.commonStatus,
     };
     console.log(Obj);
 
     this._apim.addCategory(Obj).subscribe(
       (response) => {
+        this.categoryForm.reset();
         this.show('Category added Successfully!');
         this.visible = false;
         this.fetchAllCategories();
@@ -89,6 +98,14 @@ export class CategoryComponent implements OnInit {
   }
 
   addSubCategory() {
+    // Add debugging
+    console.log('Sub Category Form valid:', this.subCategoryForm.valid);
+    console.log('Sub Category Form errors:', this.subCategoryForm.errors);
+    Object.keys(this.subCategoryForm.controls).forEach(key => {
+      const control = this.subCategoryForm.get(key);
+      console.log(`${key}: valid=${control?.valid}, value=${control?.value}, errors=`, control?.errors);
+    });
+
     if (this.subCategoryForm.invalid) {
       this.showError();
       return;
@@ -96,14 +113,15 @@ export class CategoryComponent implements OnInit {
 
     let Obj: SubCategory = {
       name: this.subCategoryForm.value.name,
-      description: this.subCategoryForm.value.description,
-      image: this.subCategoryForm.value.image,
+      description: this.subCategoryForm.value.description || '', // Provide default empty string
+      image: this.subCategoryForm.value.image || '', // Provide default empty string
       commonStatus: this.subCategoryForm.value.commonStatus,
       categoryId: this.subCategoryForm.value.category,
     };
 
     this._apim.addSubCategory(Obj).subscribe(
       (response) => {
+        this.subCategoryForm.reset();
         this.show('Sub Category added Successfully!');
         this.subModelVisible = false;
         this.fetchSubAllCategories();
@@ -170,7 +188,8 @@ export class CategoryComponent implements OnInit {
       this.categoryForm.patchValue({
         id: category.id,
         name: category.name,
-        description: category.description,
+        description: category.description || '', // Handle null/undefined values
+        image: category.image || '', // Handle null/undefined values
       });
     });
   }
@@ -183,13 +202,22 @@ export class CategoryComponent implements OnInit {
       this.subCategoryForm.patchValue({
         id: subCategory.id,
         name: subCategory.name,
-        description: subCategory.description,
-        categoryId: subCategory.categoryId,
+        description: subCategory.description || '', // Handle null/undefined values
+        image: subCategory.image || '', // Handle null/undefined values
+        category: subCategory.categoryId,
       });
     });
   }
 
   updateCategory() {
+    // Add debugging
+    console.log('Update Category Form valid:', this.categoryForm.valid);
+    console.log('Update Category Form errors:', this.categoryForm.errors);
+    Object.keys(this.categoryForm.controls).forEach(key => {
+      const control = this.categoryForm.get(key);
+      console.log(`${key}: valid=${control?.valid}, value=${control?.value}, errors=`, control?.errors);
+    });
+
     if (this.categoryForm.invalid) {
       this.showError();
       return;
@@ -198,16 +226,17 @@ export class CategoryComponent implements OnInit {
     let Obj: UpCategory = {
       id: this.categoryForm.value.id,
       name: this.categoryForm.value.name,
-      description: this.categoryForm.value.description,
-      image: this.categoryForm.value.image,
+      description: this.categoryForm.value.description || '', // Provide default empty string
+      image: this.categoryForm.value.image || '', // Provide default empty string
       commonStatus: this.categoryForm.value.commonStatus,
     };
 
     this._apim.updateCategory(Obj).subscribe(
       (response) => {
         this.categoryForm.reset();
-        this.show('category updated Successfully!');
+        this.show('Category updated Successfully!');
         this.visible = false;
+        this.isUpdate = false;
         this.fetchAllCategories();
       },
       (error) => {
@@ -217,6 +246,14 @@ export class CategoryComponent implements OnInit {
   }
 
   updateSubCategory() {
+    // Add debugging
+    console.log('Update Sub Category Form valid:', this.subCategoryForm.valid);
+    console.log('Update Sub Category Form errors:', this.subCategoryForm.errors);
+    Object.keys(this.subCategoryForm.controls).forEach(key => {
+      const control = this.subCategoryForm.get(key);
+      console.log(`${key}: valid=${control?.valid}, value=${control?.value}, errors=`, control?.errors);
+    });
+
     if (this.subCategoryForm.invalid) {
       this.showError();
       return;
@@ -225,43 +262,63 @@ export class CategoryComponent implements OnInit {
     let Obj: UpSubCategory = {
       id: this.subCategoryForm.value.id,
       name: this.subCategoryForm.value.name,
-      description: this.subCategoryForm.value.description,
-      image: this.subCategoryForm.value.image,
+      description: this.subCategoryForm.value.description || '', // Provide default empty string
+      image: this.subCategoryForm.value.image || '', // Provide default empty string
       commonStatus: this.subCategoryForm.value.commonStatus,
-      categoryId: this.subCategoryForm.value.categoryId,
+      categoryId: this.subCategoryForm.value.category,
     };
 
     this._apim.updateSubCategory(Obj).subscribe(
       (response) => {
         console.log('subCategory updated:', response);
         this.subCategoryForm.reset();
-        this.show(' sub category updated Successfully!');
-        this.visible = false;
+        this.show('Sub category updated Successfully!');
+        this.subModelVisible = false;
+        this.isSubUpdate = false;
+        this.fetchSubAllCategories();
         this.fetchAllCategories();
       },
       (error) => {
-        console.log('Error in adding category, ', error);
+        console.log('Error in updating sub category, ', error);
       }
     );
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
+    if (!file) {
+      // If no file selected, set empty string (which is now valid)
+      return;
+    }
+    
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      this.categoryForm.patchValue({
-        image: reader.result?.toString().split(',')[1] || '',
-      });
+      const base64Image = reader.result?.toString().split(',')[1] || '';
+      
+      // Update both forms since we don't know which dialog is open
+      if (this.visible) {
+        this.categoryForm.patchValue({
+          image: base64Image
+        });
+      }
+      
+      if (this.subModelVisible) {
+        this.subCategoryForm.patchValue({
+          image: base64Image
+        });
+      }
     };
   }
 
   showDialog() {
     this.visible = true;
+    this.isUpdate = false;
   }
 
   showSubCategoryDialog() {
     this.subModelVisible = true;
+    this.isSubUpdate = false;
   }
 
   toggleDescription(item: any) {
@@ -280,7 +337,7 @@ export class CategoryComponent implements OnInit {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: 'category deletion Successfully!',
+      detail: 'Category deletion Successfully!',
     });
   }
 
@@ -288,7 +345,7 @@ export class CategoryComponent implements OnInit {
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Product added Unsuccessfully!',
+      detail: 'Please fill in all required fields!',
     });
   }
 }
