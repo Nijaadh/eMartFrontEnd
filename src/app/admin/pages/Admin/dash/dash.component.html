@@ -93,10 +93,10 @@
 
   <!-- Low Stock Alerts -->
   <div class="bg-white p-6 rounded-xl shadow-lg mb-8" data-aos="fade-up">
-    <div class="flex justify-between items-center mb-4">
+    <!-- <div class="flex justify-between items-center mb-4">
       <h3 class="text-lg font-semibold text-gray-800">Low Stock Alerts</h3>
       <p-button label="View All" icon="pi pi-external-link" styleClass="p-button-sm p-button-outlined"></p-button>
-    </div>
+    </div> -->
     
     <p-table [value]="lowStockItems" [paginator]="true" [rows]="5" styleClass="p-datatable-sm" responsiveLayout="scroll">
       <ng-template pTemplate="header">
@@ -106,7 +106,7 @@
           <th>Current Stock</th>
           <th>Reorder Level</th>
           <th>Status</th>
-          <th>Action</th>
+          <!-- <th>Action</th> -->
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-item>
@@ -122,10 +122,10 @@
               {{item.currentStock === 0 ? 'Out of Stock' : 'Low Stock'}}
             </span>
           </td>
-          <td>
+          <!-- <td>
             <p-button icon="pi pi-refresh" styleClass="p-button-sm p-button-rounded p-button-info mr-2"></p-button>
-            <p-button icon="pi pi-shopping-cart" styleClass="p-button-sm p-button-rounded p-button-success"></p-button>
-          </td>
+            
+          </td> -->
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">

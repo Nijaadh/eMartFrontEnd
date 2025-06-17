@@ -30,7 +30,7 @@
     </div>
     
     <!-- Orders List View -->
-    <div *ngIf="!loading && !error && orders.length > 0 && layout === 'list'">
+    <div *ngIf="!loading && !error && orders.length > 0 && layout === 'grid'">
       <p-dataView #dv [value]="orders" [paginator]="true" [rows]="5" filterBy="orderStatus"
                  [sortField]="'createdAt'" [sortOrder]="-1">
         <ng-template pTemplate="header">

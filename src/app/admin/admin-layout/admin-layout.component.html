@@ -46,13 +46,13 @@
       <!-- Bottom Actions -->
       <div class="p-3 space-y-1 mt-auto">
         <!-- Home Button -->
-        <a routerLink="/" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
+        <!-- <a routerLink="/" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
           <i class="pi pi-home text-lg mr-3 text-gray-500 group-hover:text-blue-600"></i>
           <span class="transition-opacity duration-300" 
                 [ngClass]="{'opacity-0 w-0': !sidebarVisible, 'opacity-100': sidebarVisible}">
             Back to Home
           </span>
-        </a>
+        </a> -->
         
         <!-- Divider -->
         <div class="border-t border-gray-200 my-2"></div>
@@ -91,9 +91,9 @@
         <!-- User Profile & Actions -->
         <div class="flex items-center space-x-4">
           <!-- Notifications -->
-          <p-button icon="pi pi-bell" styleClass="p-button-text p-button-rounded" 
+          <!-- <p-button icon="pi pi-bell" styleClass="p-button-text p-button-rounded" 
                    [badge]="notificationCount.toString()" badgeClass="p-badge-danger" 
-                   *ngIf="notificationCount > 0" (onClick)="showNotifications()"></p-button>
+                   *ngIf="notificationCount > 0" (onClick)="showNotifications()"></p-button> -->
           
           <!-- Date Display -->
           <div class="hidden md:flex items-center bg-white rounded-lg shadow-sm px-4 py-2" 

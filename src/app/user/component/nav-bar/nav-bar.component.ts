@@ -56,22 +56,22 @@ export class NavBarComponent implements OnInit {
           {
             label: this.username,
             items: [
-              {
-                label: 'My Profile',
-                icon: 'pi pi-user',
-                command: () => {
-                  this.sidebarVisible = true;
-                  this.goToProfile();
-                },
-              },
-              {
-                label: 'My Orders',
-                icon: 'pi pi-shopping-cart',
-                command: () => {
-                  this.sidebarVisible = true;
-                  this.goToOrders();
-                },
-              },
+              // {
+              //   label: 'My Profile',
+              //   icon: 'pi pi-user',
+              //   command: () => {
+              //     this.sidebarVisible = true;
+              //     this.goToProfile();
+              //   },
+              // },
+              // {
+              //   label: 'My Orders',
+              //   icon: 'pi pi-shopping-cart',
+              //   command: () => {
+              //     this.sidebarVisible = true;
+              //     this.goToOrders();
+              //   },
+              // },
               {
                 label: 'Logout',
                 icon: 'pi pi-sign-out',

@@ -64,7 +64,7 @@ export class MyOrdersComponent implements OnInit {
   };
 
   // PrimeNG DataView layout options
-  layout: 'list' | 'grid' = 'list';
+  layout: 'list' | 'grid' = 'grid';
 
   constructor(
     private http: HttpClient,

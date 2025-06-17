@@ -156,16 +156,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       {
         label: this.userName,
         items: [
-          {
-            label: 'Profile',
-            icon: 'pi pi-user',
-            command: () => this.router.navigate(['/profile'])
-          },
-          {
-            label: 'Settings',
-            icon: 'pi pi-cog',
-            command: () => this.router.navigate(['/settings'])
-          },
+          // {
+          //   label: 'Profile',
+          //   icon: 'pi pi-user',
+          //   command: () => this.router.navigate(['/profile'])
+          // },
+          // {
+          //   label: 'Settings',
+          //   icon: 'pi pi-cog',
+          //   command: () => this.router.navigate(['/settings'])
+          // },
           { separator: true },
           {
             label: 'Logout',
