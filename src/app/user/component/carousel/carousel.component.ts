@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GiftItemsService } from '../../../services/gift-items.service';
+import { GiftItemsService } from '../../../services/items.service';
 
  
 @Component({
@@ -17,7 +17,7 @@ export class CarouselComponent implements OnInit {
 
 
   fetchAllItems(): void {
-      this.giftItemsService.getAllGiftItems().subscribe(data => {
+      this.giftItemsService.getAllItems().subscribe(data => {
           if (!data || !data.payload) {
               console.error('Invalid data format:', data);
               return;

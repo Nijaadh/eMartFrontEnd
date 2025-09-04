@@ -1,0 +1,571 @@
+<!-- HTML Template with Tailwind CSS -->
+<p-toast />
+<div
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
+  *ngIf="isModalVisible"
+>
+  <div
+    class="bg-white rounded-lg w-11/12 max-w-4xl max-h-[80vh] overflow-y-auto p-6 relative shadow-xl border-2 border-blue-200"
+  >
+    <span
+      class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-blue-800 cursor-pointer transition-colors"
+      (click)="closeModal()"
+      >&times;</span
+    >
+    <h2
+      class="text-2xl font-semibold text-blue-900 mb-6 pb-3 border-b-2 border-blue-100"
+    >
+      Search Results
+    </h2>
+    <div
+      class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl border border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 mb-4"
+      *ngFor="let item of filteredItems"
+    >
+      <div class="flex flex-col md:flex-row">
+        <div
+          class="p-4 bg-blue-50 flex items-center justify-center h-48 md:w-48"
+        >
+          <img
+            [src]="item.image || '/assets/box.png'"
+            alt="Product Image"
+            class="max-w-full max-h-full object-contain"
+          />
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h2 class="text-lg font-semibold text-blue-900 mb-3">
+            {{ item.name }}
+          </h2>
+          <p class="text-sm text-gray-700 mb-4 flex-1">
+            <span *ngIf="!item.showFullDescription">
+              {{ item.description | slice : 0 : 100 }}...
+              <a
+                href="javascript:void(0);"
+                (click)="toggleDescription(item)"
+                class="text-blue-600 font-medium ml-1 hover:text-blue-800 hover:underline"
+                >Show more</a
+              >
+            </span>
+            <span *ngIf="item.showFullDescription">
+              {{ item.description }}
+              <a
+                href="javascript:void(0);"
+                (click)="toggleDescription(item)"
+                class="text-blue-600 font-medium ml-1 hover:text-blue-800 hover:underline"
+                >Show less</a
+              >
+            </span>
+          </p>
+          <div class="text-xl font-bold text-blue-700">
+            {{ item.unitPrice }} LKR
+          </div>
+        </div>
+        <div class="p-4 flex items-center">
+          <button
+            class="bg-gradient-to-r from-blue-700 to-blue-600 text-white font-semibold py-3 px-4 rounded hover:from-blue-800 hover:to-blue-700 shadow hover:shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            (click)="addToCart(item)"
+          >
+            Add To Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header class="sticky z-50 w-full bg-white shadow-md border-b border-blue-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col lg:flex-row items-center gap-4 py-5">
+      <!-- Search Box -->
+      <div class="w-full">
+        <p-iconField iconPosition="right" class="w-full">
+          <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+          <input
+            type="text"
+            pInputText
+            placeholder="Search items..."
+            (input)="onSearch($event)"
+            [(ngModel)]="searchTerm"
+            name="searchTerm"
+            class="w-full p-3 h-12 rounded-md border-2 border-blue-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition-all duration-300"
+          />
+        </p-iconField>
+      </div>
+
+      <!-- Row for Filter + Cart on Mobile -->
+      <div class="flex items-center justify-between lg:hidden w-full">
+        <!-- Filter Button -->
+        <button
+          pButton
+          icon="pi pi-filter"
+          (click)="toggleMobileFilters()"
+          class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-3 h-12 w-12 rounded-md transform hover:scale-105 duration-300 flex items-center justify-center"
+          pTooltip="Filters"
+        ></button>
+
+        <!-- Shopping Cart Button -->
+        <p-button
+          (onClick)="showCart()"
+          icon="pi pi-cart-plus"
+          badge="{{ cartCount }}"
+          outlined="true"
+          badgeClass="p-badge-contrast"
+          class="text-blue-700 border-blue-200 border-2 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 h-12"
+        ></p-button>
+      </div>
+
+      <!-- Filter Section - Desktop visible, mobile toggle -->
+      <div
+        class="flex-1 w-full lg:w-auto"
+        [ngClass]="{
+          hidden: !mobileFiltersVisible && screenIsSmall,
+          block: mobileFiltersVisible || !screenIsSmall
+        }"
+      >
+        <div
+          class="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4"
+        >
+          <p-treeSelect
+            [(ngModel)]="selectedCategory"
+            [options]="categoryTreeNodes"
+            placeholder="Select Category"
+            selectionMode="single"
+            [filter]="true"
+            (onNodeSelect)="onCategoryChange()"
+            appendTo="body"
+            styleClass="w-full min-w-[200px] flex-grow md:max-w-[280px] h-12"
+            [showClear]="true"
+            display="chip"
+          >
+            <ng-template pTemplate="value" let-node let-value="value">
+              <div class="flex items-center text-blue-700 font-medium">
+                {{ node?.label || "Select category" }}
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <div
+                class="p-2 text-blue-800 font-medium border-b border-blue-200"
+              >
+                Browse Categories
+              </div>
+            </ng-template>
+          </p-treeSelect>
+
+          <!-- Sort Options -->
+          <p-dropdown
+            [options]="sortOptions"
+            optionLabel="name"
+            placeholder="Sort By"
+            [(ngModel)]="selectedSortOption"
+            (onChange)="onSortChange()"
+            [styleClass]="'sort-dropdown h-12'"
+            appendTo="body"
+            class="min-w-[120px] flex-grow md:max-w-[180px]"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2">
+                <i
+                  *ngIf="selectedSortOption.value === 'priceLow'"
+                  class="pi pi-sort-amount-up-alt text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'priceHigh'"
+                  class="pi pi-sort-amount-down text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'alpha'"
+                  class="pi pi-sort-alpha-up text-blue-600"
+                ></i>
+                <i
+                  *ngIf="selectedSortOption.value === 'newest'"
+                  class="pi pi-calendar text-blue-600"
+                ></i>
+                <span>{{ selectedSortOption.name }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-option pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <i
+                  *ngIf="option.value === 'priceLow'"
+                  class="pi pi-sort-amount-up-alt text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'priceHigh'"
+                  class="pi pi-sort-amount-down text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'alpha'"
+                  class="pi pi-sort-alpha-up text-blue-600"
+                ></i>
+                <i
+                  *ngIf="option.value === 'newest'"
+                  class="pi pi-calendar text-blue-600"
+                ></i>
+                <span>{{ option.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <!-- Price Range -->
+          <p-dropdown
+            [options]="priceRanges"
+            optionLabel="name"
+            placeholder="Price Range"
+            [(ngModel)]="selectedPriceRange"
+            (onChange)="onFilterChange()"
+            [styleClass]="'price-dropdown h-12'"
+            appendTo="body"
+            class="min-w-[120px] flex-grow md:max-w-[180px]"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2">
+                <i class="pi pi-tag text-blue-600"></i>
+                <span>{{ selectedPriceRange.name }}</span>
+              </div>
+            </ng-template>
+            <ng-template let-range pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <i class="pi pi-tag text-blue-600"></i>
+                <span>{{ range.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="flex items-center gap-6">
+            <!-- Increased gap from 3 to 6 -->
+            <div
+              class="flex items-center gap-2 bg-blue-50 rounded-md px-3 py-2 h-12 border border-blue-200"
+            >
+              <p-checkbox
+                [(ngModel)]="inStockOnly"
+                [binary]="true"
+                (onChange)="onFilterChange()"
+                styleClass="p-checkbox-sm"
+              ></p-checkbox>
+              <label
+                class="text-blue-800 font-medium text-sm cursor-pointer"
+                (click)="inStockOnly = !inStockOnly; onFilterChange()"
+              >
+                In Stock
+              </label>
+            </div>
+            <button
+              pButton
+              icon="pi pi-filter-slash"
+              (click)="clearFilters()"
+              class="text-blue-700 border-2 border-blue-200 bg-transparent hover:bg-blue-50 transition-colors p-2 h-12 rounded-md transform hover:scale-105 duration-300 flex items-center"
+              [disabled]="!hasActiveFilters()"
+              pTooltip="Clear All Filters"
+              label="Clear Filters"
+            ></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Button for Desktop -->
+      <div class="hidden lg:block lg:ml-auto">
+        <p-button
+          (onClick)="showCart()"
+          label="Shopping Cart"
+          icon="pi pi-cart-plus"
+          badge="{{ cartCount }}"
+          outlined="true"
+          badgeClass="p-badge-contrast"
+          class="text-blue-700 border-blue-200 border-2 hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 h-12"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</header>
+<div>
+  <div class="flex items-center ml-auto">
+    <p-dialog
+      header="Shopping Cart"
+      [modal]="true"
+      [(visible)]="visible"
+      [style]="{ width: '50rem', minHeight: '300px' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      styleClass="rounded-lg overflow-hidden border-2 border-blue-200"
+    >
+      <div
+        *ngIf="cartItems.length === 0"
+        class="text-center py-8 text-gray-600"
+      >
+        Your cart is empty. Start shopping to add items!
+      </div>
+
+      <div
+        *ngFor="let item of cartItems"
+        class="flex items-center py-4 border-b border-blue-100 last:border-b-0 hover:bg-blue-50 transition-colors rounded-md p-2"
+      >
+        <div
+          class="w-20 h-20 flex items-center justify-center mr-4 bg-blue-50 rounded-md border border-blue-100"
+        >
+          <img
+            [src]="item.image || '/assets/box.png'"
+            alt="{{ item.name }}"
+            class="max-h-[70px] max-w-full object-contain"
+          />
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-medium text-blue-900 mb-1 truncate">
+            [#{{ item.id }}] &nbsp; {{ item.name }}
+          </h4>
+          <div class="text-blue-700 font-medium">{{ item.unitPrice }} LKR</div>
+        </div>
+        <div class="flex items-center mx-4">
+          <button
+            class="w-8 h-8 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 hover:border-blue-400 flex items-center justify-center transition-all"
+            (click)="decrementQuantity(item.id)"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            class="w-10 mx-2 text-center border border-blue-200 rounded p-1 focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+            min="1"
+            [value]="item.quantity"
+            (change)="updateQuantity(item, $event)"
+          />
+          <button
+            class="w-8 h-8 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 hover:border-blue-400 flex items-center justify-center transition-all"
+            (click)="incrementQuantity(item.id)"
+          >
+            +
+          </button>
+        </div>
+        <div class="font-bold text-right w-20 mr-4 text-blue-800">
+          {{ item.unitPrice * item.quantity }} LKR
+        </div>
+        <p-button
+          icon="pi pi-times"
+          [rounded]="true"
+          severity="danger"
+          [outlined]="true"
+          (onClick)="removeFromCart(item.id)"
+          class="hover:scale-110 transition-transform"
+        />
+      </div>
+
+      <div
+        *ngIf="cartItems.length > 0"
+        class="mt-5 pt-4 border-t-2 border-blue-100"
+      >
+        <div class="flex justify-between items-center mb-4 text-lg font-bold">
+          <span>Total:</span>
+          <span class="text-blue-800">{{ cartTotal }} LKR</span>
+        </div>
+
+        <p-button
+          label="Proceed to Checkout"
+          icon="pi pi-check"
+          [disabled]="cartItems.length === 0"
+          styleClass="bg-gradient-to-r from-blue-700 to-blue-600 border-blue-700 hover:from-blue-800 hover:to-blue-700 w-full text-center py-3 rounded-md font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
+          (onClick)="proceedToCheckout()"
+        />
+      </div>
+    </p-dialog>
+  </div>
+</div>
+
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4"
+>
+  <div
+    *ngIf="filteredItems.length === 0"
+    class="col-span-full text-center py-12"
+  >
+    <div class="text-blue-400 text-6xl mb-4">
+      <i class="pi pi-search"></i>
+    </div>
+    <h3 class="text-xl font-semibold mb-2 text-blue-900">No items found</h3>
+    <p class="text-gray-600 mb-4">
+      No items match your search and filter criteria.
+    </p>
+    <button
+      class="text-blue-700 border-2 border-blue-300 bg-transparent hover:bg-blue-50 transition-colors px-6 py-2.5 rounded-md font-medium hover:shadow-md transform hover:scale-105 duration-300"
+      (click)="clearFilters()"
+    >
+      Clear Filters
+    </button>
+  </div>
+  <!-- <div class="top-1"> -->
+
+  <div
+    class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 flex flex-col h-full cursor-pointer group animate-fade-in"
+    *ngFor="let item of filteredItems; let i = index"
+    [ngStyle]="{ 'animation-delay': i * 0.05 + 's' }"
+    (click)="goToProfile(item.id)"
+  >
+    <div
+      class="p-4 bg-blue-50 flex items-center justify-center h-48 group-hover:bg-blue-100 transition-colors"
+    >
+      <img
+        [src]="item.image || '/assets/box.png'"
+        alt="Product Image"
+        class="max-w-[90%] max-h-[90%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+      />
+    </div>
+    <div class="p-4 flex-1 flex flex-col border-t border-blue-100">
+      <h2
+        class="text-lg font-semibold text-blue-900 mb-3 line-clamp-2 group-hover:text-blue-700 transition-colors"
+      >
+        {{ item.name }}
+      </h2>
+
+      <p
+        class="text-sm text-gray-700 mb-4 flex-1"
+        (click)="$event.stopPropagation()"
+      >
+        <span *ngIf="!item.showFullDescription">
+          {{ item.description | slice : 0 : 100 }}...
+          <a
+            href="javascript:void(0);"
+            (click)="toggleDescription(item)"
+            class="text-blue-600 font-medium ml-1 hover:text-blue-800 hover:underline"
+            >Show more</a
+          >
+        </span>
+        <span *ngIf="item.showFullDescription">
+          {{ item.description }}
+          <a
+            href="javascript:void(0);"
+            (click)="toggleDescription(item)"
+            class="text-blue-600 font-medium ml-1 hover:text-blue-800 hover:underline"
+            >Show less</a
+          >
+        </span>
+      </p>
+      <div
+        class="text-xl font-bold text-blue-700 mt-auto group-hover:text-blue-800 transition-colors"
+      >
+        {{ item.unitPrice }} LKR
+      </div>
+      <div *ngIf="item.itemCount <= 0" class="my-2">
+        <span class="text-red-600 text-sm font-medium">Out of Stock</span>
+      </div>
+      <div
+        *ngIf="item.categoryName || item.subCategoryName"
+        class="text-xs text-gray-500 mt-2"
+      >
+        <span>{{ item.categoryName }} > {{ item.subCategoryName }}</span>
+      </div>
+    </div>
+    <button
+      class="bg-gradient-to-r from-blue-700 to-blue-600 text-white font-semibold py-3 px-4 hover:from-blue-800 hover:to-blue-700 transition-all duration-300 flex items-center justify-center group-hover:shadow-inner transform group-hover:scale-[1.02]"
+      (click)="addToCart(item); $event.stopPropagation()"
+    >
+      <i class="pi pi-cart-plus mr-2"></i>
+      Add To Cart
+    </button>
+  </div>
+</div>
+
+<div class="flex justify-center mt-8 mb-10" *ngIf="totalPages > 1">
+  <div class="flex items-center gap-2 flex-wrap justify-center">
+    <!-- Previous page button -->
+    <button 
+      class="px-3 py-2 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors duration-300 flex items-center gap-1"
+      [class.opacity-50]="currentPage === 0"
+      [class.cursor-not-allowed]="currentPage === 0"
+      [disabled]="currentPage === 0"
+      (click)="previousPage()"
+    >
+      <i class="pi pi-chevron-left text-xs"></i>
+      <span class="hidden sm:inline">Previous</span>
+    </button>
+    
+    <!-- First page button (if not in view) -->
+    <button 
+      *ngIf="getPageNumbers()[0] > 0"
+      class="w-10 h-10 rounded-md border border-blue-300 flex items-center justify-center hover:bg-blue-50 transition-colors"
+      (click)="goToPage(0)"
+    >
+      1
+    </button>
+    
+    <!-- Ellipsis if needed -->
+    <span *ngIf="getPageNumbers()[0] > 1" class="px-2">...</span>
+    
+    <!-- Page number buttons -->
+    <button 
+      *ngFor="let page of getPageNumbers()"
+      class="w-10 h-10 rounded-md flex items-center justify-center transition-all duration-300"
+      [class.bg-blue-600]="page === currentPage"
+      [class.text-white]="page === currentPage"
+      [class.border-blue-600]="page === currentPage"
+      [class.border]="page === currentPage"
+      [class.border-blue-300]="page !== currentPage"
+      [class.hover:bg-blue-50]="page !== currentPage"
+      [class.hover:shadow]="page !== currentPage"
+      [class.transform]="page !== currentPage"
+      [class.hover:scale-110]="page !== currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page + 1 }}
+    </button>
+    
+    <!-- Ellipsis if needed -->
+    <span *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 2" class="px-2">...</span>
+    
+    <!-- Last page button (if not in view) -->
+    <button 
+      *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1"
+      class="w-10 h-10 rounded-md border border-blue-300 flex items-center justify-center hover:bg-blue-50 transition-colors"
+      (click)="goToPage(totalPages - 1)"
+    >
+      {{ totalPages }}
+    </button>
+    
+    <!-- Next page button -->
+    <button 
+      class="px-3 py-2 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-50 transition-colors duration-300 flex items-center gap-1"
+      [class.opacity-50]="currentPage >= totalPages - 1"
+      [class.cursor-not-allowed]="currentPage >= totalPages - 1"
+      [disabled]="currentPage >= totalPages - 1"
+      (click)="nextPage()"
+    >
+      <span class="hidden sm:inline">Next</span>
+      <i class="pi pi-chevron-right text-xs"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Page info display -->
+<div class="text-center text-gray-600 text-sm mb-8" *ngIf="totalItems > 0">
+  Showing {{ currentPage * itemsPerPage + 1 }} - {{ min((currentPage + 1) * itemsPerPage, totalItems) }} of {{ totalItems }} items
+</div>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.4s ease forwards;
+  }
+
+  /* Add a subtle pulse effect to the "Add to Cart" button */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(30, 64, 175, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(30, 64, 175, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(30, 64, 175, 0);
+    }
+  }
+
+  .group:hover button {
+    animation: pulse 2s infinite;
+  }
+</style>

@@ -1,0 +1,46 @@
+.dashboard-container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  :host ::ng-deep {
+    .p-breadcrumb {
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+    
+    .p-card {
+      border-radius: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .p-datatable .p-datatable-thead > tr > th {
+      background-color: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+    }
+    
+    .p-datatable .p-datatable-tbody > tr {
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #f1f5f9;
+      }
+    }
+    
+    .p-button.p-button-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.875rem;
+    }
+    
+    .p-button.p-button-rounded.p-button-sm {
+      width: 2rem;
+      height: 2rem;
+    }
+    
+    .p-toast .p-toast-message {
+      border-radius: 0.5rem;
+    }
+  }
+  

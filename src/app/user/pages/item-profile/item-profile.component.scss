@@ -1,0 +1,207 @@
+/* Full page width & background */
+.item-profile {
+  width: 100%;
+  padding: 2rem 4vw;
+  background: #f2f2f2;
+  box-sizing: border-box;
+}
+
+/* Card Layout */
+.item-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* Product Image */
+.item-image {
+  flex: 1 1 350px;
+  min-width: 300px;
+}
+
+.item-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Info Section */
+.item-info {
+  flex: 2 1 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: bold;
+  color: #222;
+}
+
+.brand-stock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 1rem;
+  color: #666;
+}
+
+.stock.available {
+  color: green;
+  font-weight: 600;
+}
+
+.price-highlight {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #e8fff0;
+  padding: 1rem 1.5rem;
+  border-left: 6px solid #2e8b57;
+  border-radius: 12px;
+  gap: 1rem;
+}
+
+.price-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.original-price {
+  font-size: 1.8rem;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.price {
+  font-size: 2.5rem;
+  color: #2e8b57;
+  font-weight: 700;
+}
+
+.rating {
+  font-size: 1.1rem;
+  color: #f39c12;
+}
+
+/* Sales info */
+.sales-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Description & features */
+.description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+.features {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.features li {
+  margin: 0.4rem 0;
+}
+
+/* Quantity selector */
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.quantity label {
+  font-weight: 600;
+}
+
+.quantity input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn.primary {
+  background: #2e8b57;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #246a45;
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #2e8b57;
+  color: #2e8b57;
+}
+
+.btn.secondary:hover {
+  background: #2e8b57;
+  color: white;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .item-card {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .price-highlight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

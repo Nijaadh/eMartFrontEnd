@@ -1,0 +1,26 @@
+/* Hero Section Animation */
+.hero-content {
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .story {
+    @apply flex-col;
+    
+    .section-img {
+      @apply w-full mt-8;
+    }
+  }
+}
